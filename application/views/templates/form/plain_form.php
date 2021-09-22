@@ -34,8 +34,14 @@
             switch(  $attr['type'] )
             {
                 case 'date':
-                    $form['class'] = "form-control datepicker";
-                    $form['type'] = "text";
+                    // $form['class'] = "form-control datepicker";
+                    $form['class'] = "form-control";
+                    $form['type'] = "date";
+                    $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
+                    $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
+                    echo form_input( $form );
+                    break;
                 case 'password':
                 case 'email':
                 case 'text':
