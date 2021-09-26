@@ -129,7 +129,7 @@ class Paket_model extends MY_Model
         $this->limit( $limit );
       }
       $this->offset( $start );
-      $this->order_by($this->table.'.id', 'asc');
+      $this->order_by($this->table.'.id', 'desc');
       return $this->fetch_data();
   }
 

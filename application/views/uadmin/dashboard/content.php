@@ -21,6 +21,24 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="" method="GET" >
+                        <div class="row mb-2 ">
+                            <div class="col-lg-6 col-sm-12 col-md-12 col-xs-12">
+                                <?= $form_filter ?>
+                            </div>
+                            <div class="col-2" style="margin-top:3px">
+                                <button type="submit" class="btn btn-primary btn-sm"  style="margin-left: 5px;">
+                                    ok
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
           <div class="card">
             <div class="card-body">
             <div id='map' style='width: 100%; height: 500px;'></div>
@@ -30,10 +48,6 @@
       </div>
     </div>
   </section>
-</div>
-
-<div style="height:100; overflow-y: scroll" > 
-
 </div>
 
 <textarea id="paket" style="display:none">
