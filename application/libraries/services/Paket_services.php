@@ -154,13 +154,13 @@ class Paket_services
 			),
 			"latitude" => array(
 			  'type' => 'text',
-			  'readonly' => 'readonly',
+			//   'readonly' => 'readonly',
 			  'label' => "Latitude",
 			  'value' => $this->form_validation->set_value('latitude', $this->latitude),
 			),
 			"longitude" => array(
 			  'type' => 'text',
-			  'readonly' => 'readonly',
+			//   'readonly' => 'readonly',
 			  'label' => "Longitude",
 			  'value' => $this->form_validation->set_value('longitude', $this->longitude),
 			),

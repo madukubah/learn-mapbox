@@ -82,10 +82,6 @@
       currentMarkers.push(marker);
 
         map.on('click',(e) => {
-            console.log("click");
-            const el = document.createElement('div');
-            el.className = 'marker';
-            el.innerHTML = 'marker';
 
             for (let i = currentMarkers.length - 1; i >= 0; i--) {
                 currentMarkers[i].remove();
@@ -97,6 +93,37 @@
 
             currentMarkers.push(marker);
         });
+
+    });
+</script>
+<script>
+      // console.log( "ceiling_budget" );
+    $(document).ready(function() {
+
+      $("#latitude").change(function( e ){
+          console.log( $( this ).val() );
+          setMarker( $( "#longitude" ).val() , $( this ).val());
+      });
+
+      $("#longitude").change(function(){
+          console.log( $( this ).val() );
+          setMarker( $( this ).val(), $( "#latitude" ).val() );
+      });
+
+      function setMarker( lng=0, lat=0 )
+      {
+        console.log( parseFloat(lng) );
+        console.log( parseFloat(lat) );
+
+        for (let i = currentMarkers.length - 1; i >= 0; i--) {
+            currentMarkers[i].remove();
+        }
+        // make a marker for each feature and add to the map
+        const marker =  new mapboxgl.Marker().setLngLat([ parseFloat(lng), parseFloat(lat) ]).addTo(map);
+
+        currentMarkers.push(marker);
+        console.log( currentMarkers.length );
+      }
 
     });
 </script>
