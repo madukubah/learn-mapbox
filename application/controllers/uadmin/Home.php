@@ -15,8 +15,6 @@ class Home extends Uadmin_Controller {
 	}
 	public function index()
 	{
-		$this->data[ "paket" ] = $this->paket_model->pakets( )->result();
-		
 		$year = $this->input->get("year", TRUE );
 		$year || $year = date('Y');
 		$form_filter["form_data"] = array(
@@ -32,6 +30,8 @@ class Home extends Uadmin_Controller {
 						'selected' => $year
 				),
 		);
+		$this->data[ "paket" ] = $this->paket_model->pakets( 0, null, $year)->result();
+
 		$form_filter = $this->load->view('uadmin/dashboard/form_filter', $form_filter, TRUE);
 		$this->data[ "form_filter" ] = $form_filter;
 		$this->render( "uadmin/dashboard/content" );

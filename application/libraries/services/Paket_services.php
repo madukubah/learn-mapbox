@@ -31,8 +31,8 @@ class Paket_services
   }
   public function get_photo_upload_config( $name = "_" )
   {
-    $filename = "USER_".$name."_".time();
-    $upload_path = 'uploads/users_photo/';
+    $filename = "PAKET_".time();
+    $upload_path = 'uploads/paket/';
 
     $config['upload_path'] = './'.$upload_path;
     $config['image_path'] = base_url().$upload_path;
@@ -114,6 +114,7 @@ class Paket_services
 			$this->longitude		=$paket->longitude;
 			$this->physical_progress=$paket->physical_progress;
 			$this->monetary_progress=$paket->monetary_progress;
+			$this->image			=$paket->image;
 		}
 
 		$_data["form_data"] = array(
@@ -128,9 +129,14 @@ class Paket_services
 			  'value' => $this->form_validation->set_value('name', $this->name),
 			),
 			"summernote" => array(
-			  'type' => 'textarea',
-			  'label' => "Deskripsi",
-			  'value' => $this->form_validation->set_value('summernote', $this->description),
+				'type' => 'textarea',
+				'label' => "Deskripsi",
+				'value' => $this->form_validation->set_value('summernote', $this->description),
+			),
+			"image" => array(
+				'type' => 'file',
+				'label' => "Gambar",
+				'value' => $this->form_validation->set_value('image', $this->image),
 			),
 			"start_date" => array(
 			  'type' => 'date',

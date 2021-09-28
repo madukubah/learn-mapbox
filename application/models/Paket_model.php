@@ -122,8 +122,16 @@ class Paket_model extends MY_Model
    * @return static
    * @author madukubah
    */
-  public function pakets( $start = 0 , $limit = NULL )
+  public function pakets( $start = 0 , $limit = NULL, $year = NULL )
   {
+      if (isset( $year ))
+      {
+        $start = $year."-01-01";
+        $end = $year."-12-31";
+        $this->where( "start_date >=", $start );
+        $this->where( "end_date <=", $end );
+      }
+
       if (isset( $limit ))
       {
         $this->limit( $limit );

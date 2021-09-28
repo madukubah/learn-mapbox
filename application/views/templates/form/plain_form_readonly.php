@@ -62,13 +62,16 @@
                     $form['value'] =  ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
                     echo '<label for="" class="control-label">'.$attr["label"].'</label>';
                     // echo form_textarea( $form );
-                    echo $form['value'];
+                    echo '<div class="card"><div class="card-body">'. $form['value']. '</div></div>';
                     break;
                 case 'multiple_file':
                     $form['multiple'] = "";
                 case 'file':
                     echo '<label for="" class="control-label">'.$attr["label"].'</label>';
-                    echo form_upload( $form );
+                    // echo form_upload( $form );
+                    $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    echo '<br/>';
+                    echo '<img class="img-fluid" src="'.base_url("uploads/paket/").$form['value'].'" />';
                     break;
                 case 'select_search':
                     $form['class'] = 'form-control show-tick';
