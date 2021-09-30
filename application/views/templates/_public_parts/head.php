@@ -22,5 +22,5 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<body class="hold-transition layout-top-nav layout-footer-fixed">
+<body class="hold-transition layout-top-nav layout-footer-fixed" style="background-image: url(<?= base_url('assets/img/bg.jpeg') ?>); background-size: cover; background-repeat: no-repeat">
     <div class="wrapper">
