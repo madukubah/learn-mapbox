@@ -72,7 +72,7 @@
                     'description':
                     '<div style="max-height:300px; overflow-y: scroll" > '+pakets[i].description+
                     '<img class="img-fluid" src="<?php echo base_url("uploads/paket/")?>'+pakets[i].image+'" />'+
-                    '<a href="<?php echo site_url("uadmin/paket/detail/")?>'+pakets[i].id+'" >Detail</a>'+'</div>',
+                    '<a href="<?php echo site_url( $parent_page."/paket/detail/")?>'+pakets[i].id+'" >Detail</a>'+'</div>',
                     'icon': 'harbor_icon'
                     },
                 'geometry': {

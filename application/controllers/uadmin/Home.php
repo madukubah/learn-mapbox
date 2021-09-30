@@ -11,6 +11,7 @@ class Home extends Uadmin_Controller {
 		$this->load->model(array(
 			'paket_model',
 		));
+		$this->data[ "parent_page" ] =  $this->parent_page;
 
 	}
 	public function index()

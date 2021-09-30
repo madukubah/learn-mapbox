@@ -58,43 +58,43 @@ class Paket_services
 			'physical_progress' => 'Progress Fisik (%)',
 			'monetary_progress' => 'Progress Keuangan (%)',
 		  );
-		  $table["number"] = $start_number ;
-		  $table[ "action" ] = array(
-			array(
-			  "name" => "Detail",
-			  "type" => "link",
-			  "url" => site_url($_page."detail/"),
-			  "button_color" => "primary",
-			  "param" => "id",
+	$table["number"] = $start_number ;
+	$table[ "action" ] = array(
+		array(
+			"name" => "Detail",
+			"type" => "link",
+			"url" => site_url($_page."detail/"),
+			"button_color" => "primary",
+			"param" => "id",
+		),
+		array(
+			"name" => "Edit",
+			"type" => "link",
+			"url" => site_url($_page."edit/"),
+			"button_color" => "primary",
+			"param" => "id",
+		),
+		array(
+			"name" => 'X',
+			"type" => "modal_delete",
+			"modal_id" => "delete_paket_",
+			"url" => site_url( $_page."delete/"),
+			"button_color" => "danger",
+			"param" => "id",
+			"form_data" => array(
+			"id" => array(
+				'type' => 'hidden',
+				'label' => "id",
 			),
-			array(
-			  "name" => "Edit",
-			  "type" => "link",
-			  "url" => site_url($_page."edit/"),
-			  "button_color" => "primary",
-			  "param" => "id",
+			"group_id" => array(
+				'type' => 'hidden',
+				'label' => "group_id",
 			),
-			array(
-			  "name" => 'X',
-			  "type" => "modal_delete",
-			  "modal_id" => "delete_paket_",
-			  "url" => site_url( $_page."delete/"),
-			  "button_color" => "danger",
-			  "param" => "id",
-			  "form_data" => array(
-				"id" => array(
-				  'type' => 'hidden',
-				  'label' => "id",
-				),
-				"group_id" => array(
-				  'type' => 'hidden',
-				  'label' => "group_id",
-				),
-			  ),
-			  "title" => "Paket",
-			  "data_name" => "name",
 			),
-		);
+			"title" => "Paket",
+			"data_name" => "name",
+		),
+	);
     return $table;
   }
 
