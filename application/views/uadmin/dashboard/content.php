@@ -70,7 +70,7 @@
                 'type': 'Feature',
                 'properties': {
                     'description':
-                    '<div style="max-height:300px; overflow-y: scroll" > '+pakets[i].description+'</div>',
+                    '<div style="max-height:300px; overflow-y: scroll" > '+pakets[i].description+'<img class="img-fluid" src="<?php echo base_url("uploads/paket/")?>'+pakets[i].image+'" />'+'<a href="<?php echo site_url("uadmin/paket/detail/")?>'+pakets[i].id+'" >Detail</a>'+'</div>',
                     'icon': 'harbor_icon'
                     },
                 'geometry': {
@@ -99,7 +99,7 @@
             if (error) throw error;
             
             // Add the image to the map style.
-            map.addImage('cat', image);
+            map.addImage('marker', image);
 
             // Add a layer showing the places.
             map.addLayer({
@@ -107,7 +107,7 @@
                 'type': 'symbol',
                 'source': 'places',
                 'layout': {
-                'icon-image': 'cat',
+                'icon-image': 'marker',
                 'icon-allow-overlap': true,
                 'icon-size': 0.1
                 }

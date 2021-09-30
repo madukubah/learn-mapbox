@@ -5,9 +5,9 @@
                 <!-- <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= base_url('auth/') ?>register" class="nav-link">Register</a>
                 </li> -->
-                <li class="nav-item d-none d-sm-inline-block">
+                <!-- <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= base_url('auth/') ?>login" class="btn btn-outline-primary nav-link">Login</a>
-                </li>
+                </li> -->
             <?php else : ?>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= site_url().$this->ion_auth->group( $this->ion_auth->user()->row()->group_id )->row()->name ?>" class="btn btn-default nav-link">Dashboard</a>

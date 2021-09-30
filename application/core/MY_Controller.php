@@ -12,54 +12,54 @@ class MY_Controller extends CI_Controller {
     }
 
     protected function render($the_view = NULL, $template = NULL){
-    		if($template == 'json' || $this->input->is_ajax_request()){
-    			header('Content-Type: application/json');
-    			echo json_encode($this->data);
-    		}
-    		elseif(is_null($template)){
-    			$this->load->view($the_view, $this->data );
-    		}else{
-    			$this->data['the_view_content'] = (is_null($the_view)) ? '' : $this->load->view($the_view, $this->data, TRUE);
-    			$this->load->view('templates/V_' . $template . '', $this->data);
-    		}
-		 }
-
-		public function setPagination($pagination)
-		{
-			$config['base_url'] = $pagination['base_url'];
-			$config['total_rows'] = $pagination['total_records'];
-			$config['per_page'] = $pagination['limit_per_page'];
-			$config["uri_segment"] = $pagination['uri_segment'];
-
-			// custom paging configuration
-			$config['num_links'] = $pagination['total_records']/$pagination['limit_per_page'];
-			$config['use_page_numbers'] = TRUE;
-			$config['reuse_query_string'] = TRUE;
-
-			$config['full_tag_open'] = '<ul class="pagination pagination-sm m-0 float-right">';
-			$config['full_tag_close'] = '</ul>';
-			$config['first_link'] = false;
-			$config['last_link'] = false;
-			$config['first_tag_open'] = '<li class="page-item page-link">';
-			$config['first_tag_close'] = '</li>';
-			$config['prev_link'] = '&laquo';
-			$config['prev_tag_open'] = '<li class="page-item page-link">';
-			$config['prev_tag_close'] = '</li>';
-			$config['next_link'] = '&raquo';
-			$config['next_tag_open'] = '<li class="page-item page-link">';
-			$config['next_tag_close'] = '</li>';
-			$config['last_tag_open'] = '<li class="page-item page-link">';
-			$config['last_tag_close'] = '</li>';
-			$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
-			$config['cur_tag_close'] = '</a></li>';
-			$config['num_tag_open'] = '<li class="page-item page-link">';
-			$config['num_tag_close'] = '</li>';
-
-			$this->pagination->initialize($config);
-
-			// build paging links
-			return $this->pagination->create_links();
+		if($template == 'json' || $this->input->is_ajax_request()){
+			header('Content-Type: application/json');
+			echo json_encode($this->data);
 		}
+		elseif(is_null($template)){
+			$this->load->view($the_view, $this->data );
+		}else{
+			$this->data['the_view_content'] = (is_null($the_view)) ? '' : $this->load->view($the_view, $this->data, TRUE);
+			$this->load->view('templates/V_' . $template . '', $this->data);
+		}
+		}
+
+	public function setPagination($pagination)
+	{
+		$config['base_url'] = $pagination['base_url'];
+		$config['total_rows'] = $pagination['total_records'];
+		$config['per_page'] = $pagination['limit_per_page'];
+		$config["uri_segment"] = $pagination['uri_segment'];
+
+		// custom paging configuration
+		$config['num_links'] = $pagination['total_records']/$pagination['limit_per_page'];
+		$config['use_page_numbers'] = TRUE;
+		$config['reuse_query_string'] = TRUE;
+
+		$config['full_tag_open'] = '<ul class="pagination pagination-sm m-0 float-right">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_link'] = false;
+		$config['last_link'] = false;
+		$config['first_tag_open'] = '<li class="page-item page-link">';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '&laquo';
+		$config['prev_tag_open'] = '<li class="page-item page-link">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = '&raquo';
+		$config['next_tag_open'] = '<li class="page-item page-link">';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li class="page-item page-link">';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li class="page-item page-link">';
+		$config['num_tag_close'] = '</li>';
+
+		$this->pagination->initialize($config);
+
+		// build paging links
+		return $this->pagination->create_links();
+	}
 
     public function errorValidation($error){
       $alert = str_replace('<p>','<li>',$error);
