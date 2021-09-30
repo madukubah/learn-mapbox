@@ -143,7 +143,7 @@ class Paket extends Uadmin_Controller {
 
         if ($this->form_validation->run() === TRUE )
         {
-			if( isset($_FILES["image"]) ){
+			if( isset($_FILES["image"] ) && $_FILES["image"]["name"] != '' ){
 				if ( $this->upload->do_upload("image") ) {
 					$data['image'] = $this->upload->data()["file_name"];
 

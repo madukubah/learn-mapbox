@@ -9,8 +9,9 @@ class Paket_services
 	protected $end_date;
 	protected $latitude;
 	protected $longitude;
-  	protected $physical_progress ;
-  	protected $monetary_progress ;
+  	protected $physical_progress;
+  	protected $monetary_progress;
+  	protected $image;
   
   function __construct()
   {
@@ -22,13 +23,16 @@ class Paket_services
       $this->latitude				="";
       $this->longitude		  		="";
       $this->physical_progress		= '';
-      $this->monetary_progress		= '';
+	  $this->monetary_progress		= '';
+	  $this->image					='';
+	  
   }
 
   public function __get($var)
   {
     return get_instance()->$var;
   }
+
   public function get_photo_upload_config( $name = "_" )
   {
     $filename = "PAKET_".time();
