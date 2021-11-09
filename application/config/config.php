@@ -24,7 +24,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://localhost/gis-bombana/';
-$config['base_url'] = 'http://dev-gis.tenrimanagement.com/';
+$config['base_url'] = 'https://dev-gis.tenrimanagement.com/';
 
 /*
 |--------------------------------------------------------------------------
