@@ -58,7 +58,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |	['failover'] array - A array with 0 or more data for connections if the main should fail.
 |	['save_queries'] TRUE/FALSE - Whether to "save" all executed queries.
 | 				NOTE: Disabling this will also effectively disable both
-| 				$this->db->last_query() and profiling of DB queries.
+| 				$this->db->last_query()tenrimanagement.com/tenrimanagement.com/ and profiling of DB queries.
 | 				When you run a query, with this setting set to TRUE (default),
 | 				CodeIgniter will store the SQL statement for debugging purposes.
 | 				However, this may cause high memory usage, especially if you run
@@ -78,10 +78,13 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	// 'username' => 'root',
 	// 'password' => 'Alan!234',
-	'username' => 'tenq4849_root',
-	'password' => 'Admin!234',
+	// 'username' => 'tenq4849_root',
+	// 'password' => 'Admin!234',
+	'username' => 'sign7343_sigab',
+	'password' => 'sigab!234',
 	// 'database' => 'gis_bombama',
-	'database' => 'tenq4849_dev-gis',
+	// 'database' => 'tenq4849_dev-gis',
+	'database' => 'sign7343_sigab',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
