@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.6.6deb5ubuntu0.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 24, 2019 at 08:53 AM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 5.6.37
+-- Host: localhost:3306
+-- Generation Time: Jun 28, 2022 at 05:52 PM
+-- Server version: 5.7.33-0ubuntu0.18.04.1
+-- PHP Version: 7.2.24-0ubuntu0.18.04.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fixlcore`
+-- Database: `tender`
 --
 
 -- --------------------------------------------------------
@@ -40,7 +38,13 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Administrator'),
-(2, 'uadmin', 'user admin');
+(2, 'uadmin', 'user admin'),
+(3, 'user', 'user'),
+(4, 'auditor', '-'),
+(5, 'pa', '-'),
+(6, 'pjp', '-'),
+(7, 'pt', '-'),
+(8, 'tpphp', '-');
 
 -- --------------------------------------------------------
 
@@ -54,6 +58,15 @@ CREATE TABLE `login_attempts` (
   `login` varchar(100) NOT NULL,
   `time` int(11) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(1, '::1', ' auditor@gmail.com', 1656407590),
+(2, '::1', ' auditor@gmail.com', 1656407618),
+(3, '::1', ' pjp@gmail.com', 1656407845);
 
 -- --------------------------------------------------------
 
@@ -83,8 +96,38 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (103, 1, 'Setting', 'admin/menus', '-', 'cogs', 1, 3, '-'),
 (104, 1, 'User', 'admin/user_management', 'user_management_index', 'users', 1, 4, '-'),
 (106, 103, 'Menu', 'admin/menus', 'menus_index', 'circle', 1, 1, '-'),
-(107, 2, 'Beranda', 'user/home', 'home_index', 'home', 1, 1, '-'),
-(108, 2, 'Pengguna', 'uadmin/users', 'users_index', 'home', 1, 2, '-');
+(107, 2, 'Beranda', 'uadmin/home', 'home_index', 'home', 1, 1, '-'),
+(108, 2, 'Pengguna', 'uadmin/users', 'users_index', 'home', 1, 99, '-'),
+(110, 3, 'Beranda', 'user/home', 'home_index', 'home', 1, 1, '-'),
+(111, 3, 'Paket', 'user/paket', 'paket_index', 'home', 1, 2, '-'),
+(112, 6, 'Rencana Tender', 'pjp/tender', '-', 'file', 1, 1, '-');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `paket`
+--
+
+CREATE TABLE `paket` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `start_date` date NOT NULL DEFAULT '2021-09-03',
+  `end_date` date NOT NULL DEFAULT '2021-09-03',
+  `latitude` varchar(100) NOT NULL,
+  `longitude` varchar(100) NOT NULL,
+  `physical_progress` int(8) NOT NULL,
+  `monetary_progress` int(8) NOT NULL,
+  `image` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `paket`
+--
+
+INSERT INTO `paket` (`id`, `name`, `description`, `start_date`, `end_date`, `latitude`, `longitude`, `physical_progress`, `monetary_progress`, `image`) VALUES
+(1, 'PENINGKATAN KUALITAS PERMUKIMAN KUMUH KWS. PUNGGALOBA KEC. KENDARI BARAT KOTA KENDARIKOTA KENDARI, PROVINSI SULAWESI TENGGARA', '<p><b>PENINGKATAN KUALITAS PERMUKIMAN KUMUH KWS. PUNGGALOBA KEC. KENDARI BARAT KOTA KENDARIKOTA KENDARI, PROVINSI SULAWESI TENGGARA</b><br></p><p><b><br></b></p><p><b>DESKRIPSI SINGKAT</b><br></p><p>Desa Wisata Kolo terletak di Pulau Togo merupakan salah satu gugusan pulau di Kabupaten Wkatobi dengan Luas Wilayah 866,45 Ha di Wilayah Kecamatan Wangi-Wangi Selatan.&nbsp;</p><p><b>LINGKUP KEGIATAN :</b></p><ul><li>Pekerjaan Jalan Paving Blok P=2.746,23 M</li><li>Pekerjaan Pasangan Talud P=398,10 M</li><li>Pekerjaan Dermaga 1 Unit</li><li>Pekerjaan RTH</li></ul><p><b>WAKTU PELAKSANAAN :</b></p><ul><li>Mulai<span style=\"white-space: pre;\">	</span>: 12 April 2018</li><li>Selesai :&nbsp; 28 Desember 2018</li></ul><p><b>TITIK KOORDINAT :</b></p><ul><li>Latitude&nbsp; &nbsp; &nbsp;: 0123.522533°</li><li>Longitude&nbsp; : - 005.363681°</li></ul><p><b>KEMAJUAN PELAKSANAAN:</b></p><ul><li>Progres fisik&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : 100%&nbsp;</li><li>Progres keuangan&nbsp; :&nbsp; 100%</li></ul><p><b>MANFAAT :</b></p><p>Mendukung aksesibiltas dalam mendistribusikan hasil produksi menuju pasar dan dermaga serta akses ke kawasan permukiman dan pariwisata.</p><p></p>', '2021-09-03', '2021-09-29', '-3.9718923234483583', '122.47792433500189', 100, 100, 'PAKET_1632803004.png'),
+(12, 'tes', 'description', '2021-09-03', '2021-09-03', '0.0', '0.0', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -120,8 +163,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$XpBgMvQ5JzfvN3PTgf/tA.XwxbCOs3mO0a10oP9/11qi1NUpv46.u', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1571554000, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1571554027.jpeg', 'admin'),
-(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1570758865, 1, 'admin', 'Dinas', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8');
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1656405640, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin'),
+(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1656409933, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8'),
+(14, '127.0.0.1', 'auditor@gmail.com', '$2y$10$O9/YYtvknWWZ.vYEAZa/M.RsnTR1LMu10ntsbRbedd29wga081CRy', 'auditor@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1632804971, 1656407632, 1, 'Auditor', 'Auditor', '1234', 'default.jpg', 'Alamat'),
+(15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$fEZdcDRTVJ57Zm0L7wlDheTqq3sZR48MeT1qWDXPBCh6Fj7MecLi.', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1656409920, 1, 'pjp', 'pjp', '1923847983', 'default.jpg', 'pjp');
 
 -- --------------------------------------------------------
 
@@ -141,7 +186,9 @@ CREATE TABLE `users_groups` (
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
-(29, 13, 2);
+(29, 13, 2),
+(36, 14, 4),
+(37, 15, 6);
 
 --
 -- Indexes for dumped tables
@@ -163,6 +210,12 @@ ALTER TABLE `login_attempts`
 -- Indexes for table `menus`
 --
 ALTER TABLE `menus`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `paket`
+--
+ALTER TABLE `paket`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -192,32 +245,32 @@ ALTER TABLE `users_groups`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
-
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+--
+-- AUTO_INCREMENT for table `paket`
+--
+ALTER TABLE `paket`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
-
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- Constraints for dumped tables
 --
@@ -228,7 +281,6 @@ ALTER TABLE `users_groups`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
