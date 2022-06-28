@@ -129,7 +129,7 @@ class User_services
 				'type' => 'hidden',
 				'label' => "ID",
 				'value' => $this->form_validation->set_value('id', $this->id),
-			  ),
+			),
 			"first_name" => array(
 			  'type' => 'text',
 			  'label' => "Nama Depan",
@@ -139,26 +139,74 @@ class User_services
 			  'type' => 'text',
 			  'label' => "Nama Belakang",
 			  'value' => $this->form_validation->set_value('last_name', $this->last_name),
+			  
 			),
 			"email" => array(
 			  'type' => 'text',
 			  'label' => "Email",
 			  'value' => $this->form_validation->set_value('email', $this->email),			  
 			),
-			"address" => array(
-				'type' => 'text',
-				'label' => "Alamat",
-				'value' => $this->form_validation->set_value('address', $this->address),			  
-			  ),
 			"phone" => array(
 			  'type' => 'number',
 			  'label' => "Nomor Telepon",
 			  'value' => $this->form_validation->set_value('phone', $this->phone),			  
 			),
-			"group_id" => array(
+			"address" => array(
 				'type' => 'text',
+				'label' => "Alamat",
+				'value' => $this->form_validation->set_value('address', $this->address),			  
+			),
+			"nrrp" => array(
+				'type' => 'text',
+				'label' => "NRRP",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"job_position" => array(
+				'type' => 'text',
+				'label' => "Jabatan",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"sk_number" => array(
+				'type' => 'text',
+				'label' => "Nomor SK Pengangkatan",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"due_date" => array(
+				'type' => 'date',
+				'label' => "Masa Berlaku",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"cert_no" => array(
+				'type' => 'text',
+				'label' => "Nomor Sertifikat Pengadaan/Barang Jasa",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"cert_date" => array(
+				'type' => 'date',
+				'label' => "Tanggal Sertifikat",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"status" => array(
+				'type' => 'select',
+				'label' => "Status",
+				'options' => array(
+					'1' => 'Aktif',
+					'0' => 'Non Aktif'
+				)
+				,
+				'selected' => '1',
+			),
+			"group_id" => array(
+				'type' => 'select',
 				'label' => "User Group",
-				'value' => $group_select[ $this->group_id ],
+				'options' => $group_select,
+				'selected' => $this->group_id,
 			),
 		  );
 		return $_data;

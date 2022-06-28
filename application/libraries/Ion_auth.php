@@ -649,7 +649,7 @@ class Ion_auth
 				'type' => 'hidden',
 				'label' => "ID",
 				'value' => $this->form_validation->set_value('id', $this->id),
-			  ),
+			),
 			"first_name" => array(
 			  'type' => 'text',
 			  'label' => "Nama Depan",
@@ -661,11 +661,6 @@ class Ion_auth
 			  'value' => $this->form_validation->set_value('last_name', $this->last_name),
 			  
 			),
-			"address" => array(
-				'type' => 'text',
-				'label' => "Alamat",
-				'value' => $this->form_validation->set_value('address', $this->address),			  
-			),
 			"email" => array(
 			  'type' => 'text',
 			  'label' => "Email",
@@ -675,6 +670,57 @@ class Ion_auth
 			  'type' => 'number',
 			  'label' => "Nomor Telepon",
 			  'value' => $this->form_validation->set_value('phone', $this->phone),			  
+			),
+			"address" => array(
+				'type' => 'text',
+				'label' => "Alamat",
+				'value' => $this->form_validation->set_value('address', $this->address),			  
+			),
+			"nrrp" => array(
+				'type' => 'text',
+				'label' => "NRRP",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"job_position" => array(
+				'type' => 'text',
+				'label' => "Jabatan",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"sk_number" => array(
+				'type' => 'text',
+				'label' => "Nomor SK Pengangkatan",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"due_date" => array(
+				'type' => 'date',
+				'label' => "Masa Berlaku",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"cert_no" => array(
+				'type' => 'text',
+				'label' => "Nomor Sertifikat Pengadaan/Barang Jasa",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"cert_date" => array(
+				'type' => 'date',
+				'label' => "Tanggal Sertifikat",
+				// 'value' => $this->form_validation->set_value('address', $this->address),			  
+				'value' => '',			  
+			),
+			"status" => array(
+				'type' => 'select',
+				'label' => "Status",
+				'options' => array(
+					'1' => 'Aktif',
+					'0' => 'Non Aktif'
+				)
+				,
+				'selected' => '1',
 			),
 			"group_id" => array(
 				'type' => 'select',

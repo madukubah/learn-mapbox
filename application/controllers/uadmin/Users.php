@@ -165,7 +165,7 @@ class Users extends Uadmin_Controller
         $tables = $this->config->item('tables', 'ion_auth');
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->form_validation->set_rules( $this->ion_auth->get_validation_config() );
-        $this->form_validation->set_rules('phone', "No Telepon", 'trim|required|is_unique[users.phone]');
+        $this->form_validation->set_rules('phone', "No Telepon", 'trim|required');
 		if ( $this->input->post('password') )
         {
             $this->form_validation->set_rules( 'password',"Kata Sandi",'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]' );            
