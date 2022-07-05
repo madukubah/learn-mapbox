@@ -4,12 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends User_Controller {
 	private $services = null;
     private $name = null;
-    private $parent_page = 'pjp';
-	private $current_page = 'pjp/';
+    private $parent_page = 'pa';
+	private $current_page = 'pa/';
 	public function __construct(){
 		parent::__construct();
 
-		redirect(site_url('/pjp/tender'));
+		redirect(site_url('/pa/pokmil'));
 
 		$this->load->model(array(
 			'paket_model',
@@ -38,6 +38,6 @@ class Home extends User_Controller {
 
 		$form_filter = $this->load->view('pjp/dashboard/form_filter', $form_filter, TRUE);
 		$this->data[ "form_filter" ] = $form_filter;
-		$this->render( "pjp/dashboard/content" );
+		$this->render( "pa/dashboard/content" );
 	}
 }

@@ -8,6 +8,9 @@ class Home extends Uadmin_Controller {
 	private $current_page = 'uadmin/';
 	public function __construct(){
 		parent::__construct();
+
+		redirect(site_url('/uadmin/users'));
+
 		$this->load->model(array(
 			'paket_model',
 		));

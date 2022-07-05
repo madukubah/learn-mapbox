@@ -37,6 +37,7 @@ $config['base_url'] = 'http://localhost/gis-bombana/';
 |
 */
 $config['index_page'] = 'index.php';
+// $config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

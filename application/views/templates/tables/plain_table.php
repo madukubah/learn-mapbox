@@ -26,8 +26,8 @@
                                         $attr = number_format($row->$key);
                                     else
                                         $attr = $row->$key;
-                                    if ($key == 'date' || $key == 'create_date' || $key == 'time')
-                                        $attr =  date("d/m/Y", $row->$key);
+                                    // if ($key == 'date' || $key == 'create_date' || $key == 'time')
+                                    //     $attr =  date("d/m/Y", $row->$key);
 
                                     echo $attr;
                                     ?>

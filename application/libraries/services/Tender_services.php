@@ -3,28 +3,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Tender_services
 {
 	protected $id;
+	protected $code;
 	protected $name;
-	protected $description;
+	protected $type;
+	protected $budget;
+	protected $budget_source;
+	protected $year;
+	protected $location;
+	protected $method;
 	protected $start_date;
 	protected $end_date;
-	protected $latitude;
-	protected $longitude;
-  	protected $physical_progress;
-  	protected $monetary_progress;
-  	protected $image;
+	protected $status;
   
   function __construct()
   {
-      $this->id		      			='';
-      $this->name					='';
-      $this->description			="";
-      $this->start_date				="";
-      $this->end_date		  		="";
-      $this->latitude				="";
-      $this->longitude		  		="";
-      $this->physical_progress		= '';
-	  $this->monetary_progress		= '';
-	  $this->image					='';
+      $this->id		      	='';
+      $this->code			='';
+      $this->name			="";
+      $this->type			="";
+      $this->budget		  	="";
+      $this->budget_source	="";
+      $this->year		  	="";
+      $this->location		= '';
+	  $this->method			= '';
+	  $this->start_date		='';
+	  $this->end_date		='';
+	  $this->status			='';
 	  
   }
 
@@ -36,7 +40,7 @@ class Tender_services
   public function get_photo_upload_config( $name = "_" )
   {
     $filename = "PAKET_".time();
-    $upload_path = 'uploads/paket/';
+    $upload_path = 'uploads/tender/';
 
     $config['upload_path'] = './'.$upload_path;
     $config['image_path'] = base_url().$upload_path;
@@ -52,8 +56,8 @@ class Tender_services
   {
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
-			'code' => 'Kode Paket',
-			'name' => 'Nama Paket',
+			'code' => 'Kode',
+			'name' => 'Nama',
 			'type' => 'Jenis Pengadaan',
 			'budget' => 'Anggaran',
 			'year' => 'Tahun Anggaran',
@@ -81,7 +85,7 @@ class Tender_services
 		array(
 			"name" => 'X',
 			"type" => "modal_delete",
-			"modal_id" => "delete_paket_",
+			"modal_id" => "delete_tender_",
 			"url" => site_url( $_page."delete/"),
 			"button_color" => "danger",
 			"param" => "id",
@@ -108,21 +112,23 @@ class Tender_services
 	 * @return array
 	 * @author madukubah
 	 **/
-	public function get_form_data( $paket_id = -1 )
+	public function get_form_data( $tender_id = -1 )
 	{
-		if( $paket_id != -1 )
+		if( $tender_id != -1 )
 		{
-			$paket 					= $this->paket_model->paket( $paket_id )->row();
-			$this->id				=$paket->id;
-			$this->name				=$paket->name;
-			$this->description		=$paket->description;
-			$this->start_date		=$paket->start_date;
-			$this->end_date			=$paket->end_date;
-			$this->latitude			=$paket->latitude;
-			$this->longitude		=$paket->longitude;
-			$this->physical_progress=$paket->physical_progress;
-			$this->monetary_progress=$paket->monetary_progress;
-			$this->image			=$paket->image;
+			$tender 					= $this->tender_model->tender( $tender_id )->row();
+			$this->id				=$tender->id;
+			$this->code				=$tender->code;
+			$this->name				=$tender->name;
+			$this->type				=$tender->type;
+			$this->budget			=$tender->budget;
+			$this->budget_source	=$tender->budget_source;
+			$this->year				=$tender->year;
+			$this->location			=$tender->location;
+			$this->method			=$tender->method;
+			$this->start_date		=$tender->start_date;
+			$this->end_date			=$tender->end_date;
+			$this->status			=$tender->status;
 		}
 
 		$_data["form_data"] = array(
@@ -134,8 +140,7 @@ class Tender_services
 			"code" => array(
 			  'type' => 'text',
 			  'label' => "Kode Tender",
-			//   'value' => $this->form_validation->set_value('name', $this->name),
-			  'value' => '',
+			  'value' => $this->form_validation->set_value('code', $this->code),
 			),
 			"name" => array(
 			  'type' => 'text',
@@ -152,31 +157,27 @@ class Tender_services
 					'Lainnya' => 'Lainnya',
 				)
 				,
-				'selected' => '1',
+				'selected' => $this->form_validation->set_value('type', $this->type),
 			),
 			"budget" => array(
 			  'type' => 'number',
 			  'label' => "Anggaran",
-			//   'value' => $this->form_validation->set_value('name', $this->name),
-			  'value' => '',
+			  'value' => $this->form_validation->set_value('budget', $this->budget),
 			),
 			"budget_source" => array(
 			  'type' => 'text',
 			  'label' => "Sumber Dana",
-			//   'value' => $this->form_validation->set_value('name', $this->name),
-			  'value' => '',
+			  'value' => $this->form_validation->set_value('budget_source', $this->budget_source),
 			),
 			"year" => array(
 			  'type' => 'number',
 			  'label' => "Tahun Anggaran",
-			//   'value' => $this->form_validation->set_value('name', $this->name),
-			  'value' => '',
+			  'value' => $this->form_validation->set_value('year', $this->year),
 			),
 			"location" => array(
 			  'type' => 'text',
 			  'label' => "Lokasi",
-			//   'value' => $this->form_validation->set_value('name', $this->name),
-			  'value' => '',
+			  'value' => $this->form_validation->set_value('location', $this->location),
 			),
 			"method" => array(
 				'type' => 'select',
@@ -186,7 +187,7 @@ class Tender_services
 					'Pengadaan Langsung' => 'Pengadaan Langsung',
 				)
 				,
-				'selected' => '1',
+				'selected' => $this->form_validation->set_value('method', $this->method),
 			),
 			"start_date" => array(
 				'type' => 'date',
@@ -206,7 +207,7 @@ class Tender_services
 					'Tayang' => 'Tayang'
 				)
 				,
-				'selected' => '1',
+				'selected' => $this->form_validation->set_value('status', $this->status),
 			),
 		  );
 		return $_data;
@@ -219,11 +220,6 @@ class Tender_services
 			'label' => 'name',
 			'rules' =>  'trim|required',
 		  ),
-		//   array(
-		// 	'field' => 'summernote',
-		// 	'label' => 'description',
-		// 	'rules' =>  'trim|required',
-		//   ),
 	  );
 	  
 	  return $config;

@@ -1,24 +1,30 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Paket_services
+class Pokmil_services
 {
 	protected $id;
-	protected $draft_tender_id;
-	protected $pa_id;
-	protected $name;
-	protected $pokmil_id;
+	protected $name ;
+	protected $sk_no;
+	protected $lead_id;
+	protected $member_1_id;
+	protected $member_2_id;
+	protected $member_3_id;
+	protected $member_4_id;
 	protected $date;
 	protected $status;
   
   function __construct()
   {
       $this->id		      		='';
-      $this->draft_tender_id	='';
-      $this->pa_id				="";
-      $this->name				="";
-      $this->pokmil_id		  	="";
-      $this->date				="";
-      $this->status		  		="";
+      $this->name				='';
+      $this->sk_no				="";
+      $this->lead_id			="";
+      $this->member_1_id		="";
+      $this->member_2_id		="";
+      $this->member_3_id		="";
+      $this->member_4_id		= '';
+	  $this->date				='';
+	  $this->status				='';
 	  
   }
 
@@ -29,15 +35,15 @@ class Paket_services
 
   public function get_photo_upload_config( $name = "_" )
   {
-    $filename = "PAKET_".time();
-    $upload_path = 'uploads/paket/';
+    $filename = "TENDER_".time();
+    $upload_path = 'uploads/tender/';
 
     $config['upload_path'] = './'.$upload_path;
     $config['image_path'] = base_url().$upload_path;
-    $config['allowed_types'] = "gif|jpg|png|jpeg";
+    $config['allowed_types'] = "pdf";
     $config['overwrite']="true";
-    $config['max_size']="2048";
-    $config['file_name'] = ''.$filename;
+    // $config['max_size']="2048";
+    // $config['file_name'] = ''.$filename;
 
     return $config;
   }
@@ -46,10 +52,9 @@ class Paket_services
   {
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
-			'name' => 'Nama Tender',
-			'pa_full_name' => 'PA',
-			'pokmil_name' => 'Pokmil',
-			'date' => 'Tanggal',
+			'name' => 'Nama',
+			'sk_no' => 'No SK Pokmil',
+			'lead_full_name' => 'Ketua',
 		  );
 	$table["number"] = $start_number ;
 	$table[ "action" ] = array(
@@ -70,7 +75,7 @@ class Paket_services
 		array(
 			"name" => 'X',
 			"type" => "modal_delete",
-			"modal_id" => "delete_paket_",
+			"modal_id" => "delete_tender_",
 			"url" => site_url( $_page."delete/"),
 			"button_color" => "danger",
 			"param" => "id",
@@ -97,55 +102,77 @@ class Paket_services
 	 * @return array
 	 * @author madukubah
 	 **/
-	public function get_form_data( $paket_id = -1 )
+	public function get_form_data( $pokmil_id = -1 )
 	{
-		if( $paket_id != -1 )
+		if( $pokmil_id != -1 )
 		{
-			$paket 					= $this->paket_model->paket( $paket_id )->row();
-			$this->id				=$paket->id;
-			$this->draft_tender_id	=$paket->draft_tender_id;
-			$this->pa_id			=$paket->pa_id;
-			$this->name				=$paket->name;
-			$this->pokmil_id		=$paket->pokmil_id;
-			$this->date				=$paket->date;
-			$this->status			=$paket->status;
-		}
-		$pokmils = $this->pokmil_model->pokmils( )->result();
-		$pokmil_select = array(
-			'' => 'Pilih' 
-		);
-		foreach( $pokmils as $pokmil )
-		{
-			$pokmil_select[ $pokmil->id ] = $pokmil->name;
+			$pokmil 					= $this->pokmil_model->pokmil( $pokmil_id )->row();
+			$this->id					=$pokmil->id;
+			$this->name					=$pokmil->name;
+			$this->sk_no				=$pokmil->sk_no;
+			$this->lead_id				=$pokmil->lead_id;
+			$this->member_1_id			=$pokmil->member_1_id;
+			$this->member_2_id			=$pokmil->member_2_id;
+			$this->member_3_id			=$pokmil->member_3_id;
+			$this->member_4_id			=$pokmil->member_4_id;
+			$this->date					=$pokmil->date;
+			$this->status				=$pokmil->status;
 		}
 
+
+		$users = $this->ion_auth->users_limit( 1000, 0, 'pt' )->result();
+		$user_select = array(
+			'' => 'Pilih' 
+		);
+		foreach( $users as $user )
+		{
+			$user_select[ $user->id ] = $user->first_name." ".$user->last_name;
+		}
 		$_data["form_data"] = array(
 			"id" => array(
 				'type' => 'hidden',
 				'label' => "ID",
 				'value' => $this->form_validation->set_value('id', $this->id),
 			),
-			"draft_tender_id" => array(
-				'type' => 'hidden',
-				'label' => "draft_tender_id",
-				'value' => $this->form_validation->set_value('draft_tender_id', $this->draft_tender_id),
-			),
-			"pa_id" => array(
-				'type' => 'hidden',
-				'label' => "pa_id",
-				'value' => $this->form_validation->set_value('pa_id', $this->pa_id),
-			),
 			"name" => array(
 			  'type' => 'text',
-			  'label' => "Nama Tender",
-			  'readonly' => true,
+			  'label' => "Nama Pokmil",
 			  'value' => $this->form_validation->set_value('name', $this->name),
 			),
-			"pokmil_id" => array(
+			"sk_no" => array(
+				'type' => 'text',
+				'label' => "No SK Pokmil",
+				'value' => $this->form_validation->set_value('sk_no', $this->sk_no),			  
+			),
+			"lead_id" => array(
 				'type' => 'select',
-				'label' => "Pokmil",
-				'options' => $pokmil_select,
-				'selected' => $this->pokmil_id,
+				'label' => "Ketua",
+				'options' => $user_select,
+				'selected' => $this->lead_id,
+			),
+			"member_1_id" => array(
+				'type' => 'select',
+				'label' => "Anggota 1",
+				'options' => $user_select,
+				'selected' => $this->member_1_id,
+			),
+			"member_2_id" => array(
+				'type' => 'select',
+				'label' => "Anggota 2",
+				'options' => $user_select,
+				'selected' => $this->member_2_id,
+			),
+			"member_3_id" => array(
+				'type' => 'select',
+				'label' => "Anggota 3",
+				'options' => $user_select,
+				'selected' => $this->member_3_id,
+			),
+			"member_4_id" => array(
+				'type' => 'select',
+				'label' => "Anggota 4",
+				'options' => $user_select,
+				'selected' => $this->member_4_id,
 			),
 			"date" => array(
 				'type' => 'date',
@@ -171,11 +198,6 @@ class Paket_services
 		  array(
 			'field' => 'name',
 			'label' => 'name',
-			'rules' =>  'trim|required',
-		  ),
-		  array(
-			'field' => 'pokmil_id',
-			'label' => 'pokmil_id',
 			'rules' =>  'trim|required',
 		  ),
 	  );
