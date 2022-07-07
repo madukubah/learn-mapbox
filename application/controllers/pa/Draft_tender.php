@@ -17,6 +17,7 @@ class Draft_tender extends User_Controller {
 		$this->load->model(array(
 			'draft_tender_model',
 			'pokmil_model',
+			'paket_model',
 		));
 	}	
 
@@ -101,7 +102,13 @@ class Draft_tender extends User_Controller {
 
 		$create_paket= $this->load->view('templates/actions/modal_form', $create_paket, true ); 
 
-		$this->data[ "header_button" ] =  $create_paket;
+		$paket = $this->paket_model
+			->where('draft_tender_id', $draft_tender_id)
+			->paket()
+			->row();
+
+		if( !$paket )
+			$this->data[ "header_button" ] =  $create_paket;
 
 		$this->data[ "contents" ] =  $form_data;
 		$this->render( "pa/draft_tender/detail/content" );

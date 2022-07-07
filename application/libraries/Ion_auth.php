@@ -35,6 +35,13 @@ class Ion_auth
 	protected $address;
 	protected $email;
 	protected $group_id;
+
+	protected $nrrp;
+	protected $job_position;
+	protected $sk_number;
+	protected $due_date;
+	protected $cert_no;
+	protected $cert_date;
 	/**
 	 * account status ('not_activated', etc ...)
 	 *
@@ -78,6 +85,14 @@ class Ion_auth
 		$this->address		="";
 		$this->email		="";
 		$this->group_id		= '';
+
+		$this->nrrp			= '';
+		$this->job_position	= '';
+		$this->sk_number		= '';
+		$this->due_date		= '';
+		$this->cert_no		= '';
+		$this->cert_date		= '';
+		$this->status			= '';
 		// Check compat first
 		$this->check_compatibility();
 
@@ -624,6 +639,14 @@ class Ion_auth
 			$this->email		= $user->email;
 			$this->group_id		= $user->group_id;
 			$this->address		= $user->address;
+
+			$this->nrrp			=$user->nrrp;
+			$this->job_position	=$user->job_position;
+			$this->sk_number	=$user->sk_number;
+			$this->due_date		=$user->due_date;
+			$this->cert_no		=$user->cert_no;
+			$this->cert_date	=$user->cert_date;
+			$this->status		=$user->status;
 		}
 		// echo var_dump($user);
 
@@ -679,48 +702,42 @@ class Ion_auth
 			"nrrp" => array(
 				'type' => 'text',
 				'label' => "NRRP",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('nrrp', $this->nrrp),			  
 			),
 			"job_position" => array(
 				'type' => 'text',
 				'label' => "Jabatan",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('job_position', $this->job_position),			  
 			),
 			"sk_number" => array(
 				'type' => 'text',
 				'label' => "Nomor SK Pengangkatan",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('sk_number', $this->sk_number),			  
 			),
 			"due_date" => array(
 				'type' => 'date',
 				'label' => "Masa Berlaku",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('due_date', $this->due_date),			  
 			),
 			"cert_no" => array(
 				'type' => 'text',
 				'label' => "Nomor Sertifikat Pengadaan/Barang Jasa",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('cert_no', $this->cert_no),			  
 			),
 			"cert_date" => array(
 				'type' => 'date',
 				'label' => "Tanggal Sertifikat",
-				// 'value' => $this->form_validation->set_value('address', $this->address),			  
-				'value' => '',			  
+				'value' => $this->form_validation->set_value('cert_date', $this->cert_date),			  
 			),
 			"status" => array(
 				'type' => 'select',
 				'label' => "Status",
 				'options' => array(
-					'1' => 'Aktif',
-					'0' => 'Non Aktif'
+					'Aktif' => 'Aktif',
+					'Non Aktif' => 'Non Aktif'
 				)
 				,
-				'selected' => '1',
+				'selected' => $this->status,
 			),
 			"group_id" => array(
 				'type' => 'select',
@@ -728,7 +745,7 @@ class Ion_auth
 				'options' => $group_select,
 				'selected' => $this->group_id,
 			),
-		  );
+		);
 		return $_data;
 	}
 }

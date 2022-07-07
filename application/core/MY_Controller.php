@@ -137,9 +137,9 @@ class Uadmin_Controller extends User_Controller
 
 class Public_Controller extends MY_Controller{
 
-  function __construct(){
-		parent::__construct();
-  }
+	function __construct(){
+			parent::__construct();
+	}
 
   protected function render($the_view = NULL, $template = 'public_master'){
 		parent::render($the_view, $template);

@@ -127,6 +127,14 @@ class Users extends Uadmin_Controller
             'email' => $this->input->post('email'),
             'phone' => $this->input->post('phone'),
             'address' => $this->input->post('address'),
+
+            'nrrp' => $this->input->post('nrrp'),
+            'job_position' => $this->input->post('job_position'),
+            'sk_number' => $this->input->post('sk_number'),
+            'due_date' => $this->input->post('due_date'),
+            'cert_no' => $this->input->post('cert_no'),
+            'cert_date' => $this->input->post('cert_date'),
+            'status' => $this->input->post('status'),
           );
 		}
 		
@@ -183,6 +191,15 @@ class Users extends Uadmin_Controller
               'email' => $this->input->post('email'),
               'phone' => $this->input->post('phone'),
               'group_id' => $this->input->post('group_id'),
+			  'address' => $this->input->post('address'),
+  
+			  'nrrp' => $this->input->post('nrrp'),
+			  'job_position' => $this->input->post('job_position'),
+			  'sk_number' => $this->input->post('sk_number'),
+			  'due_date' => $this->input->post('due_date'),
+			  'cert_no' => $this->input->post('cert_no'),
+			  'cert_date' => $this->input->post('cert_date'),
+			  'status' => $this->input->post('status'),
             );
 			
             if ( $this->input->post('password') )

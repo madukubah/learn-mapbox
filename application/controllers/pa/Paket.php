@@ -10,9 +10,18 @@ class Paket extends User_Controller {
 		parent::__construct();
 		$this->load->library('services/Paket_services');
 		$this->services = new Paket_services;
+
+		$this->load->library('services/Draft_tender_services');
+		$this->draft_tender_services = new Draft_tender_services;
+
+		$this->load->library('services/Tender_services');
+		$this->tender_services = new Tender_services;
+
 		$this->load->model(array(
 			'paket_model',
 			'pokmil_model',
+			'draft_tender_model',
+			'tender_model',
 		));
 	}	
 
@@ -124,11 +133,17 @@ class Paket extends User_Controller {
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $paket_id );
-		$form_data = $this->load->view('pa/paket/detail/plain_form_readonly', $form_data , TRUE ) ;
+		$form_data = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data , TRUE ) ;
 
 		$this->data[ "contents" ] =  $form_data;
+		$paket = $this->paket_model->paket( $paket_id )->row();
+		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $paket->draft_tender_id );
+		$form_data_draft_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_draft_tender , TRUE ) ;
+
+		$this->data[ "contents_2" ] =  $form_data_draft_tender;
+
 		$this->render( "pa/paket/detail/content" );
-	}
+	}	
 
 	public function edit( $paket_id = null )
 	{

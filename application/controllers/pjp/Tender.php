@@ -16,6 +16,7 @@ class Tender extends User_Controller {
 
 		$this->load->model(array(
 			'tender_model',
+			'draft_tender_model',
 		));
 	}	
 
@@ -143,7 +144,13 @@ class Tender extends User_Controller {
 
 		$create_draft_tender= $this->load->view('templates/actions/modal_form', $create_draft_tender, true ); 
 
-		$this->data[ "header_button" ] =  $create_draft_tender;
+		$draft_tender = $this->draft_tender_model
+			->where('tender_id', $tender_id)
+			->draft_tender()
+			->row();
+
+		if( !$draft_tender )
+			$this->data[ "header_button" ] =  $create_draft_tender;
 
 		$this->data[ "contents" ] =  $form_data;
 		$this->render( "pjp/tender/detail/content" );

@@ -69,57 +69,6 @@ class Paket extends User_Controller {
 		$this->render( "templates/contents/plain_content" );
 	}
 
-	public function add()
-    {
-		$this->form_validation->set_rules( $this->services->validation_config() );
-
-		if ( $this->form_validation->run() === TRUE )
-        {
-			$data['draft_tender_id'] = $this->input->post( 'draft_tender_id' );
-			$data['pa_id'] = $this->input->post( 'pa_id' );
-			$data['name'] = $this->input->post( 'name' );
-			$data['pokmil_id'] = $this->input->post( 'pokmil_id' );
-			$data['date'] = $this->input->post( 'date' );
-			$data['status'] = $this->input->post( 'status' );
-			
-			if( $this->paket_model->create( $data ) ){
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->paket_model->messages() ) );
-			}else{
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->paket_model->errors() ) );
-				redirect( site_url('pt/draft_tender/detail/'.$data['draft_tender_id'] ));
-				return;
-			}
-			redirect( site_url($this->current_page));
-		}
-        else
-        {
-            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->paket_model->errors() ? $this->paket_model->errors() : $this->session->flashdata('message')));
-            if(  !empty( validation_errors() ) || $this->paket_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
-
-			redirect( site_url('pt/draft_tender/detail/'.$this->input->post( 'draft_tender_id' ) ));
-			return;
-			$alert = $this->session->flashdata('alert');
-			$this->session->set_flashdata('alert', NULL);
-
-			$this->data["key"] = $this->input->get('key', FALSE);
-			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
-
-			// $this->data["alert"] .= ($this->upload->display_errors()) ? $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()) : NULL;
-
-			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Tambah Paket ";
-			$this->data["header"] = "Tambah Paket ";
-			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-
-            $form_data = $this->services->get_form_data();
-            $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
-
-            $this->data[ "contents" ] =  $form_data;
-            
-			$this->render( "pt/paket/create/content" );
-        }
-	}
-
 	public function detail( $paket_id = null )
     {
 		if ($paket_id == NULL) redirect(site_url($this->current_page));
@@ -136,83 +85,53 @@ class Paket extends User_Controller {
 
 		$form_data = $this->services->get_form_data( $paket_id );
 		$form_data = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data , TRUE ) ;
-
 		$this->data[ "contents" ] =  $form_data;
-		$paket = $this->paket_model->paket( $paket_id )->row();
-		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $paket->draft_tender_id );
-		$form_data_draft_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_draft_tender , TRUE ) ;
 
+		$paket = $this->paket_model->paket( $paket_id )->row();
+		
+		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $paket->draft_tender_id );
+		unset($form_data_draft_tender['form_data']['name']);
+		unset($form_data_draft_tender['form_data']['status']);
+		$form_data_draft_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_draft_tender , TRUE ) ;
 		$this->data[ "contents_2" ] =  $form_data_draft_tender;
+
+		$draft_tender = $this->draft_tender_model->draft_tender( $paket->draft_tender_id )->row();
+		$form_data_tender = $this->tender_services->get_form_data( $draft_tender->tender_id );
+		$form_data_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_tender , TRUE ) ;
+		$this->data[ "contents_2" ] =  $form_data_tender.$this->data[ "contents_2" ] ;
+
+		$tender = $this->tender_model->tender( $draft_tender->tender_id )->row();
+
+		$publish_tender = array(
+			"name" => "Terbitkan Tender",
+			"modal_id" => "create_draft_",
+			"button_color" => "success",
+			"url" => site_url( "pt/tender/edit/".$draft_tender->tender_id ),
+			"form_data" => array(
+				"paket_id" => array(
+					'type' => 'hidden',
+					'label' => "tender_id",
+					'value' => $paket->id,
+				),
+				"name" => array(
+					'type' => 'text',
+					'label' => "Nama Tender",
+					'readonly' => true,
+					'value' => $draft_tender->name,
+				),
+				"status" => array(
+					'type' => 'hidden',
+					'label' => "status",
+					'value' => 'Tayang',
+				),
+			),
+			'data' => NULL
+		);
+
+		$publish_tender= $this->load->view('templates/actions/modal_form', $publish_tender, true ); 
+		if($tender->status != 'Tayang')
+			$this->data[ "header_button" ] =  $publish_tender;
 
 		$this->render( "pt/paket/detail/content" );
 	}	
-
-	public function edit( $paket_id = null )
-	{
-		if ($paket_id == NULL) redirect(site_url($this->current_page));
-		$this->form_validation->set_rules( $this->services->validation_config() );
-
-		$this->load->library('upload'); // Load librari upload
-		$config = $this->services->get_photo_upload_config();
-
-		$this->upload->initialize($config);
-
-        if ($this->form_validation->run() === TRUE )
-        {
-			$data['draft_tender_id'] = $this->input->post( 'draft_tender_id' );
-			$data['pa_id'] = $this->input->post( 'pa_id' );
-			$data['name'] = $this->input->post( 'name' );
-			$data['pokmil_id'] = $this->input->post( 'pokmil_id' );
-			$data['date'] = $this->input->post( 'date' );
-			$data['status'] = $this->input->post( 'status' );
-
-			$data_param["id"] = $this->input->post( 'id' );
-
-			if( $this->paket_model->update( $data, $data_param ) ){
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->paket_model->messages() ) );
-			}else{
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->paket_model->errors() ) );
-			}
-			redirect( site_url($this->current_page));
-		}
-        else
-        {
-            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->paket_model->errors() ? $this->paket_model->errors() : $this->session->flashdata('message')));
-            if(  !empty( validation_errors() ) || $this->paket_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
-
-            $alert = $this->session->flashdata('alert');
-			$this->data["key"] = $this->input->get('key', FALSE);
-			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
-			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit Paket ";
-			$this->data["header"] = "Edit Paket ";
-			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-
-            $form_data = $this->services->get_form_data($paket_id);
-            $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
-
-            $this->data[ "contents" ] =  $form_data;
-            
-			$this->render( "pt/paket/edit/content" );
-        }
-	}
-
-	public function delete(  ) {
-		if( !($_POST) ) redirect( site_url($this->current_page) );
-		if ($this->input->post('id') == NULL) redirect(site_url($this->current_page));
-		
-		$tender = $this->paket_model->paket( $this->input->post('id') )->row();
-
-		$data_param['id'] 	= $this->input->post('id');
-		if( $this->paket_model->delete( $data_param ) ){
-			
-			$config = $this->services->get_photo_upload_config();
-			if (!@unlink($config['upload_path'] . $tender->image )) { };
-
-		  	$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->paket_model->messages() ) );
-		}else{
-		  	$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->paket_model->errors() ) );
-		}
-		redirect( site_url($this->current_page )  );
-	  }
 }
