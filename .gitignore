@@ -32,3 +32,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 /uploads/paket/*.png
 /uploads/paket/*.jpg
+/uploads/tender/*.pdf
