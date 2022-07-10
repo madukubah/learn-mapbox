@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 07, 2022 at 05:21 PM
+-- Generation Time: Jul 10, 2022 at 11:53 PM
 -- Server version: 5.7.38-0ubuntu0.18.04.1
 -- PHP Version: 7.0.33-60+ubuntu18.04.1+deb.sury.org+1
 
@@ -19,6 +19,77 @@ SET time_zone = "+00:00";
 --
 -- Database: `tender`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acta`
+--
+
+CREATE TABLE `acta` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `date` date NOT NULL,
+  `notary` text NOT NULL,
+  `desc` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `acta`
+--
+
+INSERT INTO `acta` (`id`, `company_id`, `name`, `date`, `notary`, `desc`) VALUES
+(2, 1, 'Nomor', '2022-07-07', 'Notaris', 'Keterangan'),
+(3, 1, ' Nama Ijin', '2022-07-05', 'Notaris', 'Keterangan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company`
+--
+
+CREATE TABLE `company` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `company_type` text NOT NULL,
+  `company_cert` text NOT NULL,
+  `npwp` text NOT NULL,
+  `postal_code` text NOT NULL,
+  `province` text NOT NULL,
+  `city` text NOT NULL,
+  `website` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`id`, `user_id`, `name`, `company_type`, `company_cert`, `npwp`, `postal_code`, `province`, `city`, `website`) VALUES
+(1, 23, 'usaha penyedia yuhu', 'CV', 'sertifikat 1', 'npwp', 'kode pos', 'provinsi', 'kota', 'website');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company_permission`
+--
+
+CREATE TABLE `company_permission` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `cert_no` text NOT NULL,
+  `agency_from` text NOT NULL,
+  `qualification` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company_permission`
+--
+
+INSERT INTO `company_permission` (`id`, `company_id`, `name`, `cert_no`, `agency_from`, `qualification`) VALUES
+(3, 1, 'Nama Ijin', 'Nomor Surat', 'Instansi Pemberi', 'Besar');
 
 -- --------------------------------------------------------
 
@@ -45,7 +116,62 @@ CREATE TABLE `draft_tender` (
 --
 
 INSERT INTO `draft_tender` (`id`, `tender_id`, `pa_id`, `name`, `contract_type`, `budget_estimation`, `kak_file`, `design_file`, `other_file`, `date`, `status`) VALUES
-(1, 1, 16, 'test tender', 'Lumpsum', 1500000, '2014-1-1-87201-231408012-bab1-21082014043343.pdf', '2014-1-1-87201-231408012-bab1-210820140433431.pdf', '2014-1-1-87201-231408012-bab1-210820140433432.pdf', '2022-07-13', 'Draft');
+(1, 1, 16, 'test tender', 'Lumpsum', 1500000, '2014-1-1-87201-231408012-bab1-21082014043343.pdf', '2014-1-1-87201-231408012-bab1-210820140433431.pdf', '2014-1-1-87201-231408012-bab1-210820140433432.pdf', '2022-07-13', 'Draft'),
+(2, 2, 18, 'test tender 2', 'Lumpsum', 1199999999, '2014-1-1-87201-231408012-bab1-210820140433433.pdf', '', '', '2022-07-09', 'Draft');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `experience`
+--
+
+CREATE TABLE `experience` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `location` text NOT NULL,
+  `agency` text NOT NULL,
+  `address` text NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `experience`
+--
+
+INSERT INTO `experience` (`id`, `company_id`, `name`, `location`, `agency`, `address`, `start_date`, `end_date`) VALUES
+(1, 1, ' Nama Pekerjaan 22', 'Lokasi', 'Instansi 22', 'Alamat', '2022-07-21', '2022-07-12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expert`
+--
+
+CREATE TABLE `expert` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `birthday` date NOT NULL,
+  `address` text NOT NULL,
+  `last_study` text NOT NULL,
+  `email` text NOT NULL,
+  `experience` text NOT NULL,
+  `skill` text NOT NULL,
+  `npwp` text NOT NULL,
+  `sex` text NOT NULL,
+  `nationality` text NOT NULL,
+  `status` text NOT NULL,
+  `position` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `expert`
+--
+
+INSERT INTO `expert` (`id`, `company_id`, `name`, `birthday`, `address`, `last_study`, `email`, `experience`, `skill`, `npwp`, `sex`, `nationality`, `status`, `position`) VALUES
+(1, 1, 'Nama 2', '2022-07-11', 'Alamat', ' Pendidikan Terakhir', 'Email', ' Pengalaman Kerja (Tahun)', ' Profesi/Keahlian', 'NPWP', 'Laki Laki', 'Kewarganegaraan', 'Tidak Tetap', 'Jabatan');
 
 -- --------------------------------------------------------
 
@@ -71,7 +197,8 @@ INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (5, 'pa', 'pa'),
 (6, 'pjp', 'pjp'),
 (7, 'pt', 'pt'),
-(8, 'tpphp', 'tpphp');
+(8, 'tpphp', 'tpphp'),
+(9, 'penyedia', 'penyedia');
 
 -- --------------------------------------------------------
 
@@ -123,7 +250,32 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (114, 5, 'Pokmil', 'pa/pokmil', '-', 'home', 1, 1, '-'),
 (115, 5, 'Draft Tender', 'pa/draft_tender', '-', 'home', 1, 1, '-'),
 (116, 5, 'Paket', 'pa/paket', '-', 'home', 1, 1, '-'),
-(117, 7, 'Paket', 'pt/paket', '-', 'home', 1, 1, '-');
+(117, 7, 'Paket', 'pt/paket', '-', 'home', 1, 1, '-'),
+(118, 9, 'Tender', 'penyedia/tender', '-', 'home', 1, 1, '-'),
+(119, 9, 'Perusahaan Saya', 'penyedia/company', '-', 'home', 1, 1, '-');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ownership`
+--
+
+CREATE TABLE `ownership` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `id_number` text NOT NULL,
+  `address` text NOT NULL,
+  `shared` text NOT NULL,
+  `unit` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ownership`
+--
+
+INSERT INTO `ownership` (`id`, `company_id`, `name`, `id_number`, `address`, `shared`, `unit`) VALUES
+(5, 1, 'Nama', ' Nomor KTP', 'Alamat', 'Saham', ' Satuan(Lembar/Persen)');
 
 -- --------------------------------------------------------
 
@@ -146,7 +298,8 @@ CREATE TABLE `paket` (
 --
 
 INSERT INTO `paket` (`id`, `draft_tender_id`, `pa_id`, `name`, `pokmil_id`, `date`, `status`) VALUES
-(3, 1, 16, 'test tender', 1, '2022-07-07', 'Aktif');
+(3, 1, 16, 'test tender', 1, '2022-07-07', 'Aktif'),
+(4, 2, 18, 'test tender 2', 1, '2022-07-09', 'Aktif');
 
 -- --------------------------------------------------------
 
@@ -172,7 +325,29 @@ CREATE TABLE `pokmil` (
 --
 
 INSERT INTO `pokmil` (`id`, `name`, `sk_no`, `lead_id`, `member_1_id`, `member_2_id`, `member_3_id`, `member_4_id`, `date`, `status`) VALUES
-(1, 'pokmil 1', 'pokmil 1', 19, 20, 21, 0, 0, '2022-07-06', 'Aktif');
+(1, 'pokmil 1', 'pokmil 1', 19, 20, 21, 0, 0, '2022-07-06', 'Aktif'),
+(2, 'test pokmil 2', 'test pokmil 2', 20, 21, 19, 0, 0, '2022-07-09', 'Aktif');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tax`
+--
+
+CREATE TABLE `tax` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `date` date NOT NULL,
+  `cert_no` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tax`
+--
+
+INSERT INTO `tax` (`id`, `company_id`, `name`, `date`, `cert_no`) VALUES
+(2, 1, ' Nama Pajak', '2022-06-30', ' Nomor Bukti');
 
 -- --------------------------------------------------------
 
@@ -200,7 +375,54 @@ CREATE TABLE `tender` (
 --
 
 INSERT INTO `tender` (`id`, `code`, `name`, `type`, `budget`, `budget_source`, `year`, `location`, `method`, `start_date`, `end_date`, `status`) VALUES
-(1, 'test tender', 'test tender', 'Barang/Pekerjaan', 1000000, 'test', 2022, 'lokasi', 'Tender', '2022-07-06', '2022-07-29', 'Tayang');
+(1, 'test tender', 'test tender', 'Barang/Pekerjaan', 1000000, 'test', 2022, 'lokasi', 'Tender', '2022-07-06', '2022-07-29', 'Tayang'),
+(2, 'test tender 2', 'test tender 2', 'Barang/Pekerjaan', 1000000000, 'test dana', 2020, 'test lokasi', 'Tender', '2022-07-08', '2022-07-08', 'Tayang');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tender_penyedia`
+--
+
+CREATE TABLE `tender_penyedia` (
+  `id` int(11) NOT NULL,
+  `tender_id` int(11) NOT NULL,
+  `penyedia_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tender_penyedia`
+--
+
+INSERT INTO `tender_penyedia` (`id`, `tender_id`, `penyedia_id`) VALUES
+(6, 1, 23),
+(7, 2, 23);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tool`
+--
+
+CREATE TABLE `tool` (
+  `id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `capacity` int(11) NOT NULL,
+  `type` text NOT NULL,
+  `condition` text NOT NULL,
+  `year` text NOT NULL,
+  `location` text NOT NULL,
+  `cert_no` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tool`
+--
+
+INSERT INTO `tool` (`id`, `company_id`, `name`, `quantity`, `capacity`, `type`, `condition`, `year`, `location`, `cert_no`) VALUES
+(1, 1, ' Nama Alat 22', 2, 2, ' Merk/Tipe', 'Kondisi', '1234', ' Lokasi Sekarang', ' Bukti Kepemilikan (Nomor) 2');
 
 -- --------------------------------------------------------
 
@@ -243,15 +465,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`, `nrrp`, `job_position`, `sk_number`, `due_date`, `cert_no`, `cert_date`, `status`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1657178601, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin', '', '', '', NULL, '', NULL, ''),
-(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1657178630, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8', '', '', '', NULL, '', NULL, ''),
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1657449445, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin', '', '', '', NULL, '', NULL, ''),
+(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1657269987, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8', '', '', '', NULL, '', NULL, ''),
 (14, '127.0.0.1', 'auditor@gmail.com', '$2y$10$O9/YYtvknWWZ.vYEAZa/M.RsnTR1LMu10ntsbRbedd29wga081CRy', 'auditor@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1632804971, 1656407632, 1, 'Auditor', 'Auditor', '1234', 'default.jpg', 'Alamat', '', '', '', NULL, '', NULL, ''),
-(15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$fEZdcDRTVJ57Zm0L7wlDheTqq3sZR48MeT1qWDXPBCh6Fj7MecLi.', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1657179749, 1, 'pjp', 'pjp', '1923847983', 'default.jpg', 'pjp', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
+(15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$fEZdcDRTVJ57Zm0L7wlDheTqq3sZR48MeT1qWDXPBCh6Fj7MecLi.', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1657377023, 1, 'pjp', 'pjp', '1923847983', 'default.jpg', 'pjp', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
 (16, '127.0.0.1', 'pa@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657179287, 1, 'pa', 'pa', '1023897', 'default.jpg', 'alamat', 'nrrp', 'jabatan', 'alskdhf', '2022-07-06', 'asdfilkj', '2022-07-06', '1'),
-(18, '127.0.0.1', 'pa2@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, NULL, 1, 'pa2', 'pa2', '1023897', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '0000-00-00', '1'),
-(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657179555, 1, 'pt', 'pt', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
+(18, '127.0.0.1', 'pa2@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657270124, 1, 'pa2', 'pa2', '1023897', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '0000-00-00', '1'),
+(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657433045, 1, 'pt', 'pt', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
 (20, '127.0.0.1', 'pt2@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt2', 'pt2', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
-(21, '127.0.0.1', 'pt3@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt3@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt3', 'pt3', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif');
+(21, '127.0.0.1', 'pt3@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt3@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt3', 'pt3', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
+(23, '127.0.0.1', 'penyedia@gmail.com', '$2y$10$vOyp6wdUdPNbSHfLfV2AzO7EmN3l11d42zq5MVd6c.KoXtXpj/a3S', 'penyedia@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657431943, 1657433317, 1, 'penyedia', 'penyedia', '143554523', 'default.jpg', 'almat', '', '', '', NULL, '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -278,16 +501,47 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (45, 18, 5),
 (46, 19, 7),
 (48, 20, 7),
-(49, 21, 7);
+(49, 21, 7),
+(51, 23, 9);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `acta`
+--
+ALTER TABLE `acta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `company`
+--
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `company_permission`
+--
+ALTER TABLE `company_permission`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `draft_tender`
 --
 ALTER TABLE `draft_tender`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `experience`
+--
+ALTER TABLE `experience`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `expert`
+--
+ALTER TABLE `expert`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -309,6 +563,12 @@ ALTER TABLE `menus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ownership`
+--
+ALTER TABLE `ownership`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `paket`
 --
 ALTER TABLE `paket`
@@ -321,9 +581,27 @@ ALTER TABLE `pokmil`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tax`
+--
+ALTER TABLE `tax`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tender`
 --
 ALTER TABLE `tender`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tender_penyedia`
+--
+ALTER TABLE `tender_penyedia`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tool`
+--
+ALTER TABLE `tool`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -350,15 +628,40 @@ ALTER TABLE `users_groups`
 --
 
 --
+-- AUTO_INCREMENT for table `acta`
+--
+ALTER TABLE `acta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `company`
+--
+ALTER TABLE `company`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `company_permission`
+--
+ALTER TABLE `company_permission`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `draft_tender`
 --
 ALTER TABLE `draft_tender`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `experience`
+--
+ALTER TABLE `experience`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `expert`
+--
+ALTER TABLE `expert`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
@@ -368,32 +671,52 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+--
+-- AUTO_INCREMENT for table `ownership`
+--
+ALTER TABLE `ownership`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `paket`
 --
 ALTER TABLE `paket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `pokmil`
 --
 ALTER TABLE `pokmil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `tax`
+--
+ALTER TABLE `tax`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `tender_penyedia`
+--
+ALTER TABLE `tender_penyedia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `tool`
+--
+ALTER TABLE `tool`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- Constraints for dumped tables
 --
