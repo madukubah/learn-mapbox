@@ -45,7 +45,7 @@ class Draft_tender_services
     $config['allowed_types'] = "pdf";
     $config['overwrite']="true";
     // $config['max_size']="2048";
-    // $config['file_name'] = ''.$filename;
+    $config['file_name'] = ''.$filename;
 
     return $config;
   }

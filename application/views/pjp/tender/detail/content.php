@@ -55,21 +55,3 @@
     </div>
   </section>
 </div>
-
-<script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoibWFkdWt1YmFoIiwiYSI6ImNrdHRtd2s4cTAyZnUyb214eW96OTkwanUifQ.IgNRk8pFnkH-nCc3I5FqeQ';
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [122.514900, -3.972201],
-        zoom: 11.15
-    });
-    
-    map.on('load', () => {
-
-      const lat = document.getElementById("latitude").value;
-      const lng = document.getElementById("longitude").value;
-      const marker =  new mapboxgl.Marker().setLngLat([ lng, lat ]).addTo(map);
-
-    });
-</script>

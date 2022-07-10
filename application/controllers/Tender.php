@@ -37,6 +37,16 @@ class Tender extends Public_Controller {
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 
+		$link_register_tender = 
+		array(
+			"name" => "Ikut Tender",
+			"type" => "link",
+			"url" => site_url( "penyedia/tender/register/".$tender_id),
+			"button_color" => "success",	
+			"data" => NULL,
+		);
+		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_register_tender, TRUE );
+
 		$this->data[ "contents" ] =  $form_data;
 		$this->render( "tender" );
 	}

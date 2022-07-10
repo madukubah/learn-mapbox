@@ -10,6 +10,13 @@ class Auth extends Public_Controller
                 $this->config->load('ion_auth', TRUE);
                 $this->load->helper(array('url', 'language'));
                 $this->lang->load('auth');
+
+                $this->load->library('services/Company_services');
+		$this->services = new Company_services;
+
+                $this->load->model(array(
+			'company_model',
+		));
         }
 
         public function login() 
@@ -38,6 +45,7 @@ class Auth extends Public_Controller
                                 if( $this->ion_auth->in_group( 'pjp' ) ) redirect(site_url('/pjp'));
                                 if( $this->ion_auth->in_group( 'pa' ) ) redirect(site_url('/pa'));
                                 if( $this->ion_auth->in_group( 'pt' ) ) redirect(site_url('/pt'));
+                                if( $this->ion_auth->in_group( 'penyedia' ) ) redirect(site_url('/penyedia'));
 
                                 redirect( site_url('/user') , 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
                                 // redirect( site_url('/uadmin') , 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
@@ -59,7 +67,89 @@ class Auth extends Public_Controller
                 }
         }
     
-        public function register() 
+        public function register(  )
+        {
+                $tables = $this->config->item('tables', 'ion_auth');
+                $identity_column = $this->config->item('identity', 'ion_auth');
+                $this->form_validation->set_rules( $this->ion_auth->get_validation_config() );
+                $this->form_validation->set_rules('phone', "No Telepon", 'trim|required');
+                $this->form_validation->set_rules('email', "Email", 'trim|required|is_unique[users.email]');
+
+                if ( $this->form_validation->run() === TRUE )
+                {
+                        $group_id = $this->input->post('group_id');
+
+                        //   $email = $this->input->post('email') ;
+                        //   $phone = $this->input->post('phone') ;
+                        //   $identity = $phone ;
+                        //   $password = $phone ;
+                        $email = $this->input->post('email') ;
+                        $identity = $email;
+                        $password = substr( $email, 0, strpos( $identity, "@" ) ) ;
+
+
+                        $additional_data = array(
+                                'first_name' => $this->input->post('first_name'),
+                                'last_name' => $this->input->post('last_name'),
+                                'email' => $this->input->post('email'),
+                                'phone' => $this->input->post('phone'),
+                                'address' => $this->input->post('address'),
+                        );
+                }
+                
+                $identity_mode = NULL;
+                
+                if ($this->form_validation->run() === TRUE && ( $user_id =  $this->ion_auth->register($identity, $password, $email,$additional_data, [$group_id], $identity_mode ) ) )
+                {       
+                        $data['user_id'] = $user_id;
+			$data['name'] = $this->input->post( 'name' );
+			$data['company_type'] = $this->input->post( 'company_type' );
+			$data['company_cert'] = $this->input->post( 'company_cert' );
+			$data['npwp'] = $this->input->post( 'npwp' );
+			$data['postal_code'] = $this->input->post( 'postal_code' );
+			$data['province'] = $this->input->post( 'province' );
+			$data['city'] = $this->input->post( 'city' );
+			$data['website'] = $this->input->post( 'website' );
+                        
+                        $this->company_model->create( $data );
+                        $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->ion_auth->messages() ) );
+                        redirect( site_url( 'penyedia'  )  );
+                }
+                else
+                {
+                        $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
+                        if(  !empty( validation_errors() ) || $this->ion_auth->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
+
+                        $alert = $this->session->flashdata('alert');
+                        $this->data["key"] = $this->input->get('key', FALSE);
+                        $this->data["alert"] = (isset($alert)) ? $alert : NULL ;
+                        // $this->data["current_page"] = $this->current_page;
+                        $this->data["block_header"] = "Daftar Penyedia";
+                        $this->data["header"] = "Daftar Penyedia";
+                        $this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+                        $form_data = $this->ion_auth->get_form_data();
+                        $form_data['form_data']['group_id']['type'] = 'hidden' ;
+                        $form_data['form_data']['group_id']['value'] = 9 ;
+                        unset($form_data['form_data']['nrrp'] );
+                        unset($form_data['form_data']['job_position'] );
+                        unset($form_data['form_data']['sk_number'] );
+                        unset($form_data['form_data']['due_date'] );
+                        unset($form_data['form_data']['cert_no'] );
+                        unset($form_data['form_data']['cert_date'] );
+                        unset($form_data['form_data']['status'] );
+                        $form_data_company = $this->services->get_form_data();
+
+                        $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
+                        $form_data_company = $this->load->view('templates/form/plain_form', $form_data_company , TRUE ) ;
+                        $form_data .= $form_data_company;
+                        $this->data[ "contents" ] =  $form_data;
+                        
+                        $this->render( "V_register" );
+                }
+        }
+
+        public function register2() 
         {
                 // return;
                 $tables = $this->config->item('tables', 'ion_auth');
@@ -91,6 +181,7 @@ class Auth extends Public_Controller
 		{			
 			// check to see if we are creating the user
 			// redirect them back to the admin page
+			
                         $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->ion_auth->messages() ) );
 			redirect("auth/login", 'refresh');
 		}

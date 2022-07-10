@@ -28,13 +28,19 @@ class Home extends Public_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->tender_services->get_table_config( $this->current_page );
-		unset($table['action'][2]);
-		unset($table['action'][1]);
-		$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		$table['header'] = array(
+			'name' => 'Nama',
+			'budget' => 'Anggaran',
+			'end_date' => 'Akhir Pendaftaran',
+		);
+		unset($table['action']);
+		$table[ "rows" ] = $this->tender_model
+		->where('status', 'Tayang')
+		->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
-		$table = $this->load->view('templates/tables/plain_table', $table, true);
+		$table = $this->load->view('public/plain_table_12', $table, true);
 		$this->data[ "contents" ] = $table;
 
 		$alert = $this->session->flashdata('alert');
@@ -44,6 +50,6 @@ class Home extends Public_Controller {
 		$this->data["block_header"] = "Rencana Tender";
 		$this->data["header"] = "Tender";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-		$this->render("home");
+		$this->render("public/home");
 	}
 }

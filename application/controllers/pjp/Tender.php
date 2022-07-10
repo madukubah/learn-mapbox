@@ -49,7 +49,7 @@ class Tender extends User_Controller {
 			"button_color" => "primary",	
 			"data" => NULL,
 		);
-		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE ); ;
+		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE );
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
