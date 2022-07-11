@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 10, 2022 at 11:53 PM
+-- Generation Time: Jul 12, 2022 at 12:41 AM
 -- Server version: 5.7.38-0ubuntu0.18.04.1
 -- PHP Version: 7.0.33-60+ubuntu18.04.1+deb.sury.org+1
 
@@ -252,7 +252,8 @@ INSERT INTO `menus` (`id`, `menu_id`, `name`, `link`, `list_id`, `icon`, `status
 (116, 5, 'Paket', 'pa/paket', '-', 'home', 1, 1, '-'),
 (117, 7, 'Paket', 'pt/paket', '-', 'home', 1, 1, '-'),
 (118, 9, 'Tender', 'penyedia/tender', '-', 'home', 1, 1, '-'),
-(119, 9, 'Perusahaan Saya', 'penyedia/company', '-', 'home', 1, 1, '-');
+(119, 9, 'Perusahaan Saya', 'penyedia/company', '-', 'home', 1, 1, '-'),
+(120, 7, 'Tender Tayang', 'pt/tender', '-', 'home', 1, 1, '-');
 
 -- --------------------------------------------------------
 
@@ -331,6 +332,48 @@ INSERT INTO `pokmil` (`id`, `name`, `sk_no`, `lead_id`, `member_1_id`, `member_2
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE `schedule` (
+  `id` int(11) NOT NULL,
+  `tender_id` int(11) NOT NULL,
+  `announcement_start_date` datetime NOT NULL,
+  `announcement_end_date` datetime NOT NULL,
+  `file_download_start_date` datetime NOT NULL,
+  `file_download_end_date` datetime NOT NULL,
+  `explanation_start_date` datetime NOT NULL,
+  `explanation_end_date` datetime NOT NULL,
+  `effering_file_upload_start_date` datetime NOT NULL,
+  `effering_file_upload_end_date` datetime NOT NULL,
+  `proof_offering_start_date` datetime NOT NULL,
+  `proof_offering_end_date` datetime NOT NULL,
+  `evaluation_start_date` datetime NOT NULL,
+  `evaluation_end_date` datetime NOT NULL,
+  `proof_qualification_start_date` datetime NOT NULL,
+  `proof_qualification_end_date` datetime NOT NULL,
+  `winner_settle_start_date` datetime NOT NULL,
+  `winner_settle_end_date` datetime NOT NULL,
+  `winner_announcement_start_date` datetime NOT NULL,
+  `winner_announcement_end_date` datetime NOT NULL,
+  `interuption_start_date` datetime NOT NULL,
+  `interuption_end_date` datetime NOT NULL,
+  `choose_letter_start_date` datetime NOT NULL,
+  `choose_letter_end_date` datetime NOT NULL,
+  `signing_start_date` datetime NOT NULL,
+  `signing_end_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`id`, `tender_id`, `announcement_start_date`, `announcement_end_date`, `file_download_start_date`, `file_download_end_date`, `explanation_start_date`, `explanation_end_date`, `effering_file_upload_start_date`, `effering_file_upload_end_date`, `proof_offering_start_date`, `proof_offering_end_date`, `evaluation_start_date`, `evaluation_end_date`, `proof_qualification_start_date`, `proof_qualification_end_date`, `winner_settle_start_date`, `winner_settle_end_date`, `winner_announcement_start_date`, `winner_announcement_end_date`, `interuption_start_date`, `interuption_end_date`, `choose_letter_start_date`, `choose_letter_end_date`, `signing_start_date`, `signing_end_date`) VALUES
+(1, 2, '2022-07-05 19:15:00', '0000-00-00 00:00:00', '2022-07-09 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-07-13 09:05:00', '2022-07-21 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tax`
 --
 
@@ -387,16 +430,17 @@ INSERT INTO `tender` (`id`, `code`, `name`, `type`, `budget`, `budget_source`, `
 CREATE TABLE `tender_penyedia` (
   `id` int(11) NOT NULL,
   `tender_id` int(11) NOT NULL,
-  `penyedia_id` int(11) NOT NULL
+  `penyedia_id` int(11) NOT NULL,
+  `effering_file` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tender_penyedia`
 --
 
-INSERT INTO `tender_penyedia` (`id`, `tender_id`, `penyedia_id`) VALUES
-(6, 1, 23),
-(7, 2, 23);
+INSERT INTO `tender_penyedia` (`id`, `tender_id`, `penyedia_id`, `effering_file`) VALUES
+(6, 1, 23, ''),
+(7, 2, 23, 'Penawaran_1657557265.pdf');
 
 -- --------------------------------------------------------
 
@@ -465,16 +509,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`, `nrrp`, `job_position`, `sk_number`, `due_date`, `cert_no`, `cert_date`, `status`) VALUES
-(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1657449445, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin', '', '', '', NULL, '', NULL, ''),
+(1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1657541098, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin', '', '', '', NULL, '', NULL, ''),
 (13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1657269987, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8', '', '', '', NULL, '', NULL, ''),
 (14, '127.0.0.1', 'auditor@gmail.com', '$2y$10$O9/YYtvknWWZ.vYEAZa/M.RsnTR1LMu10ntsbRbedd29wga081CRy', 'auditor@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1632804971, 1656407632, 1, 'Auditor', 'Auditor', '1234', 'default.jpg', 'Alamat', '', '', '', NULL, '', NULL, ''),
 (15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$fEZdcDRTVJ57Zm0L7wlDheTqq3sZR48MeT1qWDXPBCh6Fj7MecLi.', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1657377023, 1, 'pjp', 'pjp', '1923847983', 'default.jpg', 'pjp', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
 (16, '127.0.0.1', 'pa@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657179287, 1, 'pa', 'pa', '1023897', 'default.jpg', 'alamat', 'nrrp', 'jabatan', 'alskdhf', '2022-07-06', 'asdfilkj', '2022-07-06', '1'),
 (18, '127.0.0.1', 'pa2@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657270124, 1, 'pa2', 'pa2', '1023897', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '0000-00-00', '1'),
-(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657433045, 1, 'pt', 'pt', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
+(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657539988, 1, 'pt', 'pt', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
 (20, '127.0.0.1', 'pt2@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt2', 'pt2', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
 (21, '127.0.0.1', 'pt3@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt3@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt3', 'pt3', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
-(23, '127.0.0.1', 'penyedia@gmail.com', '$2y$10$vOyp6wdUdPNbSHfLfV2AzO7EmN3l11d42zq5MVd6c.KoXtXpj/a3S', 'penyedia@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657431943, 1657433317, 1, 'penyedia', 'penyedia', '143554523', 'default.jpg', 'almat', '', '', '', NULL, '', NULL, '');
+(23, '127.0.0.1', 'penyedia@gmail.com', '$2y$10$vOyp6wdUdPNbSHfLfV2AzO7EmN3l11d42zq5MVd6c.KoXtXpj/a3S', 'penyedia@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657431943, 1657554396, 1, 'penyedia', 'penyedia', '143554523', 'default.jpg', 'almat', '', '', '', NULL, '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -581,6 +625,12 @@ ALTER TABLE `pokmil`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tax`
 --
 ALTER TABLE `tax`
@@ -671,7 +721,7 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 --
 -- AUTO_INCREMENT for table `ownership`
 --
@@ -687,6 +737,11 @@ ALTER TABLE `paket`
 --
 ALTER TABLE `pokmil`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `schedule`
+--
+ALTER TABLE `schedule`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tax`
 --

@@ -17,6 +17,8 @@ class Tender extends User_Controller {
 		$this->load->model(array(
 			'tender_model',
 			'draft_tender_model',
+			'tender_penyedia_model',
+			'schedule_model',
 		));
 	}	
 
@@ -34,29 +36,24 @@ class Tender extends User_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		unset($table['action'][2]);
+		unset($table['action'][1]);
+		$table[ "rows" ] = $this->tender_model
+			->where('status', 'Tayang')
+			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
-		$link_add = 
-		array(
-			"name" => "Tambah",
-			"type" => "link",
-			"url" => site_url( $this->current_page."add/"),
-			"button_color" => "primary",	
-			"data" => NULL,
-		);
-		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE ); ;
 		#################################################################3
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Rencana Tender";
-		$this->data["header"] = "Rencana Tender";
+		$this->data["block_header"] = "Tender";
+		$this->data["header"] = "Tender";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
 	}
@@ -71,61 +68,113 @@ class Tender extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Rencana Tender ";
-		$this->data["header"] = "Detail Rencana Tender ";
+		$this->data["block_header"] = "Tender ";
+		$this->data["header"] = "Tender ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 
-		$form_data_draft_tender = $this->draft_tender_services->get_form_data()['form_data'];
-		$form_data_draft_tender['tender_id']['value'] = $tender_id;
-		$form_data_draft_tender['name']['value'] = $this->services->get_form_data( $tender_id )['form_data']['name']['value'];
-		$create_draft_tender = array(
-			"name" => "Buat Draft",
-			"modal_id" => "create_draft_",
-			"button_color" => "success",
-			"url" => site_url( "pt/draft_tender/add/"),
-			"form_data" => $form_data_draft_tender,
-			'data' => NULL
-		);
-
-		$create_draft_tender= $this->load->view('templates/actions/modal_form', $create_draft_tender, true ); 
-
 		$draft_tender = $this->draft_tender_model
 			->where('tender_id', $tender_id)
 			->draft_tender()
 			->row();
+		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $draft_tender->id );
+		unset($form_data_draft_tender['form_data']['name']);
+		unset($form_data_draft_tender['form_data']['status']);
+		$form_data_draft_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_draft_tender , TRUE ) ;
 
-		if( !$draft_tender )
-			$this->data[ "header_button" ] =  $create_draft_tender;
+		$tender_penyedia_table["header"] = array(
+			'name' => 'Nama',
+		);
+		$tender_penyedia_table["number"] = 1;
+		$tender_penyedia_table["rows"] = $this->tender_penyedia_model
+			->select('	tender_penyedia.*, 
+					company.*,
+					company.id as company_id,
+				')
+			->where('tender_id', $tender_id )
+			->join(
+				"users",
+				"users.id = tender_penyedia.penyedia_id",
+				"inner")
+			->join(
+				"company",
+				"company.user_id = users.id",
+				"inner")
+			->tender_penyedias()
+			->result();
+		$tender_penyedia_table = $this->load->view('pt/tender/detail/plain_table', $tender_penyedia_table, true);
 
-		$this->data[ "contents" ] =  $form_data;
+		$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
+		$this->data[ "contents_2" ] =  $tender_penyedia_table;
+		$schedule = $this->schedule_model
+			->where('tender_id', $tender_id)
+			->schedule()
+			->row();
+		$schedule_id = '';
+		$schedule_table = $this->load->view('pt/tender/detail/schedule_table', array('schedule' => $schedule,'tender_id' => $tender_id ), true);
+		$this->data[ "contents_3" ] =  $schedule_table;
 		$this->render( "pt/tender/detail/content" );
 	}
 
-	public function edit( $tender_id = null )
+	public function schedule( $tender_id )
 	{
-		if ($tender_id == NULL) redirect(site_url($this->current_page));
-		$this->form_validation->set_rules( $this->services->validation_config() );
-
-        if ($this->form_validation->run() === TRUE )
-        {
-			$data['status'] = $this->input->post( 'status' );
-
-			$data_param["id"] = $tender_id;
-
-			if( $this->tender_model->update( $data, $data_param ) ){
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_model->messages() ) );
+		if( $this->input->post( 'delete' ) !== NULL ){
+			$data_param['id'] 	= $this->input->post('id');
+			if( $this->schedule_model->delete( $data_param ) ){
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->schedule_model->messages() ) );
 			}else{
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_model->errors() ) );
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->schedule_model->errors() ) );
 			}
-			redirect( site_url('pt/paket/detail/'.$this->input->post( 'paket_id')));
+			redirect(site_url( $this->current_page.'detail/'.$company_id ));
 		}
-        else
-        {
-			redirect( site_url('pt/paket/detail/'.$this->input->post( 'paket_id')));
-        }
-	}
 
+		$data['tender_id'] = $tender_id;
+		$data['announcement_start_date'] = $this->input->post( 'announcement_start_date' ).' '.$this->input->post( 'announcement_start_time' );
+		$data['announcement_end_date'] = $this->input->post( 'announcement_end_date' ).' '.$this->input->post( 'announcement_end_time' );
+		$data['file_download_start_date'] = $this->input->post( 'file_download_start_date' ).' '.$this->input->post( 'file_download_start_time' );
+		$data['file_download_end_date'] = $this->input->post( 'file_download_end_date' ).' '.$this->input->post( 'file_download_end_time' );
+		$data['explanation_start_date'] = $this->input->post( 'explanation_start_date' ).' '.$this->input->post( 'explanation_start_time' );
+		$data['explanation_end_date'] = $this->input->post( 'explanation_end_date' ).' '.$this->input->post( 'explanation_end_time' );
+		$data['effering_file_upload_start_date'] = $this->input->post( 'effering_file_upload_start_date' ).' '.$this->input->post( 'effering_file_upload_start_time' );
+		$data['effering_file_upload_end_date'] = $this->input->post( 'effering_file_upload_end_date' ).' '.$this->input->post( 'effering_file_upload_end_time' );
+		$data['proof_offering_start_date'] = $this->input->post( 'proof_offering_start_date' ).' '.$this->input->post( 'proof_offering_start_time' );
+		$data['proof_offering_end_date'] = $this->input->post( 'proof_offering_end_date' ).' '.$this->input->post( 'proof_offering_end_time' );
+		$data['evaluation_start_date'] = $this->input->post( 'evaluation_start_date' ).' '.$this->input->post( 'evaluation_start_time' );
+		$data['evaluation_end_date'] = $this->input->post( 'evaluation_end_date' ).' '.$this->input->post( 'evaluation_end_time' );
+		$data['proof_qualification_start_date'] = $this->input->post( 'proof_qualification_start_date' ).' '.$this->input->post( 'proof_qualification_start_time' );
+		$data['proof_qualification_end_date'] = $this->input->post( 'proof_qualification_end_date' ).' '.$this->input->post( 'proof_qualification_end_time' );
+		$data['winner_settle_start_date'] = $this->input->post( 'winner_settle_start_date' ).' '.$this->input->post( 'winner_settle_start_time' );
+		$data['winner_settle_end_date'] = $this->input->post( 'winner_settle_end_date' ).' '.$this->input->post( 'winner_settle_end_time' );
+		$data['winner_announcement_start_date'] = $this->input->post( 'winner_announcement_start_date' ).' '.$this->input->post( 'winner_announcement_start_time' );
+		$data['winner_announcement_end_date'] = $this->input->post( 'winner_announcement_end_date' ).' '.$this->input->post( 'winner_announcement_end_time' );
+		$data['interuption_start_date'] = $this->input->post( 'interuption_start_date' ).' '.$this->input->post( 'interuption_start_time' );
+		$data['interuption_end_date'] = $this->input->post( 'interuption_end_date' ).' '.$this->input->post( 'interuption_end_time' );
+		$data['choose_letter_start_date'] = $this->input->post( 'choose_letter_start_date' ).' '.$this->input->post( 'choose_letter_start_time' );
+		$data['choose_letter_end_date'] = $this->input->post( 'choose_letter_end_date' ).' '.$this->input->post( 'choose_letter_end_time' );
+		$data['signing_start_date'] = $this->input->post( 'signing_start_date' ).' '.$this->input->post( 'signing_start_time' );
+		$data['signing_end_date'] = $this->input->post( 'signing_end_date' ).' '.$this->input->post( 'signing_end_time' );
+		
+
+		$data_param["id"] = $this->input->post( 'id' );
+		if($data_param["id"])
+		{
+			if( $this->schedule_model->update( $data, $data_param ) ){
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->schedule_model->messages() ) );
+			}else{
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->schedule_model->errors() ) );
+			}
+		}
+		else
+		{
+			if( $this->schedule_model->create( $data ) ){
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->schedule_model->messages() ) );
+			}else{
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->schedule_model->errors() ) );
+			}
+		}
+		
+		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+	}
 }

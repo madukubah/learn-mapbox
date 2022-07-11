@@ -18,6 +18,7 @@ class Tender extends User_Controller {
 			'tender_model',
 			'draft_tender_model',
 			'tender_penyedia_model',
+			'schedule_model',
 		));
 	}	
 
@@ -72,6 +73,46 @@ class Tender extends User_Controller {
 		redirect( site_url($this->current_page.'detail/'.$tender_id));
 	}
 
+	public function effering_file( $tender_penyedia_id = NULL )
+	{
+		if ($tender_penyedia_id == NULL) redirect(site_url($this->current_page));
+
+		$this->load->library('upload'); // Load librari upload
+		
+		$filename = "Penawaran_".time();
+		$upload_path = 'uploads/tender/';
+	
+		$config['upload_path'] = './'.$upload_path;
+		$config['image_path'] = base_url().$upload_path;
+		$config['allowed_types'] = "pdf";
+		$config['overwrite']="true";
+		$config['max_size']="2048";
+		$config['file_name'] = ''.$filename;
+
+		$this->upload->initialize($config);
+		
+		if( isset($_FILES["effering_file"] ) && $_FILES["effering_file"]["name"] != '' ){
+				
+			if ( $this->upload->do_upload("effering_file") ) {
+				$data['effering_file'] = $this->upload->data()["file_name"];
+
+				$tender_penyedia = $this->tender_penyedia_model->tender_penyedia( $tender_penyedia_id )->row();
+				if (!@unlink($config['upload_path'] . $tender_penyedia->effering_file )) { };
+			}else {
+				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+			}
+		}
+		$data['tender_id'] = $this->input->post( 'tender_id' );
+		$data_param["id"] = $tender_penyedia_id;
+
+		if( $this->tender_penyedia_model->update( $data, $data_param ) ){
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_penyedia_model->messages() ) );
+		}else{
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
+		}
+		redirect( site_url($this->current_page.'detail/'.$data['tender_id']));
+	}
+
 	public function detail( $tender_id = null )
     {
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
@@ -122,7 +163,7 @@ class Tender extends User_Controller {
 		$tender_penyedia_table["number"] = 1;
 		$tender_penyedia_table["rows"] = $this->tender_penyedia_model
 			->select('	tender_penyedia.*, 
-					company.*,
+					company.name,
 				')
 			->where('tender_id', $tender_id )
 			->join(
@@ -135,10 +176,17 @@ class Tender extends User_Controller {
 				"inner")
 			->tender_penyedias()
 			->result();
-		$tender_penyedia_table = $this->load->view('templates/tables/plain_table', $tender_penyedia_table, true);
-
+		$tender_penyedia_table['user_id'] = $user_id;
+		$tender_penyedia_table = $this->load->view('penyedia/tender/detail/plain_table', $tender_penyedia_table, true);
 		$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
 		$this->data[ "contents_2" ] =  $tender_penyedia_table;
+		$schedule = $this->schedule_model
+			->where('tender_id', $tender_id)
+			->schedule()
+			->row();
+		$schedule_id = '';
+		$schedule_table = $this->load->view('penyedia/tender/detail/schedule_table', array('schedule' => $schedule,'tender_id' => $tender_id ), true);
+		$this->data[ "contents_3" ] =  $schedule_table;
 		$this->render( "penyedia/tender/detail/content" );
 	}
 
