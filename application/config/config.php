@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/tender-online/';
+$config['base_url'] = 'http://tender.pcmkendari.my.id/';
 // $config['base_url'] = 'http://sigab.id/';
 
 /*
