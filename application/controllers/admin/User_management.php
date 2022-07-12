@@ -19,7 +19,7 @@ class User_management extends Admin_Controller
 		 // 
 		 $page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		 //pagination parameter
-		 $pagination['base_url'] = base_url( $this->current_page ) .'/index';
+		 $pagination['base_url'] = site_url( $this->current_page ) .'/index';
 		 $pagination['total_records'] = $this->ion_auth->record_count() ;
 		 $pagination['limit_per_page'] = 10;
 		 $pagination['start_record'] = $page*$pagination['limit_per_page'];
