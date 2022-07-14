@@ -7,9 +7,20 @@ class MY_Controller extends CI_Controller {
 
     public function __construct(){
 	   parent::__construct();
+	   $this->load->model(array(
+			'log_model',
+		));
 	   $this->data["menu_list_id"] = $this->router->fetch_class() . '_' . $this->router->fetch_method() ; 
 	   $this->data["user_image"] = ( $this->session->userdata( 'user_image' ) != "" ) ? $this->session->userdata( 'user_image' ) : base_url('assets/img/user.png') ;
+
     }
+
+	public function __destruct(){
+		$user_id = $this->ion_auth->get_user_id();
+		$data['user_id'] = $user_id;
+		$data['content'] = $this->db->last_query();
+		$this->log_model->create( $data );
+	 }
 
     protected function render($the_view = NULL, $template = NULL){
 		if($template == 'json' || $this->input->is_ajax_request()){
