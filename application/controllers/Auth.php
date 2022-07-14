@@ -73,6 +73,7 @@ class Auth extends Public_Controller
                 $identity_column = $this->config->item('identity', 'ion_auth');
                 $this->form_validation->set_rules( $this->ion_auth->get_validation_config() );
                 $this->form_validation->set_rules('phone', "No Telepon", 'trim|required');
+                $this->form_validation->set_rules('password', "Password", 'trim|required');
                 $this->form_validation->set_rules('email', "Email", 'trim|required|is_unique[users.email]');
 
                 if ( $this->form_validation->run() === TRUE )
@@ -85,7 +86,8 @@ class Auth extends Public_Controller
                         //   $password = $phone ;
                         $email = $this->input->post('email') ;
                         $identity = $email;
-                        $password = substr( $email, 0, strpos( $identity, "@" ) ) ;
+                        $password = $this->input->post('password');
+                        // $password = substr( $email, 0, strpos( $identity, "@" ) ) ;
 
 
                         $additional_data = array(
@@ -138,6 +140,10 @@ class Auth extends Public_Controller
                         unset($form_data['form_data']['cert_no'] );
                         unset($form_data['form_data']['cert_date'] );
                         unset($form_data['form_data']['status'] );
+                        $form_data['form_data']['password'] = array(
+                                'type' => 'password',
+                                'label' => "Password",
+                        );
                         $form_data_company = $this->services->get_form_data();
 
                         $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;

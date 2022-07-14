@@ -31,12 +31,21 @@ class Home extends Public_Controller {
 		$table['header'] = array(
 			'name' => 'Nama',
 			'budget' => 'Anggaran',
-			'end_date' => 'Akhir Pendaftaran',
+			'file_download_end_date' => 'Akhir Pendaftaran',
 		);
 		unset($table['action']);
 		$table[ "rows" ] = $this->tender_model
-		->where('status', 'Tayang')
-		->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+			->select('
+				tender.*,
+				schedule.*
+			')
+			->join(
+				'schedule',
+				'schedule.tender_id = tender.id',
+				'inner'
+			)
+			->where('status', 'Tayang')
+			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}

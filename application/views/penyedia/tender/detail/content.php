@@ -50,6 +50,20 @@
           <div class="tab-content" id="custom-tabs-four-tabContent">
             <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
               <?php echo (isset($contents)) ? $contents : '';  ?>
+              <?php
+                echo '<label for="requirement_file" class="control-label">File Persyaratan</label><br>';
+                if( $tender->requirement_file )
+                  echo '<a href="'.base_url("uploads/tender/").$tender->requirement_file.'">  File Persyaratan </a>';
+                else
+                  echo 'None';
+                
+                echo '<br>';
+                echo '<label for="election_file" class="control-label">Dokumen Pemilihan</label><br>';
+                if( $tender->election_file )
+                  echo '<a href="'.base_url("uploads/tender/").$tender->election_file.'">  Dokumen Pemilihan </a>';
+                else
+                  echo 'None';
+              ?>
             </div>
             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
               <?php echo (isset($contents_2)) ? $contents_2 : '';  ?>

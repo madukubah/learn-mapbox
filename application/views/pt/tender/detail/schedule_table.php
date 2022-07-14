@@ -14,7 +14,7 @@
             'id_start_date' => 'file_download_start_date',
             'id_start_time' => 'file_download_start_time',
             'id_end_date' => 'file_download_end_date',
-            'id_end_time' => 'file_download_end_date',
+            'id_end_time' => 'file_download_end_time',
             'value_start' => isset($schedule)? $schedule->file_download_start_date: '0000-00-00 00:00:00',
             'value_end' => isset($schedule)? $schedule->file_download_end_date: '0000-00-00 00:00:00',
         ),

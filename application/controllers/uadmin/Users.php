@@ -60,45 +60,6 @@ class Users extends Uadmin_Controller
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
 	}
-	// public function index( $user_groups = NULL )
-	// {
-	// 	$this->data[ "menu_list_id" ] = "users_".$user_groups ; 
-	// 	// echo $this->data[ "menu_list_id" ] ; return;
-	// 	// 
-	// 	 $page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
-	// 	 //pagination parameter
-	// 	 $pagination['base_url'] = site_url( $this->current_page ) .'/index';
-	// 	 $pagination['total_records'] = $this->ion_auth->record_count() ;
-	// 	 $pagination['limit_per_page'] = 10;
-	// 	 $pagination['start_record'] = $page*$pagination['limit_per_page'];
-	// 	 $pagination['uri_segment'] = 4;
-	// 	 //set pagination
-	// 	 if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
-
-	// 	$table = $this->services->get_table_config( $this->current_page );
-	// 	$table[ "rows" ] = $this->ion_auth->users_limit( $pagination['limit_per_page'], $pagination['start_record'] , $user_groups )->result();
-	// 	$table = $this->load->view('templates/tables/plain_table', $table, true);
-	// 	$this->data[ "contents" ] = $table;
-
-	// 	$link_add = 
-	// 	array(
-	// 		"name" => "Tambah",
-	// 		"type" => "link",
-	// 		"url" => site_url( $this->current_page."create/"),
-	// 		"button_color" => "primary",	
-	// 		"data" => NULL,
-	// 	);
-	// 	// $this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE ); ;
-	// 	#################################################################3
-	// 	$alert = $this->session->flashdata('alert');
-	// 	$this->data["key"] = $this->input->get('key', FALSE);
-	// 	$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
-	// 	$this->data["current_page"] = $this->current_page;
-	// 	$this->data["block_header"] = "";//$this->_user_groups[ $user_groups ];
-	// 	$this->data["header"] = "";//$this->_user_groups[ $user_groups ];
-	// 	$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-	// 	$this->render( "templates/contents/plain_content" );
-	// }
 
 	public function add()
     {
@@ -176,7 +137,7 @@ class Users extends Uadmin_Controller
         $this->form_validation->set_rules('phone', "No Telepon", 'trim|required');
 		if ( $this->input->post('password') )
         {
-            $this->form_validation->set_rules( 'password',"Kata Sandi",'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]' );            
+            // $this->form_validation->set_rules( 'password',"Kata Sandi",'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]' );            
             $this->form_validation->set_rules( 'password_confirm',"konfirmasi Kata Sandi",'trim|required'); 
 
         }

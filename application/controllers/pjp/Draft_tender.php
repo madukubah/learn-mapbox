@@ -29,16 +29,26 @@ class Draft_tender extends User_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->draft_tender_model->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		$table[ "rows" ] = $this->draft_tender_model
+			->select('
+				draft_tender.*,
+				concat(users.first_name, " ", users.last_name) as pa_name
+			')
+			->join(
+				'users',
+				'users.id = draft_tender.pa_id',
+				'left'
+			)
+			->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		$users = $this->ion_auth->users_limit( 1000, 0, 'pa' )->result();
-		$user_select = array();
-		foreach( $users as $user )
-		{
-			$user_select[ $user->id ] = $user->first_name." ".$user->last_name;
-		}
-		for ($i=0; $i < count($table[ "rows" ]) ; $i++) { 
-			$table[ "rows" ][$i]->pa_name = $user_select[ $table[ "rows" ][$i]->pa_id ];
-		}
+		// $user_select = array();
+		// foreach( $users as $user )
+		// {
+		// 	$user_select[ $user->id ] = $user->first_name." ".$user->last_name;
+		// }
+		// for ($i=0; $i < count($table[ "rows" ]) ; $i++) { 
+		// 	$table[ "rows" ][$i]->pa_name = $user_select[ $table[ "rows" ][$i]->pa_id ];
+		// }
 
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;

@@ -63,6 +63,8 @@ class Tender extends User_Controller {
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		$this->data[ "tender" ] =  $tender;
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
@@ -79,6 +81,7 @@ class Tender extends User_Controller {
 			->where('tender_id', $tender_id)
 			->draft_tender()
 			->row();
+
 		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $draft_tender->id );
 		unset($form_data_draft_tender['form_data']['name']);
 		unset($form_data_draft_tender['form_data']['status']);
@@ -173,6 +176,70 @@ class Tender extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->schedule_model->errors() ) );
 			}
+		}
+		
+		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+	}
+
+	public function upload_file( $tender_id = NULL )
+	{
+		if ($tender_id == NULL) redirect(site_url($this->current_page));
+
+		$this->load->library('upload'); // Load librari upload
+		
+		$filename = "TENDER_".time();
+		$upload_path = 'uploads/tender/';
+
+		$config['upload_path'] = './'.$upload_path;
+		$config['image_path'] = base_url().$upload_path;
+		$config['allowed_types'] = "pdf";
+		$config['overwrite']="true";
+		$config['max_size']="2048";
+		$config['file_name'] = ''.$filename;
+		$data = array();
+		$this->upload->initialize($config);
+		foreach($_FILES as $key => $value){
+			if( $_FILES[$key]["name"] != '' ){
+				if ( $this->upload->do_upload($key) ) {
+					$data[$key] = $this->upload->data()["file_name"];
+
+					$tender = $this->tender_model->tender( $tender_id )->row();
+					if (!@unlink($config['upload_path'] . $tender->$key )) { };
+
+					$data_param["id"] = $tender_id;
+
+					if( $this->tender_model->update( $data, $data_param ) ){
+						$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_model->messages() ) );
+					}else{
+						$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_model->errors() ) );
+					}
+				}else {
+					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+				}
+			}
+			redirect( site_url($this->current_page.'detail/'.$tender_id));
+		}
+	}
+
+	public function tender_penyedia( $tender_id )
+	{
+		// $data['tender_id'] = $tender_id;
+		// $data['penyedia_id'] = $this->input->post( 'penyedia_id' );
+		$data['administration'] = $this->input->post( 'administration' ) == 'on';
+		$data['technical'] = $this->input->post( 'technical' ) == 'on';
+		$data['budget'] = $this->input->post( 'budget' ) == 'on';
+		$data['position'] = $this->input->post( 'position' );
+		
+		// echo var_dump($data);
+		// die;
+
+		$data_param["tender_id"] = $tender_id;
+		$data_param["penyedia_id"] = $this->input->post( 'penyedia_id' );
+
+		if( $this->tender_penyedia_model->update( $data, $data_param ) ){
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_penyedia_model->messages() ) );
+		}else{
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
 		}
 		
 		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
