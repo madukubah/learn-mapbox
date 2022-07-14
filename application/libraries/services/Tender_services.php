@@ -153,8 +153,6 @@ class Tender_services
 				'options' => array(
 					'Barang/Pekerjaan' => 'Barang/Pekerjaan',
 					'Konstruksi/Jasa' => 'Konstruksi/Jasa',
-					'Konsultansi/Jasa' => 'Konsultansi/Jasa',
-					'Lainnya' => 'Lainnya',
 				)
 				,
 				'selected' => $this->form_validation->set_value('type', $this->type),

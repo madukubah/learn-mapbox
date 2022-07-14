@@ -5,6 +5,10 @@
             <th style="width:50px">No</th>
             <th >Nama</th>
             <th >Penawaran</th>
+            <th >Administrasi</th>
+            <th >Teknis</th>
+            <th >Harga/Biaya</th>
+            <th >Urutan</th>
         </tr>
         </thead>
         <tbody  >
@@ -18,8 +22,11 @@
             <td> 
                 <?php 
                 if($user_id == $row-> penyedia_id )
-                {
-                    echo '<a href="'.base_url("uploads/tender/").$row-> effering_file.'">  File </a>';
+                {   
+                    if( $row->effering_file )
+                        echo '<a href="'.base_url("uploads/tender/").$row-> effering_file.'">  File </a>';
+                    else
+                        echo 'None';
                     echo form_open_multipart(site_url('penyedia/tender/effering_file/'.$row->id));
                     $form = array(
                         'name' => 'tender_id',
@@ -45,6 +52,18 @@
                     echo form_close();
                 }
             ?> </td>
+            <td>
+                <input disabled type="checkbox" name="administration" id="administration" <?= ( $row->administration ) ? 'checked': ''?> >
+            </td>
+            <td>
+                <input disabled type="checkbox" name="technical" id="technical" <?= ( $row->technical ) ? 'checked': ''?> >
+            </td>
+            <td>
+                <input disabled type="checkbox" name="budget" id="budget" <?= ( $row->budget ) ? 'checked': ''?> >
+            </td>
+            <td>
+                <?= $row->position?>
+            </td>
         </tr>
         <?php 
             endforeach;

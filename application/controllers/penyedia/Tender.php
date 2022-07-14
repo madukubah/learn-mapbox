@@ -38,7 +38,9 @@ class Tender extends User_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		unset($table['action'][2]);
 		unset($table['action'][1]);
-		$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		$table[ "rows" ] = $this->tender_model
+			->where('status', 'Tayang')
+			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
@@ -59,8 +61,15 @@ class Tender extends User_Controller {
 	public function register( $tender_id = NULL )
 	{
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
-
 		$user_id = $this->ion_auth->get_user_id();
+
+		$tender_penyedia = $this->tender_penyedia_model
+			->where('penyedia_id', $user_id )
+			->where('tender_id', $tender_id )
+			->tender_penyedia()
+			->row();
+		if( $tender_penyedia )
+			redirect( site_url($this->current_page.'detail/'.$tender_id));
 
 		$data['tender_id'] = $tender_id;
 		$data['penyedia_id'] = $user_id;
@@ -91,7 +100,10 @@ class Tender extends User_Controller {
 
 		$this->upload->initialize($config);
 		
-		if( isset($_FILES["effering_file"] ) && $_FILES["effering_file"]["name"] != '' ){
+		$data['tender_id'] = $this->input->post( 'tender_id' );
+		$data_param["id"] = $tender_penyedia_id;
+
+		if( isset($_FILES["effering_file"] ) ){
 				
 			if ( $this->upload->do_upload("effering_file") ) {
 				$data['effering_file'] = $this->upload->data()["file_name"];
@@ -100,10 +112,9 @@ class Tender extends User_Controller {
 				if (!@unlink($config['upload_path'] . $tender_penyedia->effering_file )) { };
 			}else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
+				redirect( site_url($this->current_page.'detail/'.$data['tender_id']));
 			}
 		}
-		$data['tender_id'] = $this->input->post( 'tender_id' );
-		$data_param["id"] = $tender_penyedia_id;
 
 		if( $this->tender_penyedia_model->update( $data, $data_param ) ){
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_penyedia_model->messages() ) );
@@ -118,6 +129,8 @@ class Tender extends User_Controller {
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		$this->data[ "tender" ] =  $tender;
 
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);

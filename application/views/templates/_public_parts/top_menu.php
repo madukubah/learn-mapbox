@@ -13,7 +13,7 @@
                 </li>
             <?php else : ?>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?= site_url().$this->ion_auth->group( $this->ion_auth->user()->row()->group_id )->row()->name ?>" class="btn btn-default nav-link">Dashboard</a>
+                    <a href="<?= site_url('/').$this->ion_auth->group( $this->ion_auth->user()->row()->group_id )->row()->name ?>" class="btn btn-default nav-link">Dashboard</a>
                 </li>
             <?php endif; ?>
         </ul>

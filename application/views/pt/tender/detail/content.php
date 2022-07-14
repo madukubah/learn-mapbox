@@ -50,6 +50,69 @@
           <div class="tab-content" id="custom-tabs-four-tabContent">
             <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
               <?php echo (isset($contents)) ? $contents : '';  ?>
+              <?php
+
+                echo '<label for="requirement_file" class="control-label">File Persyaratan</label><br>';
+                if( $tender->requirement_file )
+                  echo '<a href="'.base_url("uploads/tender/").$tender->requirement_file.'">  File Persyaratan </a>';
+                else
+                  echo 'None';
+                echo form_open_multipart(site_url('pt/tender/upload_file/'.$tender->id));
+                $form = array(
+                    'name' => 'tender_id',
+                    'id' => 'tender_id',
+                    'type' => 'hidden',
+                    'value' => $tender->id
+                    
+                );
+                echo form_input( $form );
+                $form = array(
+                    'name' => 'requirement_file',
+                    'id' => 'requirement_file',
+                    'type' => 'file',
+                    'placeholder' => 'File Persyaratan' ,
+                    
+                );
+                echo form_upload( $form );
+                ?>
+                <button class="btn btn-bold btn-success btn-sm " style="margin-left: 5px;" type="submit">
+                  Simpan
+                </button>
+                <?php
+                echo form_close();
+              ?>
+
+              <?php
+
+              echo '<label for="election_file" class="control-label">Dokumen Pemilihan</label><br>';
+              if( $tender->election_file )
+                echo '<a href="'.base_url("uploads/tender/").$tender->election_file.'">  Dokumen Pemilihan </a>';
+              else
+                echo 'None';
+              echo form_open_multipart(site_url('pt/tender/upload_file/'.$tender->id));
+              $form = array(
+                  'name' => 'tender_id',
+                  'id' => 'tender_id',
+                  'type' => 'hidden',
+                  'value' => $tender->id
+                  
+              );
+              echo form_input( $form );
+              $form = array(
+                  'name' => 'election_file',
+                  'id' => 'election_file',
+                  'type' => 'file',
+                  'placeholder' => 'Dokumen Pemilihan' ,
+                  
+              );
+              echo form_upload( $form );
+              ?>
+              <button class="btn btn-bold btn-success btn-sm " style="margin-left: 5px;" type="submit">
+                Simpan
+              </button>
+              <?php
+              echo form_close();
+              ?>
             </div>
             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
               <?php echo (isset($contents_2)) ? $contents_2 : '';  ?>
