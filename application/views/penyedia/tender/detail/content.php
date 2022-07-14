@@ -44,6 +44,9 @@
             <li class="nav-item">
               <a class="nav-link" id="custom-tabs-four-schedule-tab" data-toggle="pill" href="#custom-tabs-four-schedule" role="tab" aria-controls="custom-tabs-three-schedule" aria-selected="false">Jadwal</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" id="custom-tabs-four-comment-tab" data-toggle="pill" href="#custom-tabs-four-comment" role="tab" aria-controls="custom-tabs-three-comment" aria-selected="false">Pertanyaan</a>
+            </li>
           </ul>
         </div>
         <div class="card-body">
@@ -70,6 +73,36 @@
             </div>
             <div class="tab-pane fade" id="custom-tabs-four-schedule" role="tabpanel" aria-labelledby="custom-tabs-four-schedule-tab">
               <?php echo (isset($contents_3)) ? $contents_3 : '';  ?>
+            </div>
+            <div class="tab-pane fade" id="custom-tabs-four-comment" role="tabpanel" aria-labelledby="custom-tabs-four-comment-tab">
+                
+                <?php foreach($comments as $comment): ?>
+                  <b><?= $comment->datetime ?></b><br>
+                  <b><?= $comment->user_name ?></b><br>
+                  <p><?= $comment->content ?></p>
+                <?php endforeach; ?>
+                <?php echo form_open_multipart(site_url('penyedia/tender/comment/'.$tender->id));?>
+                <div class='row'>
+                  <div class="col-10">
+                    <?php 
+                      $form = array(
+                          'name' => 'content',
+                          'id' => 'content',
+                          'type' => 'textarea',
+                          'class' => 'form-control',
+                          
+                      );
+                      echo form_input( $form );
+                    ?>
+                  </div>
+                  <div class="col-2">
+                    <button class="btn btn-bold btn-block btn-success btn-sm " style="margin-left: 5px;" type="submit">
+                      Kirin
+                    </button>
+                  </div>
+                </div>
+              <?php echo form_close();?>
+
             </div>
           </div>
         </div>

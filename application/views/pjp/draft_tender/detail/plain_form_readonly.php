@@ -48,6 +48,11 @@
                 case 'number':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    if (is_numeric( $form['value'] ) )
+                    {
+                        $form['type'] = 'text';
+                        $form['value'] = number_format( $form['value'] );
+                    }
                     echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
                     echo form_input( $form );
                     break;
@@ -81,8 +86,15 @@
                     $form['options'] = ( isset( $attr['options'] )  ) ? $attr['options'] : '';
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['selected'] = ( isset( $attr['selected'] )  ) ? $attr['selected'] : $value;
+                    if( $form['selected'] != 0 || $form['selected'] != '' )
+                        $form['value'] = $form['options'][$form['selected']];
+                    else
+                        $form['value'] = '';
+                    unset( $form['options']);
+                    unset( $form['selected'] );
+
                     echo '<label for="" class="control-label">'.$attr["label"].'</label>';
-                    echo form_dropdown( $form );
+                    echo form_input( $form );
                     break;
             }
         ?>

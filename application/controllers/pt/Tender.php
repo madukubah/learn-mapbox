@@ -19,6 +19,7 @@ class Tender extends User_Controller {
 			'draft_tender_model',
 			'tender_penyedia_model',
 			'schedule_model',
+			'comment_model',
 		));
 	}	
 
@@ -118,6 +119,21 @@ class Tender extends User_Controller {
 		$schedule_id = '';
 		$schedule_table = $this->load->view('pt/tender/detail/schedule_table', array('schedule' => $schedule,'tender_id' => $tender_id ), true);
 		$this->data[ "contents_3" ] =  $schedule_table;
+
+		$comments = $this->comment_model
+			->select('
+				comment.*,
+				concat(users.first_name, " ", users.last_name) as user_name
+			')
+			->join(
+				'users',
+				'users.id = comment.user_id',
+				'left'
+			)
+			->where('tender_id', $tender_id)
+			->comments()
+			->result();
+		$this->data[ "comments" ] =  $comments;
 		$this->render( "pt/tender/detail/content" );
 	}
 
@@ -240,6 +256,28 @@ class Tender extends User_Controller {
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_penyedia_model->messages() ) );
 		}else{
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
+		}
+		
+		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+	}
+
+	public function comment( $tender_id )
+	{
+		$user_id = $this->ion_auth->get_user_id();
+
+		$data['tender_id'] = $tender_id;
+		$data['content'] = $this->input->post( 'content' );
+		$data['user_id'] = $user_id;
+		$data['datetime'] = date('Y-m-d H:i:s');
+		
+
+		if( $data['content'] == '' )
+			redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+
+		if( $this->comment_model->create( $data ) ){
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->comment_model->messages() ) );
+		}else{
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->comment_model->errors() ) );
 		}
 		
 		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
