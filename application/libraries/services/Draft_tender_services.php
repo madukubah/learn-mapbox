@@ -59,7 +59,7 @@ class Draft_tender_services
 			'contract_type' => 'Jenis Kontrak',
 			'budget_estimation' => 'Harga Perkiraan Sendiri (HPS)',
 			'date' => 'Tanggal',
-			'status' => 'Status',
+			// 'status' => 'Status',
 		  );
 	$table["number"] = $start_number ;
 	$table[ "action" ] = array(
@@ -191,13 +191,13 @@ class Draft_tender_services
 				'label' => "Tanggal",
 				'value' => $this->form_validation->set_value('date', $this->date),
 			),
-			"status" => array(
-				'type' => 'text',
-				'label' => "Status",
-				'readonly' => true,
-				// 'value' => $this->form_validation->set_value('status', $this->status),
-				'value' => 'Draft',
-			),
+			// "status" => array(
+			// 	'type' => 'text',
+			// 	'label' => "Status",
+			// 	'readonly' => true,
+			// 	// 'value' => $this->form_validation->set_value('status', $this->status),
+			// 	'value' => 'Draft',
+			// ),
 		  );
 		return $_data;
 	}

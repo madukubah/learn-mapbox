@@ -179,16 +179,16 @@ class Pokmil_services
 				'label' => "Tanggal",
 				'value' => $this->form_validation->set_value('date', $this->date),
 			),
-			"status" => array(
-				'type' => 'select',
-				'label' => "Status",
-				'options' => array(
-					'Aktif' => 'Aktif',
-					'Non Aktif' => 'Non Aktif'
-				)
-				,
-				'selected' => $this->form_validation->set_value('status', $this->status),
-			),
+			// "status" => array(
+			// 	'type' => 'select',
+			// 	'label' => "Status",
+			// 	'options' => array(
+			// 		'Aktif' => 'Aktif',
+			// 		'Non Aktif' => 'Non Aktif'
+			// 	)
+			// 	,
+			// 	'selected' => $this->form_validation->set_value('status', $this->status),
+			// ),
 		  );
 		return $_data;
 	}
