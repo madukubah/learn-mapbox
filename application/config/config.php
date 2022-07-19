@@ -23,8 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/tender-online/';
-// $config['base_url'] = 'http://sigab.id/';
+$config['base_url'] = 'https://tender.pcmkendari.my.id/';
 
 /*
 |--------------------------------------------------------------------------
@@ -407,8 +406,8 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix']    = '';
 $config['cookie_domain']    = '';
 $config['cookie_path']        = '/';
-$config['cookie_secure']    = FALSE;
-$config['cookie_httponly']     = FALSE;
+$config['cookie_secure']    = TRUE;
+$config['cookie_httponly']     = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -436,7 +435,7 @@ $config['standardize_newlines'] = FALSE;
 |          for backwards compatibility purposes!
 |
 */
-$config['global_xss_filtering'] = FALSE;
+$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
