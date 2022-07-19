@@ -35,6 +35,7 @@ class Ion_auth
 	protected $address;
 	protected $email;
 	protected $group_id;
+	protected $active;
 
 	protected $nrrp;
 	protected $job_position;
@@ -85,6 +86,7 @@ class Ion_auth
 		$this->address		="";
 		$this->email		="";
 		$this->group_id		= '';
+		$this->active		= '';
 
 		$this->nrrp			= '';
 		$this->job_position	= '';
@@ -639,6 +641,7 @@ class Ion_auth
 			$this->email		= $user->email;
 			$this->group_id		= $user->group_id;
 			$this->address		= $user->address;
+			$this->active		= $user->active;
 
 			$this->nrrp			=$user->nrrp;
 			$this->job_position	=$user->job_position;
@@ -729,15 +732,15 @@ class Ion_auth
 				'label' => "Tanggal Sertifikat Pengadaan/Barang Jasa",
 				'value' => $this->form_validation->set_value('cert_date', $this->cert_date),			  
 			),
-			"status" => array(
+			"active" => array(
 				'type' => 'select',
 				'label' => "Status",
 				'options' => array(
-					'Aktif' => 'Aktif',
-					'Non Aktif' => 'Non Aktif'
+					'1' => 'Aktif',
+					'0' => 'Non Aktif'
 				)
 				,
-				'selected' => $this->status,
+				'selected' => $this->active,
 			),
 			"group_id" => array(
 				'type' => 'select',

@@ -23,7 +23,6 @@ class Users extends Uadmin_Controller
 	} 
 	public function index( $id_user = NULL )
 	{
-		 // 
 		 $page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
 		 //pagination parameter
 		 $pagination['base_url'] = site_url( $this->current_page ) .'/index';
@@ -36,8 +35,11 @@ class Users extends Uadmin_Controller
 
 		$table = $this->services->get_table_config( $this->current_page );
 		$table[ "rows" ] = $this->ion_auth->users_limit( $pagination['limit_per_page'], $pagination['start_record']  )->result();
-		unset( $table[ "rows" ][0] );
-		unset( $table[ "rows" ][1] );
+		if($page == 0)
+		{
+			unset( $table[ "rows" ][0] );
+			unset( $table[ "rows" ][1] );
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -88,6 +90,7 @@ class Users extends Uadmin_Controller
             'email' => $this->input->post('email'),
             'phone' => $this->input->post('phone'),
             'address' => $this->input->post('address'),
+            'active' => $this->input->post('active'),
 
             'nrrp' => $this->input->post('nrrp'),
             'job_position' => $this->input->post('job_position'),
@@ -153,6 +156,7 @@ class Users extends Uadmin_Controller
               'phone' => $this->input->post('phone'),
               'group_id' => $this->input->post('group_id'),
 			  'address' => $this->input->post('address'),
+			  'active' => $this->input->post('active'),
   
 			  'nrrp' => $this->input->post('nrrp'),
 			  'job_position' => $this->input->post('job_position'),

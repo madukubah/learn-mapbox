@@ -140,6 +140,7 @@ class Auth extends Public_Controller
                         unset($form_data['form_data']['cert_no'] );
                         unset($form_data['form_data']['cert_date'] );
                         unset($form_data['form_data']['status'] );
+                        unset($form_data['form_data']['active'] );
                         $form_data['form_data']['password'] = array(
                                 'type' => 'password',
                                 'label' => "Password",
