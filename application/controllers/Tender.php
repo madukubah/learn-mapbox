@@ -32,7 +32,7 @@ class Tender extends Public_Controller {
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Detail Tender ";
 		$this->data["header"] = "Detail Tender ";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		$this->data["sub_header"] = 'Klik Tombol Aksi Untuk Ikut Tender';
 
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;

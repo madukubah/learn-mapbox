@@ -46,7 +46,7 @@ class Paket_services
   {
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
-			'name' => 'Nama Tender',
+			'name' => 'Nama Paket',
 			'pa_full_name' => 'PA',
 			'pokmil_name' => 'Pokmil',
 			'date' => 'Tanggal',
@@ -64,7 +64,7 @@ class Paket_services
 			"name" => "Edit",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
-			"button_color" => "primary",
+			"button_color" => "warning",
 			"param" => "id",
 		),
 		array(

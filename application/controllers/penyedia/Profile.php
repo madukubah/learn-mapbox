@@ -119,15 +119,15 @@ class Profile extends User_Controller {
 			$form_password[ 'form_data' ] = array(
 				"old_password" => array(
 					'type' => 'password',
-					'label' => "Password lama",
+					'label' => "Password Lama",
 				),
 				"password" => array(
 				  'type' => 'password',
-				  'label' => "Password",
+				  'label' => "Password Baru",
 				),
 				"password_confirm" => array(
 				  'type' => 'password',
-				  'label' => "Konfirmasi Password",
+				  'label' => "Konfirmasi Password Baru",
 				),
 			);
 			$form_data[ 'form_data' ] = array_merge( $form_data[ 'form_data' ] , $form_password[ 'form_data' ] );

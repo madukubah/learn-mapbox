@@ -12,7 +12,7 @@ $data_param = ($data != '') ? $data->$param : '';
         <div class="modal-content">
             <?php echo form_open($url); ?>
             <div class="modal-header">
-                <h6 class="modal-title">Hapus <?php echo $title ?></h6>
+                <h6 class="modal-title">HAPUS DATA</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

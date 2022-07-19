@@ -55,11 +55,11 @@ class Draft_tender_services
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
 			'name' => 'Tender',
-			'pa_name' => 'Nama PA',
+			'pa_name' => 'Pengguna Anggaran',
 			'contract_type' => 'Jenis Kontrak',
 			'budget_estimation' => 'Harga Perkiraan Sendiri (HPS)',
-			'date' => 'Tanggal',
-			// 'status' => 'Status',
+			'date' => 'Tanggal Mulai Tender',
+			//'status' => 'Status',
 		  );
 	$table["number"] = $start_number ;
 	$table[ "action" ] = array(
@@ -74,7 +74,7 @@ class Draft_tender_services
 			"name" => "Edit",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
-			"button_color" => "primary",
+			"button_color" => "warning",
 			"param" => "id",
 		),
 		array(
@@ -146,19 +146,19 @@ class Draft_tender_services
 			),
 			"name" => array(
 			  'type' => 'text',
-			  'label' => "Nama Tender",
+			  'label' => "Nama Paket",
 			  'readonly' => true,
 			  'value' => $this->form_validation->set_value('name', $this->name),
 			),
 			"pa_id" => array(
 				'type' => 'select',
-				'label' => "PA",
+				'label' => "Pengguna Anggaran*",
 				'options' => $user_select,
 				'selected' => $this->pa_id,
 			),
 			"contract_type" => array(
 				'type' => 'select',
-				'label' => "Jenis Kontrak",
+				'label' => "Jenis Kontrak*",
 				'options' => array(
 					'Lumpsum' => 'Lumpsum',
 					'Harga Satuan' => 'Harga Satuan',
@@ -167,30 +167,30 @@ class Draft_tender_services
 				'selected' => $this->form_validation->set_value('contract_type', $this->contract_type),
 			),
 			"budget_estimation" => array(
-			  'type' => 'number',
-			  'label' => "Harga Perkiraan Sendiri (HPS)",
+			  'type' => 'text',
+			  'label' => "Harga Perkiraan Sendiri (HPS)*",
 			  'value' => $this->form_validation->set_value('budget_estimation', $this->budget_estimation),
 			),
 			"kak_file" => array(
 				'type' => 'file',
-				'label' => "File KAK",
+				'label' => "File KAK*",
 				'value' => $this->form_validation->set_value('kak_file', $this->kak_file),
 			),
 			"design_file" => array(
 				'type' => 'file',
-				'label' => "File Rancangan",
+				'label' => "File Rancangan Kontrak*",
 				'value' => $this->form_validation->set_value('design_file', $this->design_file),
 			),
 			"other_file" => array(
 				'type' => 'file',
-				'label' => "File Lainnya",
+				'label' => "File Lainnya (Jika Ada)",
 				'value' => $this->form_validation->set_value('other_file', $this->other_file),
 			),
-			"date" => array(
-				'type' => 'date',
-				'label' => "Tanggal",
-				'value' => $this->form_validation->set_value('date', $this->date),
-			),
+			//"date" => array(
+			//	'type' => 'date',
+			//	'label' => "Tanggal",
+			//	'value' => $this->form_validation->set_value('date', $this->date),
+			//),
 			// "status" => array(
 			// 	'type' => 'text',
 			// 	'label' => "Status",

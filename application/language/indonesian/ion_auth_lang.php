@@ -27,7 +27,7 @@
 $lang['login_not_login']				            = 'Anda Harus Login';
 $lang['login_must_admin']				            = 'Anda Harus Jadi admin';
 
-$lang['account_creation_successful']				= 'Akun Berhasil Dibuat';
+$lang['account_creation_successful']				= 'Akun Pengguna Baru Berhasil Dibuat';
 $lang['account_creation_unsuccessful']				= 'Tidak Dapat Membuat Akun';
 $lang['account_creation_duplicate_email']			= 'Email Sudah Digunakan atau Tidak Valid';
 $lang['account_creation_duplicate_identity']	    = 'Identitas Sudah Digunakan atau Tidak Valid';
@@ -60,8 +60,8 @@ $lang['login_timeout']								= 'Sementara Terkunci. Coba Beberapa Saat Lagi.';
 $lang['logout_successful']							= 'Log Out Berhasil';
 
 // Account Changes
-$lang['update_successful']							= 'Informasi Akun Berhasil Diperbaharui';
-$lang['update_unsuccessful']						= 'Gagal Memperbaharui Informasi Akun';
+$lang['update_successful']							= 'Detail Akun Pengguna Berhasil Diperbaharui';
+$lang['update_unsuccessful']						= 'Gagal Memperbaharui Informasi Akun Pengguna';
 $lang['delete_successful']							= 'Pengguna Telah Dihapus';
 $lang['delete_unsuccessful']						= 'Gagal Menghapus Pengguna';
 

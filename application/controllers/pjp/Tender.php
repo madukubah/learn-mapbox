@@ -100,8 +100,8 @@ class Tender extends User_Controller {
 			// $this->data["alert"] .= ($this->upload->display_errors()) ? $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()) : NULL;
 
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Tambah Rencana Tender ";
-			$this->data["header"] = "Tambah Rencana Tender ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Tambah Rencana Tender";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data();

@@ -29,15 +29,15 @@ class Home extends Public_Controller {
 
 		$table = $this->tender_services->get_table_config( $this->current_page );
 		$table['header'] = array(
-			'name' => 'Nama',
-			'budget' => 'Anggaran',
+			'name' => 'Nama Paket',
+			'budget' => 'HPS',
 			'file_download_end_date' => 'Akhir Pendaftaran',
 		);
 		unset($table['action']);
 		$table[ "rows" ] = $this->tender_model
 			->select('
-				tender.*,
-				schedule.*
+				schedule.*,
+				tender.*
 			')
 			->join(
 				'schedule',

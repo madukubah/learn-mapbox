@@ -9,6 +9,9 @@
                     <a href="<?= site_url() ?>" class="nav-link">Tentang</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
+                    <a href="<?= site_url() ?>" class="nav-link">Unduh</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= site_url('auth/') ?>login" class="nav-link">Login</a>
                 </li>
             <?php else : ?>

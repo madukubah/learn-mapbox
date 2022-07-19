@@ -23,7 +23,7 @@ class Group_services
                 "type" => "modal_form",
                 "modal_id" => "edit_",
                 "url" => site_url( $_page."edit/"),
-                "button_color" => "primary",
+                "button_color" => "warning",
                 "param" => "id",
                 "form_data" => array(
                     "id" => array(

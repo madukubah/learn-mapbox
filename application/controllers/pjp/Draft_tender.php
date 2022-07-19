@@ -124,7 +124,7 @@ class Draft_tender extends User_Controller {
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = "Detail Draft Tender ";
 		$this->data["header"] = "Detail Draft Tender ";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		$this->data["sub_header"] = '';
 
 		$form_data = $this->services->get_form_data( $draft_tender_id );
 		$form_data = $this->load->view('pjp/draft_tender/detail/plain_form_readonly', $form_data , TRUE ) ;
@@ -209,8 +209,8 @@ class Draft_tender extends User_Controller {
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit Paket ";
-			$this->data["header"] = "Edit Paket ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Edit Paket";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data($draft_tender_id);
