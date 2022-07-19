@@ -44,7 +44,7 @@
 								"file_size"			=> "",
 								"file_ext"			=> "",
 								"upload_path"		=> "",
-								"overwrite"			=> FALSE,
+								"overwrite"			=> TRUE,
 								"encrypt_name"		=> FALSE,
 								"is_image"			=> FALSE,
 								"image_width"		=> "",
@@ -54,7 +54,7 @@
 								"error_msg"			=> array(),
 								"mimes"				=> array(),
 								"remove_spaces"		=> TRUE,
-								"xss_clean"			=> FALSE,
+								"xss_clean"			=> TRUE,
 								"temp_prefix"		=> "temp_file_",
 								"client_name"		=> ""
 							);
