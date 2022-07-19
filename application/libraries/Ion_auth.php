@@ -690,7 +690,7 @@ class Ion_auth
 			  'value' => $this->form_validation->set_value('email', $this->email),			  
 			),
 			"phone" => array(
-			  'type' => 'number',
+			  'type' => 'text',
 			  'label' => "Nomor Telepon",
 			  'value' => $this->form_validation->set_value('phone', $this->phone),			  
 			),
@@ -701,7 +701,7 @@ class Ion_auth
 			),
 			"nrrp" => array(
 				'type' => 'text',
-				'label' => "NRRP",
+				'label' => "NRP",
 				'value' => $this->form_validation->set_value('nrrp', $this->nrrp),			  
 			),
 			"job_position" => array(
@@ -716,7 +716,7 @@ class Ion_auth
 			),
 			"due_date" => array(
 				'type' => 'date',
-				'label' => "Masa Berlaku",
+				'label' => "Tanggal SK Pengangkatan",
 				'value' => $this->form_validation->set_value('due_date', $this->due_date),			  
 			),
 			"cert_no" => array(
@@ -726,7 +726,7 @@ class Ion_auth
 			),
 			"cert_date" => array(
 				'type' => 'date',
-				'label' => "Tanggal Sertifikat",
+				'label' => "Tanggal Sertifikat Pengadaan/Barang Jasa",
 				'value' => $this->form_validation->set_value('cert_date', $this->cert_date),			  
 			),
 			"status" => array(
@@ -741,7 +741,7 @@ class Ion_auth
 			),
 			"group_id" => array(
 				'type' => 'select',
-				'label' => "User Group",
+				'label' => "Hak Akses",
 				'options' => $group_select,
 				'selected' => $this->group_id,
 			),

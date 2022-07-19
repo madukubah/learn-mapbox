@@ -57,7 +57,7 @@ class Tender_services
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
 			'code' => 'Kode',
-			'name' => 'Nama',
+			'name' => 'Nama Paket',
 			'type' => 'Jenis Pengadaan',
 			'budget' => 'Anggaran',
 			'year' => 'Tahun Anggaran',
@@ -79,7 +79,7 @@ class Tender_services
 			"name" => "Edit",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
-			"button_color" => "primary",
+			"button_color" => "warning",
 			"param" => "id",
 		),
 		array(
@@ -139,67 +139,80 @@ class Tender_services
 			),
 			"code" => array(
 			  'type' => 'text',
-			  'label' => "Kode Tender",
+			  'label' => "Kode Tender*",
 			  'value' => $this->form_validation->set_value('code', $this->code),
 			),
 			"name" => array(
 			  'type' => 'text',
-			  'label' => "Nama Tender",
+			  'label' => "Nama Paket*",
 			  'value' => $this->form_validation->set_value('name', $this->name),
 			),
 			"type" => array(
 				'type' => 'select',
-				'label' => "Jenis Pengadaan",
+				'label' => "Jenis Pengadaan*",
 				'options' => array(
-					'Barang/Pekerjaan' => 'Barang/Pekerjaan',
-					'Konstruksi/Jasa' => 'Konstruksi/Jasa',
+					'Pengadaan Barang' => 'Pengadaan Barang',
+					'Pekerjaan Konstruksi' => 'Pekerjaan Konstruksi',
 				)
 				,
 				'selected' => $this->form_validation->set_value('type', $this->type),
 			),
 			"budget" => array(
-			  'type' => 'number',
-			  'label' => "Anggaran",
+			  'type' => 'text',
+			  'label' => "Anggaran (Rp.)*",
 			  'value' => $this->form_validation->set_value('budget', $this->budget),
 			),
 			"budget_source" => array(
 			  'type' => 'text',
-			  'label' => "Sumber Dana",
+			  'label' => "Sumber Anggaran*",
 			  'value' => $this->form_validation->set_value('budget_source', $this->budget_source),
 			),
 			"year" => array(
-			  'type' => 'number',
-			  'label' => "Tahun Anggaran",
-			  'value' => $this->form_validation->set_value('year', $this->year),
+			  'type' => 'select',
+			  'label' => "Tahun Anggaran*",
+			  'options' => array(
+					'2021' => '2021',
+					'2022' => '2022',
+					'2023' => '2023',
+					'2024' => '2024',
+					'2025' => '2025',
+					'2026' => '2026',
+					'2027' => '2027',
+					'2028' => '2028',
+					'2029' => '2029',
+					'2030' => '2030',
+				)
+				,
+				'selected' => $this->form_validation->set_value('year', $this->year),
 			),
 			"location" => array(
 			  'type' => 'text',
-			  'label' => "Lokasi",
+			  'label' => "Lokasi*",
 			  'value' => $this->form_validation->set_value('location', $this->location),
 			),
 			"method" => array(
 				'type' => 'select',
-				'label' => "Metode Pengadaan",
+				'label' => "Metode Pengadaan*",
 				'options' => array(
-					'Tender' => 'Tender',
 					'Pengadaan Langsung' => 'Pengadaan Langsung',
+					'Tender' => 'Tender',
 				)
 				,
 				'selected' => $this->form_validation->set_value('method', $this->method),
 			),
 			"start_date" => array(
 				'type' => 'date',
-				'label' => "Mulai",
+				'label' => "Tanggal Mulai Rencana Tender*",
 				'value' => $this->form_validation->set_value('start_date', $this->start_date),
 			),
 			"end_date" => array(
 				'type' => 'date',
-				'label' => "Selesai",
+				'label' => "Tanggal Selesai Rencana Tender*",
 				'value' => $this->form_validation->set_value('end_date', $this->end_date),
 			),
 			"status" => array(
 				'type' => 'select',
-				'label' => "Status",
+				'label' => "Status Tender*",
 				'options' => array(
 					'Rencana' => 'Rencana',
 					'Tayang' => 'Tayang'

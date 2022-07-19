@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 12, 2022 at 12:41 AM
+-- Generation Time: Jul 14, 2022 at 05:30 PM
 -- Server version: 5.7.38-0ubuntu0.18.04.1
 -- PHP Version: 7.0.33-60+ubuntu18.04.1+deb.sury.org+1
 
@@ -46,6 +46,31 @@ INSERT INTO `acta` (`id`, `company_id`, `name`, `date`, `notary`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comment`
+--
+
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
+  `tender_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`id`, `tender_id`, `user_id`, `content`, `datetime`) VALUES
+(3, 5, 19, '', '2022-07-14 16:44:44'),
+(4, 5, 19, 'test', '2022-07-14 16:50:00'),
+(5, 5, 19, 'test', '2022-07-14 16:51:57'),
+(6, 5, 32, 'haluuu', '2022-07-14 16:55:06'),
+(7, 5, 32, 'test', '2022-07-14 16:57:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `company`
 --
 
@@ -67,7 +92,10 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `user_id`, `name`, `company_type`, `company_cert`, `npwp`, `postal_code`, `province`, `city`, `website`) VALUES
-(1, 23, 'usaha penyedia yuhu', 'CV', 'sertifikat 1', 'npwp', 'kode pos', 'provinsi', 'kota', 'website');
+(1, 23, 'usaha penyedia yuhu', 'CV', 'sertifikat 1', 'npwp', 'kode pos', 'provinsi', 'kota', 'website'),
+(2, 29, 'PT. Rambutan', 'PT', '12345', '1.23.4.5', '93117', 'Sulawesi Tenggara', 'Kendari', ''),
+(3, 31, 'Kita', 'CV', 'kitakita', '1283439809', '93123', 'Sulawwsi', 'fdjnjknsd', 'Sibhbiuf'),
+(4, 32, 'usaha', 'CV', 'Badan', 'NPWP', 'Kode Pos', 'Provinsi', ' Kabupaten/Kota', 'Website');
 
 -- --------------------------------------------------------
 
@@ -116,8 +144,11 @@ CREATE TABLE `draft_tender` (
 --
 
 INSERT INTO `draft_tender` (`id`, `tender_id`, `pa_id`, `name`, `contract_type`, `budget_estimation`, `kak_file`, `design_file`, `other_file`, `date`, `status`) VALUES
-(1, 1, 16, 'test tender', 'Lumpsum', 1500000, '2014-1-1-87201-231408012-bab1-21082014043343.pdf', '2014-1-1-87201-231408012-bab1-210820140433431.pdf', '2014-1-1-87201-231408012-bab1-210820140433432.pdf', '2022-07-13', 'Draft'),
-(2, 2, 18, 'test tender 2', 'Lumpsum', 1199999999, '2014-1-1-87201-231408012-bab1-210820140433433.pdf', '', '', '2022-07-09', 'Draft');
+(3, 4, 16, 'Pengadaan Komputer Server', 'Lumpsum', 1500000, '', '', '', '2022-07-22', 'Draft'),
+(4, 2, 16, 'Pemeliharaan Gedung ATM', 'Lumpsum', 1000000, '', '', '', '2022-07-14', 'Draft'),
+(5, 1, 16, 'Pembangunan Gedung Kantor Cabang BPD', 'Lumpsum', 0, '', '', '', '2022-07-14', ''),
+(6, 5, 16, 'Mobil', 'Lumpsum', 80000000, 'TENDER_1657630137.pdf', 'TENDER_16576301371.pdf', 'TENDER_16576301372.pdf', '2022-07-12', 'Draft'),
+(7, 6, 16, 'Pengadaan Aqua Gelas', 'Harga Satuan', 60000000, '', '', '', '2022-07-13', 'Draft');
 
 -- --------------------------------------------------------
 
@@ -299,8 +330,9 @@ CREATE TABLE `paket` (
 --
 
 INSERT INTO `paket` (`id`, `draft_tender_id`, `pa_id`, `name`, `pokmil_id`, `date`, `status`) VALUES
-(3, 1, 16, 'test tender', 1, '2022-07-07', 'Aktif'),
-(4, 2, 18, 'test tender 2', 1, '2022-07-09', 'Aktif');
+(4, 2, 18, 'test tender 2', 1, '2022-07-09', 'Aktif'),
+(5, 6, 16, 'Mobil', 3, '2022-07-12', 'Aktif'),
+(6, 7, 16, 'Pengadaan Aqua Gelas', 4, '2022-07-13', 'Non Aktif');
 
 -- --------------------------------------------------------
 
@@ -327,7 +359,9 @@ CREATE TABLE `pokmil` (
 
 INSERT INTO `pokmil` (`id`, `name`, `sk_no`, `lead_id`, `member_1_id`, `member_2_id`, `member_3_id`, `member_4_id`, `date`, `status`) VALUES
 (1, 'pokmil 1', 'pokmil 1', 19, 20, 21, 0, 0, '2022-07-06', 'Aktif'),
-(2, 'test pokmil 2', 'test pokmil 2', 20, 21, 19, 0, 0, '2022-07-09', 'Aktif');
+(2, 'test pokmil 2', 'test pokmil 2', 20, 21, 19, 0, 0, '2022-07-09', 'Aktif'),
+(3, 'Local', 'pa@gmail', 19, 20, 21, 0, 0, '2022-07-12', 'Aktif'),
+(4, 'Tim Sukses', '38999543', 19, 20, 21, 0, 0, '2022-07-13', 'Aktif');
 
 -- --------------------------------------------------------
 
@@ -369,7 +403,9 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`id`, `tender_id`, `announcement_start_date`, `announcement_end_date`, `file_download_start_date`, `file_download_end_date`, `explanation_start_date`, `explanation_end_date`, `effering_file_upload_start_date`, `effering_file_upload_end_date`, `proof_offering_start_date`, `proof_offering_end_date`, `evaluation_start_date`, `evaluation_end_date`, `proof_qualification_start_date`, `proof_qualification_end_date`, `winner_settle_start_date`, `winner_settle_end_date`, `winner_announcement_start_date`, `winner_announcement_end_date`, `interuption_start_date`, `interuption_end_date`, `choose_letter_start_date`, `choose_letter_end_date`, `signing_start_date`, `signing_end_date`) VALUES
-(1, 2, '2022-07-05 19:15:00', '0000-00-00 00:00:00', '2022-07-09 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-07-13 09:05:00', '2022-07-21 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 2, '2022-07-05 19:15:00', '0000-00-00 00:00:00', '2022-07-09 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-07-13 09:05:00', '2022-07-21 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 5, '2022-07-12 00:01:00', '2022-08-25 23:59:00', '2022-07-13 00:14:00', '2022-07-15 00:00:00', '2022-07-26 00:01:00', '2022-07-20 12:04:00', '2022-07-13 13:04:00', '2022-07-20 12:04:00', '2022-07-31 21:09:00', '2022-08-03 21:10:00', '2022-07-26 23:04:00', '2022-07-19 12:04:00', '2022-07-21 21:07:00', '2022-07-17 21:09:00', '2022-08-03 21:08:00', '2022-07-28 12:05:00', '2022-07-29 21:11:00', '2022-07-28 12:05:00', '2022-07-29 15:05:00', '2022-08-05 12:08:00', '2022-08-06 21:10:00', '2022-08-05 14:05:00', '2022-08-03 21:12:00', '2022-07-26 14:06:00'),
+(3, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-07-14 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -410,16 +446,21 @@ CREATE TABLE `tender` (
   `method` text NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  `requirement_file` text NOT NULL,
+  `election_file` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tender`
 --
 
-INSERT INTO `tender` (`id`, `code`, `name`, `type`, `budget`, `budget_source`, `year`, `location`, `method`, `start_date`, `end_date`, `status`) VALUES
-(1, 'test tender', 'test tender', 'Barang/Pekerjaan', 1000000, 'test', 2022, 'lokasi', 'Tender', '2022-07-06', '2022-07-29', 'Tayang'),
-(2, 'test tender 2', 'test tender 2', 'Barang/Pekerjaan', 1000000000, 'test dana', 2020, 'test lokasi', 'Tender', '2022-07-08', '2022-07-08', 'Tayang');
+INSERT INTO `tender` (`id`, `code`, `name`, `type`, `budget`, `budget_source`, `year`, `location`, `method`, `start_date`, `end_date`, `status`, `requirement_file`, `election_file`) VALUES
+(1, '45632187', 'Pembangunan Gedung Kantor Cabang BPD', 'Barang/Pekerjaan', 1000000, 'Dana Belanja', 2022, 'Kab. Buton Utara', 'Tender', '2022-07-25', '2022-07-29', 'Tayang', '', ''),
+(2, '34587621', 'Pemeliharaan Gedung ATM', 'Konstruksi/Jasa', 1000000000, 'Dana Belanja', 2022, 'Kab. Konawe', 'Tender', '2022-07-04', '2022-07-08', 'Tayang', '', ''),
+(4, '12345678', 'Pengadaan Komputer Server', 'Barang/Pekerjaan', 350000000, 'Dana Belanja', 2022, 'Kota Kendari', 'Tender', '2022-07-18', '2022-07-22', 'Tayang', '', ''),
+(5, '89296145', 'Mobil', 'Barang/Pekerjaan', 100000000, 'umum', 2022, 'kota', 'Tender', '2022-07-12', '2022-07-29', 'Tayang', 'Persyaratan_1657762823.pdf', 'TENDER_1657763315.pdf'),
+(6, '12345678', 'Pengadaan Aqua Gelas', 'Barang/Pekerjaan', 8000000, 'Bank', 2022, 'Kendari', 'Tender', '2022-07-13', '2022-07-29', 'Rencana', '', '');
 
 -- --------------------------------------------------------
 
@@ -431,16 +472,28 @@ CREATE TABLE `tender_penyedia` (
   `id` int(11) NOT NULL,
   `tender_id` int(11) NOT NULL,
   `penyedia_id` int(11) NOT NULL,
-  `effering_file` text NOT NULL
+  `effering_file` text NOT NULL,
+  `administration` tinyint(1) NOT NULL,
+  `technical` tinyint(1) NOT NULL,
+  `budget` tinyint(1) NOT NULL,
+  `position` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tender_penyedia`
 --
 
-INSERT INTO `tender_penyedia` (`id`, `tender_id`, `penyedia_id`, `effering_file`) VALUES
-(6, 1, 23, ''),
-(7, 2, 23, 'Penawaran_1657557265.pdf');
+INSERT INTO `tender_penyedia` (`id`, `tender_id`, `penyedia_id`, `effering_file`, `administration`, `technical`, `budget`, `position`) VALUES
+(6, 1, 23, '', 0, 0, 0, 0),
+(7, 2, 23, 'Penawaran_1657557265.pdf', 0, 0, 0, 0),
+(8, 1, 15, '', 0, 0, 0, 0),
+(9, 4, 13, '', 0, 0, 0, 0),
+(10, 4, 23, '', 1, 0, 0, 0),
+(11, 5, 23, 'Penawaran_1657632426.pdf', 1, 0, 0, 5),
+(12, 5, 29, '', 0, 0, 0, 0),
+(13, 6, 31, 'Penawaran_1657696254.pdf', 0, 0, 0, 0),
+(16, 6, 32, 'Penawaran_1657771551.pdf', 0, 0, 0, 0),
+(17, 5, 32, 'Penawaran_1657772841.pdf', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -510,15 +563,16 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `phone`, `image`, `address`, `nrrp`, `job_position`, `sk_number`, `due_date`, `cert_no`, `cert_date`, `status`) VALUES
 (1, '127.0.0.1', 'admin@fixl.com', '$2y$12$ydMl5gvUnv.r3KM2wHV5jeCsHrkbyRhFJRSiZRwRjsIE/27obAqcO', 'admin@fixl.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1657541098, 1, 'Admin', 'istrator', '081342989185', 'USER_1_1656405871.jpg', 'admin', '', '', '', NULL, '', NULL, ''),
-(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1657269987, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8', '', '', '', NULL, '', NULL, ''),
-(14, '127.0.0.1', 'auditor@gmail.com', '$2y$10$O9/YYtvknWWZ.vYEAZa/M.RsnTR1LMu10ntsbRbedd29wga081CRy', 'auditor@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1632804971, 1656407632, 1, 'Auditor', 'Auditor', '1234', 'default.jpg', 'Alamat', '', '', '', NULL, '', NULL, ''),
-(15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$fEZdcDRTVJ57Zm0L7wlDheTqq3sZR48MeT1qWDXPBCh6Fj7MecLi.', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1657377023, 1, 'pjp', 'pjp', '1923847983', 'default.jpg', 'pjp', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
-(16, '127.0.0.1', 'pa@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657179287, 1, 'pa', 'pa', '1023897', 'default.jpg', 'alamat', 'nrrp', 'jabatan', 'alskdhf', '2022-07-06', 'asdfilkj', '2022-07-06', '1'),
-(18, '127.0.0.1', 'pa2@gmail.com', '$2y$10$PWtzu1GsItjcSmvU3zRESOGSjSg5bR/MiMEiJj7jGXKxwsKVjAeIy', 'pa2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657270124, 1, 'pa2', 'pa2', '1023897', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '0000-00-00', '1'),
-(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657539988, 1, 'pt', 'pt', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', '1'),
-(20, '127.0.0.1', 'pt2@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt2', 'pt2', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
-(21, '127.0.0.1', 'pt3@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt3@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'pt3', 'pt3', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
-(23, '127.0.0.1', 'penyedia@gmail.com', '$2y$10$vOyp6wdUdPNbSHfLfV2AzO7EmN3l11d42zq5MVd6c.KoXtXpj/a3S', 'penyedia@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657431943, 1657554396, 1, 'penyedia', 'penyedia', '143554523', 'default.jpg', 'almat', '', '', '', NULL, '', NULL, '');
+(13, '::1', 'uadmin@gmail.com', '$2y$10$78SZyvKRKMU7nPCew9w4nOpEUmJ1SeTV4L4ZG2NXXSfbEaswqoepq', 'uadmin@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1568678256, 1657790218, 1, 'admin', 'PPE', '00', 'USER_13_1568678463.jpg', 'jln mutiara no 8', '', '', '', NULL, '', NULL, ''),
+(15, '127.0.0.1', 'pjp@gmail.com', '$2y$10$E80s6WQogVzBF2ZTAL9k3.MiwoqUet7l1u43St9/sdhkEUBrvqvji', 'pjp@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1656407833, 1657790887, 1, 'Penanggungjawab Pengadaan', 'PJP', '1923847983', 'default.jpg', 'pjp', '', '', '', '0000-00-00', '', '2022-07-07', 'Aktif'),
+(16, '127.0.0.1', 'pa@gmail.com', '$2y$10$5GEKL2bU1fhMNqnvI7l.s.uPXXiYwhG0TZ1E55QvIYPQzxiC2dpgy', 'pa@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114148, 1657790874, 1, 'Direktur Utama', 'PA', '1023897', 'default.jpg', 'alamat', 'nrrp', 'jabatan', 'alskdhf', '2022-07-06', 'asdfilkj', '2022-07-06', 'Aktif'),
+(19, '127.0.0.1', 'pt@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657790911, 1, 'Panitia Tender', 'PT - 01', '-91847', 'default.jpg', 'alamat', '', '', '', '0000-00-00', '', '2022-07-07', 'Aktif'),
+(20, '127.0.0.1', 'pt2@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, 1657790297, 1, 'Panitia Tender', 'PT - 02', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
+(21, '127.0.0.1', 'pt3@gmail.com', '$2y$10$CXjHKVY6fPyEnZQlf3kU2.xM.GeLXGjbDbiwvump/oq.7AsZBZfGC', 'pt3@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657114417, NULL, 1, 'Panitia Tender', 'PT - 03', '-91847', 'default.jpg', 'alamat', 'nrrp', 'alksdfhj', 'alksdhlf', '2022-07-06', 'asdfasdf', '2022-07-06', 'Aktif'),
+(23, '127.0.0.1', 'penyedia@gmail.com', '$2y$10$vOyp6wdUdPNbSHfLfV2AzO7EmN3l11d42zq5MVd6c.KoXtXpj/a3S', 'penyedia@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657431943, 1657790933, 1, 'Penyedia', 'Barang/Jasa', '143554523', 'default.jpg', 'almat', '', '', '', '0000-00-00', '', '0000-00-00', 'Aktif'),
+(30, '180.251.149.200', 'pjp6@gmail.com', '$2y$10$u1yb264AGuzljlPrlG7Pd.E2Y8gyk2LfHt3mYzS3.e6tVhhEGsXfS', 'pjp6@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657693298, NULL, 1, 'PJP', 'pjp', '3487374', 'default.jpg', 'Jl. Kompleks Perkantoran Bumi Praja Anduonohu Gedung III Lantai 3', '23445', 'Kepala', '123456', '2022-07-21', '56789', '2022-07-29', 'Aktif'),
+(31, '180.251.149.200', 'akukamu@gmail.com', '$2y$10$wCpY6WGoIGuVDUmisCCxK.ihK/YQiG4ypXx7KaEdiCFNGi3vLmVvS', 'akukamu@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657695982, 1657696340, 1, 'Aku', 'Kamu', '08229122233', 'default.jpg', 'Jl jl', '', '', '', '0000-00-00', '', '0000-00-00', 'Aktif'),
+(32, '127.0.0.1', 'penyedia2@gmail.com', '$2y$10$4ZIszXxjViT3jr01egdU8O.DQxl2911WhFnK4d56Ghf4ysu1fbrOm', 'penyedia2@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1657770857, 1657788751, 1, 'Nama Depan', 'Nama Belakang', '0123740987', 'default.jpg', 'l;asdjf', '', '', '', NULL, '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -539,14 +593,15 @@ CREATE TABLE `users_groups` (
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
 (29, 13, 2),
-(36, 14, 4),
-(47, 15, 6),
-(40, 16, 5),
-(45, 18, 5),
-(46, 19, 7),
-(48, 20, 7),
-(49, 21, 7),
-(51, 23, 9);
+(83, 15, 6),
+(84, 16, 5),
+(57, 19, 7),
+(58, 20, 7),
+(59, 21, 7),
+(60, 23, 9),
+(79, 30, 6),
+(82, 31, 9),
+(85, 32, 9);
 
 --
 -- Indexes for dumped tables
@@ -556,6 +611,12 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 -- Indexes for table `acta`
 --
 ALTER TABLE `acta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -683,10 +744,15 @@ ALTER TABLE `users_groups`
 ALTER TABLE `acta`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `company_permission`
 --
@@ -696,7 +762,7 @@ ALTER TABLE `company_permission`
 -- AUTO_INCREMENT for table `draft_tender`
 --
 ALTER TABLE `draft_tender`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `experience`
 --
@@ -716,7 +782,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `menus`
 --
@@ -731,17 +797,17 @@ ALTER TABLE `ownership`
 -- AUTO_INCREMENT for table `paket`
 --
 ALTER TABLE `paket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `pokmil`
 --
 ALTER TABLE `pokmil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tax`
 --
@@ -751,12 +817,12 @@ ALTER TABLE `tax`
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `tender_penyedia`
 --
 ALTER TABLE `tender_penyedia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `tool`
 --
@@ -766,12 +832,12 @@ ALTER TABLE `tool`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 --
 -- Constraints for dumped tables
 --

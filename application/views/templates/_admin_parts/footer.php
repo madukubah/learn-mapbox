@@ -1,7 +1,7 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2019 <?= APP_AUTHOR ?>.</strong>
+    <strong>Copyright &copy;2022 <?= APP_AUTHOR ?>.</strong>
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.0-rc.1
+      <b>Version</b> 1.0
     </div>
   </footer>
 

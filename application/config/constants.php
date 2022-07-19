@@ -87,7 +87,7 @@ defined('EXIT__AUTO_MAX')      or define('EXIT__AUTO_MAX', 125); // highest auto
 
 // custom
 define('APP_NAME', 'Tender Online');
-define('APP_AUTHOR', 'FIXL Labs');
+define('APP_AUTHOR', 'Bank Sultra');
 define('APP_DESC', 'FIXL base core for creating Information System base on Codeigniter');
 define('FAVICON_IMAGE', 'assets/logo/favicon.ico');
 define('ICON_IMAGE', 'assets/logo/coreigniter.png');

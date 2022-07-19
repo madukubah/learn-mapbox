@@ -43,7 +43,7 @@ class Users extends Uadmin_Controller
 
 		$link_add = 
 		array(
-			"name" => "Tambah",
+			"name" => "Tambah Pengguna",
 			"type" => "link",
 			"url" => site_url( $this->current_page."add/"),
 			"button_color" => "primary",	
@@ -55,8 +55,8 @@ class Users extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "User Management";
-		$this->data["header"] = "User Management";
+		$this->data["block_header"] = "";
+		$this->data["header"] = "Daftar Semua Pengguna";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
 	}
@@ -116,8 +116,8 @@ class Users extends Uadmin_Controller
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Tambah User ";
-			$this->data["header"] = "Tambah User ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Tambah Pengguna";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->ion_auth->get_form_data();
@@ -194,8 +194,8 @@ class Users extends Uadmin_Controller
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit User ";
-			$this->data["header"] = "Edit User ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Edit Pengguna";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->ion_auth->get_form_data( $user_id );
@@ -229,9 +229,9 @@ class Users extends Uadmin_Controller
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail User ";
-		$this->data["header"] = "Detail User ";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		$this->data["block_header"] = "";
+		$this->data["header"] = "Detail Pengguna ";
+		$this->data["sub_header"] = '';
 
 		$this->render( "templates/contents/plain_content" );
 	}

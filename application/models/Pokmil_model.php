@@ -27,7 +27,7 @@ class Pokmil_model extends MY_Model
     
       if( isset($id) )
       {
-        $this->set_message("berhasil");
+        $this->set_message("pokmil baru berhasil ditambah");
         return $id;
       }
       $this->set_error("gagal");
@@ -57,7 +57,7 @@ class Pokmil_model extends MY_Model
 
     $this->db->trans_commit();
 
-    $this->set_message("berhasil");
+    $this->set_message("Pokmil berhasil diupdate");
     return TRUE;
   }
   /**
@@ -90,7 +90,7 @@ class Pokmil_model extends MY_Model
 
     $this->db->trans_commit();
 
-    $this->set_message("berhasil");//('pokmil_delete_successful');
+    $this->set_message("Pokmil berhasil dihapus");//('pokmil_delete_successful');
     return TRUE;
   }
 

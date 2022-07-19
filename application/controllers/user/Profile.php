@@ -29,8 +29,8 @@ class Profile extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Data Akun ";
-		$this->data["header"] = "Data Akun ";
+		$this->data["block_header"] = "";
+		$this->data["header"] = "Profil Akun";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "user/profile/content" );
 	}
@@ -111,23 +111,23 @@ class Profile extends User_Controller {
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit Akun ";
-			$this->data["header"] = "Edit Akun ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Edit Profil";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->ion_auth->get_form_data( $user_id );
 			$form_password[ 'form_data' ] = array(
 				"old_password" => array(
 					'type' => 'password',
-					'label' => "Password lama",
+					'label' => "Password Lama",
 				),
 				"password" => array(
 				  'type' => 'password',
-				  'label' => "Password",
+				  'label' => "Password Baru",
 				),
 				"password_confirm" => array(
 				  'type' => 'password',
-				  'label' => "Konfirmasi Password",
+				  'label' => "Konfirmasi Password Baru",
 				),
 			);
 			$form_data[ 'form_data' ] = array_merge( $form_data[ 'form_data' ] , $form_password[ 'form_data' ] );

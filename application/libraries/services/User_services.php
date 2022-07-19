@@ -63,12 +63,11 @@ class User_services
   {
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
-			'username' => 'username',
-			'group_name' => 'Group',
+			'username' => 'Username',
+			'group_name' => 'Akses',
 			'user_fullname' => 'Nama Lengkap',
 			'phone' => 'No Telepon',
-			'address' => 'Alamat',
-			'email' => 'Email',
+			'email' => 'E-mail',
 		  );
 		  $table["number"] = $start_number ;
 		  $table[ "action" ] = array(
@@ -83,7 +82,7 @@ class User_services
 			  "name" => "Edit",
 			  "type" => "link",
 			  "url" => site_url($_page."edit/"),
-			  "button_color" => "primary",
+			  "button_color" => "warning",
 			  "param" => "id",
 			),
 			array(
@@ -171,7 +170,7 @@ class User_services
 			  'value' => $this->form_validation->set_value('email', $this->email),			  
 			),
 			"phone" => array(
-			  'type' => 'number',
+			  'type' => 'text',
 			  'label' => "Nomor Telepon",
 			  'value' => $this->form_validation->set_value('phone', $this->phone),			  
 			),
@@ -182,7 +181,7 @@ class User_services
 			),
 			"nrrp" => array(
 				'type' => 'text',
-				'label' => "NRRP",
+				'label' => "NRP",
 				'value' => $this->form_validation->set_value('nrrp', $this->nrrp),			  
 			),
 			"job_position" => array(
@@ -197,7 +196,7 @@ class User_services
 			),
 			"due_date" => array(
 				'type' => 'date',
-				'label' => "Masa Berlaku",
+				'label' => "Tanggal SK Pengangkatan",
 				'value' => $this->form_validation->set_value('due_date', $this->due_date),			  
 			),
 			"cert_no" => array(
@@ -207,7 +206,7 @@ class User_services
 			),
 			"cert_date" => array(
 				'type' => 'date',
-				'label' => "Tanggal Sertifikat",
+				'label' => "Tanggal Sertifikat Pengadaan Barang/Jasa",
 				'value' => $this->form_validation->set_value('cert_date', $this->cert_date),			  
 			),
 			"status" => array(
@@ -222,7 +221,7 @@ class User_services
 			),
 			"group_id" => array(
 				'type' => 'select',
-				'label' => "User Group",
+				'label' => "Hak Akses",
 				'options' => $group_select,
 				'selected' => $this->group_id,
 			),

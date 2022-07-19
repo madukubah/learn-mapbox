@@ -69,7 +69,7 @@ class Pokmil_services
 			"name" => "Edit",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
-			"button_color" => "primary",
+			"button_color" => "warning",
 			"param" => "id",
 		),
 		array(
@@ -141,43 +141,43 @@ class Pokmil_services
 			),
 			"sk_no" => array(
 				'type' => 'text',
-				'label' => "No SK Pokmil",
+				'label' => "Nomor SK Pokmil",
 				'value' => $this->form_validation->set_value('sk_no', $this->sk_no),			  
+			),
+			"date" => array(
+				'type' => 'date',
+				'label' => "Tanggal SK Pokmil",
+				'value' => $this->form_validation->set_value('date', $this->date),
 			),
 			"lead_id" => array(
 				'type' => 'select',
-				'label' => "Ketua",
+				'label' => "Anggota 1",
 				'options' => $user_select,
 				'selected' => $this->lead_id,
 			),
 			"member_1_id" => array(
 				'type' => 'select',
-				'label' => "Anggota 1",
+				'label' => "Anggota 2",
 				'options' => $user_select,
 				'selected' => $this->member_1_id,
 			),
 			"member_2_id" => array(
 				'type' => 'select',
-				'label' => "Anggota 2",
+				'label' => "Anggota 3",
 				'options' => $user_select,
 				'selected' => $this->member_2_id,
 			),
 			"member_3_id" => array(
 				'type' => 'select',
-				'label' => "Anggota 3",
+				'label' => "Anggota 4",
 				'options' => $user_select,
 				'selected' => $this->member_3_id,
 			),
 			"member_4_id" => array(
 				'type' => 'select',
-				'label' => "Anggota 4",
+				'label' => "Anggota 5",
 				'options' => $user_select,
 				'selected' => $this->member_4_id,
-			),
-			"date" => array(
-				'type' => 'date',
-				'label' => "Tanggal",
-				'value' => $this->form_validation->set_value('date', $this->date),
 			),
 			// "status" => array(
 			// 	'type' => 'select',

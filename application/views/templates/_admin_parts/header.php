@@ -10,8 +10,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-          <a class="nav-link" href="<?= site_url('auth/logout') ?>">
-              <i class="fas fa-sign-in-alt"></i>
+          <a class="nav-link" href="<?= site_url('auth/logout') ?>">Logout  <i class="fas fa-sign-in-alt"></i>
           </a>
       </li>
     </ul>
