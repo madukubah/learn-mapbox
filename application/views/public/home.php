@@ -50,8 +50,6 @@
               </h5>
             </div>
             <div class="card-body">
-              <b>26 Juni 2022 13:22</b><br>
-              <a href="#">Informasi Maintenance LPSE</a><br>
               <b>10 Juni 2022 13:13</b><br>
               <a href="#">Maintenance Server</a><br>
               <b>9 Juni 2022 11:14</b><br>

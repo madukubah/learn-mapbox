@@ -42,7 +42,7 @@ class Pokmil extends User_Controller {
 
 		$link_add = 
 		array(
-			"name" => "Tambah",
+			"name" => "Tambah Pokmil",
 			"type" => "link",
 			"url" => site_url( $this->current_page."add/"),
 			"button_color" => "primary",	
@@ -54,8 +54,8 @@ class Pokmil extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Kelompok Kerja Pemilihan";
-		$this->data["header"] = "Kelompok Kerja Pemilihan";
+		$this->data["block_header"] = "";
+		$this->data["header"] = "Kelompok Kerja Pemilihan (Pokmil)";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
 	}
@@ -98,7 +98,7 @@ class Pokmil extends User_Controller {
 
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "";
-			$this->data["header"] = "Tambah Kelompok Kerja Pemilihan ";
+			$this->data["header"] = "Tambah Pokmil ";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data();
@@ -120,8 +120,8 @@ class Pokmil extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Kelompok Kerja Pemilihan ";
-		$this->data["header"] = "Detail Kelompok Kerja Pemilihan ";
+		$this->data["block_header"] = "Detail Kelompok Kerja Pemilihan (Pokmil)";
+		$this->data["header"] = "Detail Kelompok Kerja Pemilihan (Pokmil)";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $pokmil_id );
@@ -165,8 +165,8 @@ class Pokmil extends User_Controller {
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit Paket ";
-			$this->data["header"] = "Edit Paket ";
+			$this->data["block_header"] = "";
+			$this->data["header"] = "Edit Kelompok Kerja Pemilihan (Pokmil)";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data($pokmil_id);
