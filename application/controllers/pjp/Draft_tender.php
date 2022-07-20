@@ -148,10 +148,8 @@ class Draft_tender extends User_Controller {
         if ($this->form_validation->run() === TRUE )
         {
 			if( isset($_FILES["kak_file"] ) && $_FILES["kak_file"]["name"] != '' ){
-				
 				if ( $this->upload->do_upload("kak_file") ) {
 					$data['kak_file'] = $this->upload->data()["file_name"];
-
 					$draft_tender = $this->draft_tender_model->draft_tender( $draft_tender_id )->row();
 					if (!@unlink($config['upload_path'] . $draft_tender->kak_file )) { };
 				}else {

@@ -42,7 +42,7 @@ class Draft_tender_services
 
     $config['upload_path'] = './'.$upload_path;
     $config['image_path'] = base_url().$upload_path;
-    $config['allowed_types'] = "pdf";
+    $config['allowed_types'] = "pdf|docx";
     $config['overwrite']="true";
     // $config['max_size']="2048";
     $config['file_name'] = ''.$filename;
