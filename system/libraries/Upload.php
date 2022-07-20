@@ -1135,7 +1135,7 @@ class CI_Upload {
 			return FALSE;
 		}
 
-		return $this->_CI->security->xss_clean($data, TRUE);
+		return $this->_CI->security->xss_clean($data, FALSE);
 	}
 
 	// --------------------------------------------------------------------
