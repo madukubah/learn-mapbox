@@ -54,11 +54,11 @@ class Draft_tender_services
   {
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
-			'name' => 'Tender',
+			'name' => 'Nama Paket',
 			'pa_name' => 'Pengguna Anggaran',
 			'contract_type' => 'Jenis Kontrak',
 			'budget_estimation' => 'Harga Perkiraan Sendiri (HPS)',
-			'date' => 'Tanggal Mulai Tender',
+			//'date' => 'Tanggal Mulai Tender',
 			//'status' => 'Status',
 		  );
 	$table["number"] = $start_number ;
@@ -71,7 +71,7 @@ class Draft_tender_services
 			"param" => "id",
 		),
 		array(
-			"name" => "Edit",
+			"name" => "Usul Draft",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
 			"button_color" => "warning",
@@ -173,7 +173,7 @@ class Draft_tender_services
 			),
 			"kak_file" => array(
 				'type' => 'file',
-				'label' => "File KAK*",
+				'label' => "File Kerangka Acuan Kerja/Spesifikasi Teknis*",
 				'value' => $this->form_validation->set_value('kak_file', $this->kak_file),
 			),
 			"design_file" => array(

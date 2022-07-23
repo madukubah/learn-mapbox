@@ -122,7 +122,7 @@ class Pokmil_services
 
 		$users = $this->ion_auth->users_limit( 1000, 0, 'pt' )->result();
 		$user_select = array(
-			'' => 'Pilih' 
+			'0' => 'Pilih' 
 		);
 		foreach( $users as $user )
 		{

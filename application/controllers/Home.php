@@ -56,8 +56,8 @@ class Home extends Public_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Rencana Tender";
-		$this->data["header"] = "Tender";
+		$this->data["block_header"] = "";
+		$this->data["header"] = "Paket Tender Terumumkan";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render("public/home");
 	}

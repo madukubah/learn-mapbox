@@ -146,8 +146,8 @@ class Tender extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Tender ";
-		$this->data["header"] = "Tender ";
+		$this->data["block_header"] = " ";
+		$this->data["header"] = "Detail Tender Terumumkan ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $tender_id );

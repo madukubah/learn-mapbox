@@ -30,8 +30,8 @@ class Tender extends Public_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Tender ";
-		$this->data["header"] = "Detail Tender ";
+		$this->data["block_header"] = " ";
+		$this->data["header"] = "Informasi Paket ";
 		$this->data["sub_header"] = 'Klik Tombol Aksi Untuk Ikut Tender';
 
 		$form_data = $this->services->get_form_data( $tender_id );

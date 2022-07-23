@@ -47,9 +47,9 @@ class Paket_services
 	// sesuaikan nama tabel header yang akan d tampilkan dengan nama atribut dari tabel yang ada dalam database
     $table["header"] = array(
 			'name' => 'Nama Paket',
-			'pa_full_name' => 'PA',
+			'pa_full_name' => 'Pengguna Anggaran',
 			'pokmil_name' => 'Pokmil',
-			'date' => 'Tanggal',
+			'date' => 'Tanggal Buat Paket',
 		  );
 	$table["number"] = $start_number ;
 	$table[ "action" ] = array(
@@ -137,7 +137,7 @@ class Paket_services
 			),
 			"name" => array(
 			  'type' => 'text',
-			  'label' => "Nama Tender",
+			  'label' => "Nama Paket",
 			  'readonly' => true,
 			  'value' => $this->form_validation->set_value('name', $this->name),
 			),
@@ -149,7 +149,7 @@ class Paket_services
 			),
 			"date" => array(
 				'type' => 'date',
-				'label' => "Tanggal",
+				'label' => "Tanggal Buat Paket",
 				'value' => $this->form_validation->set_value('date', $this->date),
 			),
 			"status" => array(

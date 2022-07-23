@@ -36,7 +36,7 @@
           </div>
           <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">Tender</a>
+              <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">Informasi</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Penyedia</a>
@@ -45,7 +45,7 @@
               <a class="nav-link" id="custom-tabs-four-schedule-tab" data-toggle="pill" href="#custom-tabs-four-schedule" role="tab" aria-controls="custom-tabs-three-schedule" aria-selected="false">Jadwal</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="custom-tabs-four-comment-tab" data-toggle="pill" href="#custom-tabs-four-comment" role="tab" aria-controls="custom-tabs-three-comment" aria-selected="false">Pertanyaan</a>
+              <a class="nav-link" id="custom-tabs-four-comment-tab" data-toggle="pill" href="#custom-tabs-four-comment" role="tab" aria-controls="custom-tabs-three-comment" aria-selected="false">Penjelasan</a>
             </li>
           </ul>
         </div>
@@ -55,9 +55,9 @@
               <?php echo (isset($contents)) ? $contents : '';  ?>
               <?php
 
-                echo '<label for="requirement_file" class="control-label">File Persyaratan</label><br>';
+                echo '<label for="requirement_file" class="control-label">Upload Syarat Kualifikasi :</label><br>';
                 if( $tender->requirement_file )
-                  echo '<a href="'.base_url("uploads/tender/").$tender->requirement_file.'">  File Persyaratan </a>';
+                  echo '<a href="'.base_url("uploads/tender/").$tender->requirement_file.'">  File Syarat Kualifikasi </a>';
                 else
                   echo 'None';
                 echo form_open_multipart(site_url('pt/tender/upload_file/'.$tender->id));
@@ -73,7 +73,7 @@
                     'name' => 'requirement_file',
                     'id' => 'requirement_file',
                     'type' => 'file',
-                    'placeholder' => 'File Persyaratan' ,
+                    'placeholder' => 'File Syarat Kualifikasi' ,
                     
                 );
                 echo form_upload( $form );
@@ -87,9 +87,9 @@
 
               <?php
 
-              echo '<label for="election_file" class="control-label">Dokumen Pemilihan</label><br>';
+              echo '<label for="election_file" class="control-label">Upload Dokumen Pemilihan :</label><br>';
               if( $tender->election_file )
-                echo '<a href="'.base_url("uploads/tender/").$tender->election_file.'">  Dokumen Pemilihan </a>';
+                echo '<a href="'.base_url("uploads/tender/").$tender->election_file.'">  File Dokumen Pemilihan </a>';
               else
                 echo 'None';
               echo form_open_multipart(site_url('pt/tender/upload_file/'.$tender->id));
@@ -105,7 +105,7 @@
                   'name' => 'election_file',
                   'id' => 'election_file',
                   'type' => 'file',
-                  'placeholder' => 'Dokumen Pemilihan' ,
+                  'placeholder' => 'File Dokumen Pemilihan' ,
                   
               );
               echo form_upload( $form );
@@ -144,7 +144,7 @@
                   </div>
                   <div class="col-2">
                     <button class="btn btn-bold btn-block btn-success btn-sm " style="margin-left: 5px;" type="submit">
-                      Kirin
+                      Kirim
                     </button>
                   </div>
                 </div>

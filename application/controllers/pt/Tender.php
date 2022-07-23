@@ -53,7 +53,7 @@ class Tender extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Tender";
+		$this->data["block_header"] = "Tender ";
 		$this->data["header"] = "Tender";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
@@ -71,8 +71,8 @@ class Tender extends User_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Tender ";
-		$this->data["header"] = "Tender ";
+		$this->data["block_header"] = " ";
+		$this->data["header"] = "Detail Paket Tender Terumumkan ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $tender_id );
@@ -136,7 +136,36 @@ class Tender extends User_Controller {
 		$this->data[ "comments" ] =  $comments;
 		$this->render( "pt/tender/detail/content" );
 	}
+    
+    
+	public function edit( $tender_id = null )
+	{
+		if ($tender_id == NULL) redirect(site_url($this->current_page));
+		$this->form_validation->set_rules( $this->services->validation_config() );
+        $paket_id = $this->input->post( 'paket_id' );
+        if ($this->form_validation->run() === TRUE )
+        {
+			$data['status'] = $this->input->post( 'status' );
 
+			$data_param["id"] = $tender_id;
+
+			if( $this->tender_model->update( $data, $data_param ) ){
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_model->messages() ) );
+			}else{
+				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_model->errors() ) );
+			}
+			
+		}
+        else
+        {
+            $this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
+            if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
+
+            $alert = $this->session->flashdata('alert');
+        }
+        redirect( site_url('pt/paket/detail/'.$paket_id));
+	}
+	
 	public function schedule( $tender_id )
 	{
 		if( $this->input->post( 'delete' ) !== NULL ){

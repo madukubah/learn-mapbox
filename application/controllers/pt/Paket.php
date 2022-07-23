@@ -103,14 +103,14 @@ class Paket extends User_Controller {
 		$tender = $this->tender_model->tender( $draft_tender->tender_id )->row();
 
 		$publish_tender = array(
-			"name" => "Terbitkan Tender",
+			"name" => "Umumkan Tender",
 			"modal_id" => "create_draft_",
 			"button_color" => "success",
 			"url" => site_url( "pt/tender/edit/".$draft_tender->tender_id ),
 			"form_data" => array(
 				"paket_id" => array(
 					'type' => 'hidden',
-					'label' => "tender_id",
+					'label' => "paket_id",
 					'value' => $paket->id,
 				),
 				"name" => array(
