@@ -31,42 +31,49 @@ class Company extends User_Controller {
 			->company()
 			->row();
 		if( $company )
+		{
+
 			redirect(site_url( $this->current_page.'detail/'.$company->id ));
+		}
+		else
+		{
+			redirect(site_url( 'penyedia/tender'));
+		}
 
-		// 
-		$page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
-		//pagination parameter
-		$pagination['base_url'] = site_url( $this->current_page ) .'/index';
-		$pagination['total_records'] = $this->company_model->record_count() ;
-		$pagination['limit_per_page'] = 10;
-		$pagination['start_record'] = $page*$pagination['limit_per_page'];
-		$pagination['uri_segment'] = 4;
-		//set pagination
-		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
+		// // 
+		// $page = ($this->uri->segment(4)) ? ($this->uri->segment(4) - 1) : 0;
+		// //pagination parameter
+		// $pagination['base_url'] = site_url( $this->current_page ) .'/index';
+		// $pagination['total_records'] = $this->company_model->record_count() ;
+		// $pagination['limit_per_page'] = 10;
+		// $pagination['start_record'] = $page*$pagination['limit_per_page'];
+		// $pagination['uri_segment'] = 4;
+		// //set pagination
+		// if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
-		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->company_model->companys( $pagination['start_record'], $pagination['limit_per_page'] )->result();
-		$table = $this->load->view('templates/tables/plain_table', $table, true);
-		$this->data[ "contents" ] = $table;
+		// $table = $this->services->get_table_config( $this->current_page );
+		// $table[ "rows" ] = $this->company_model->companys( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		// $table = $this->load->view('templates/tables/plain_table', $table, true);
+		// $this->data[ "contents" ] = $table;
 
-		$link_add = 
-		array(
-			"name" => "Tambah",
-			"type" => "link",
-			"url" => site_url( $this->current_page."add/"),
-			"button_color" => "primary",	
-			"data" => NULL,
-		);
-		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE ); ;
+		// $link_add = 
+		// array(
+		// 	"name" => "Tambah",
+		// 	"type" => "link",
+		// 	"url" => site_url( $this->current_page."add/"),
+		// 	"button_color" => "primary",	
+		// 	"data" => NULL,
+		// );
+		// $this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_add, TRUE ); ;
 		
-		$alert = $this->session->flashdata('alert');
-		$this->data["key"] = $this->input->get('key', FALSE);
-		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
-		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Kelompok Kerja Pemilihan";
-		$this->data["header"] = "Kelompok Kerja Pemilihan";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-		$this->render( "templates/contents/plain_content" );
+		// $alert = $this->session->flashdata('alert');
+		// $this->data["key"] = $this->input->get('key', FALSE);
+		// $this->data["alert"] = (isset($alert)) ? $alert : NULL ;
+		// $this->data["current_page"] = $this->current_page;
+		// $this->data["block_header"] = "Kelompok Kerja Pemilihan";
+		// $this->data["header"] = "Kelompok Kerja Pemilihan";
+		// $this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		// $this->render( "templates/contents/plain_content" );
 	}
 
 	public function detail( $company_id = null )
