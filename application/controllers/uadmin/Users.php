@@ -40,6 +40,10 @@ class Users extends Uadmin_Controller
 			unset( $table[ "rows" ][0] );
 			unset( $table[ "rows" ][1] );
 		}
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -134,6 +138,7 @@ class Users extends Uadmin_Controller
 
 	public function edit( $user_id = NULL )
     {
+		$user_id = base64_decode($user_id);
         $tables = $this->config->item('tables', 'ion_auth');
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->form_validation->set_rules( $this->ion_auth->get_validation_config() );
@@ -222,6 +227,7 @@ class Users extends Uadmin_Controller
 
 	public function detail( $user_id = NULL )
 	{
+		$user_id = base64_decode($user_id);
 		if( !($user_id) ) redirect(site_url('uadmin'));  
 
 		$form_data = $this->services->get_form_data_readonly(  $user_id );
@@ -245,7 +251,7 @@ class Users extends Uadmin_Controller
 
 		$group_id 	= $this->input->post('group_id');
 		$id_user 	= $this->input->post('id');
-
+		
 		if( $this->ion_auth->delete_user( $id_user ) ){
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->ion_auth->messages() ) );
 		}else{

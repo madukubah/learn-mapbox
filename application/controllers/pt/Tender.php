@@ -45,6 +45,10 @@ class Tender extends User_Controller {
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -61,6 +65,7 @@ class Tender extends User_Controller {
 
 	public function detail( $tender_id = null )
     {
+		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -108,6 +113,10 @@ class Tender extends User_Controller {
 				"inner")
 			->tender_penyedias()
 			->result();
+		foreach( $tender_penyedia_table[ "rows" ] as $row )
+		{
+			$row->company_id = base64_encode($row->company_id);
+		}
 		$tender_penyedia_table = $this->load->view('pt/tender/detail/plain_table', $tender_penyedia_table, true);
 
 		$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
@@ -140,6 +149,7 @@ class Tender extends User_Controller {
     
 	public function edit( $tender_id = null )
 	{
+		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
         $paket_id = $this->input->post( 'paket_id' );
@@ -168,16 +178,6 @@ class Tender extends User_Controller {
 	
 	public function schedule( $tender_id )
 	{
-		if( $this->input->post( 'delete' ) !== NULL ){
-			$data_param['id'] 	= $this->input->post('id');
-			if( $this->schedule_model->delete( $data_param ) ){
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->schedule_model->messages() ) );
-			}else{
-				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->schedule_model->errors() ) );
-			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
-		}
-
 		$data['tender_id'] = $tender_id;
 		$data['announcement_start_date'] = $this->input->post( 'announcement_start_date' ).' '.$this->input->post( 'announcement_start_time' );
 		$data['announcement_end_date'] = $this->input->post( 'announcement_end_date' ).' '.$this->input->post( 'announcement_end_time' );
@@ -223,7 +223,7 @@ class Tender extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 	}
 
 	public function upload_file( $tender_id = NULL )
@@ -237,7 +237,7 @@ class Tender extends User_Controller {
 
 		$config['upload_path'] = './'.$upload_path;
 		$config['image_path'] = base_url().$upload_path;
-		$config['allowed_types'] = "pdf";
+		$config['allowed_types'] = "pdf|docx";
 		$config['overwrite']="true";
 		$config['max_size']="2048";
 		$config['file_name'] = ''.$filename;
@@ -262,8 +262,8 @@ class Tender extends User_Controller {
 					$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
 				}
 			}
-			redirect( site_url($this->current_page.'detail/'.$tender_id));
 		}
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 	}
 
 	public function tender_penyedia( $tender_id )
@@ -287,7 +287,7 @@ class Tender extends User_Controller {
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 	}
 
 	public function comment( $tender_id )
@@ -301,7 +301,7 @@ class Tender extends User_Controller {
 		
 
 		if( $data['content'] == '' )
-			redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+			redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 
 		if( $this->comment_model->create( $data ) ){
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->comment_model->messages() ) );
@@ -309,6 +309,6 @@ class Tender extends User_Controller {
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->comment_model->errors() ) );
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 	}
 }

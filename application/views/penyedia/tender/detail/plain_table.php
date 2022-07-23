@@ -4,6 +4,7 @@
         <tr>
             <th style="width:50px">No</th>
             <th >Nama</th>
+            <!-- <th >HPS</th> -->
             <th >Penawaran</th>
             <th >Administrasi</th>
             <th >Teknis</th>
@@ -19,6 +20,18 @@
         <tr >
             <td> <?php echo $no ++ ?> </td>
             <td> <?php echo $row->name ?> </td>
+            <!-- <td>
+                 <?php 
+                    $form = array(
+                        'name' => 'tender_id',
+                        'id' => 'tender_id',
+                        'type' => 'number',
+                        'value' => $row->tender_id,
+                        
+                    );
+                    echo form_input( $form );
+                ?> 
+            </td> -->
             <td> 
                 <?php 
                 if($user_id == $row-> penyedia_id )
@@ -45,7 +58,7 @@
                     );
                     echo form_upload( $form );
                     ?>
-                    <button class="btn btn-bold btn-success btn-sm " style="margin-left: 5px;" type="submit">
+                    <button class="btn btn-bold btn-success btn-xs " style="margin-left: 5px;" type="submit">
                       Simpan
                     </button>
                     <?php

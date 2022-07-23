@@ -33,7 +33,7 @@ class Company extends User_Controller {
 		if( $company )
 		{
 
-			redirect(site_url( $this->current_page.'detail/'.$company->id ));
+			redirect(site_url( $this->current_page.'detail/'.base64_encode($company->id) ));
 		}
 		else
 		{
@@ -78,6 +78,7 @@ class Company extends User_Controller {
 
 	public function detail( $company_id = null )
     {
+		$company_id = base64_decode($company_id);
 		if ($company_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->company_model->errors() ? $this->company_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->company_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );

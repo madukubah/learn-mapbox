@@ -37,6 +37,10 @@ class Pokmil extends User_Controller {
 			"users.id = pokmil.lead_id",
 			"inner"
 		)->pokmils( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -112,6 +116,7 @@ class Pokmil extends User_Controller {
 
 	public function detail( $pokmil_id = null )
     {
+		$pokmil_id = base64_decode($pokmil_id);
 		if ($pokmil_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->pokmil_model->errors() ? $this->pokmil_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->pokmil_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -132,6 +137,7 @@ class Pokmil extends User_Controller {
 
 	public function edit( $pokmil_id = null )
 	{
+		$pokmil_id = base64_decode($pokmil_id);
 		if ($pokmil_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 

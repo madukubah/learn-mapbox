@@ -54,6 +54,10 @@ class Tender extends User_Controller {
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -89,7 +93,7 @@ class Tender extends User_Controller {
 		}else{
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
 		}
-		redirect( site_url($this->current_page.'detail/'.$tender_id));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($data['tender_id']) ));
 	}
 
 	public function effering_file( $tender_penyedia_id = NULL )
@@ -103,7 +107,7 @@ class Tender extends User_Controller {
 	
 		$config['upload_path'] = './'.$upload_path;
 		$config['image_path'] = base_url().$upload_path;
-		$config['allowed_types'] = "pdf";
+		$config['allowed_types'] = "pdf|docx";
 		$config['overwrite']="true";
 		$config['max_size']="2048";
 		$config['file_name'] = ''.$filename;
@@ -122,7 +126,7 @@ class Tender extends User_Controller {
 				if (!@unlink($config['upload_path'] . $tender_penyedia->effering_file )) { };
 			}else {
 				$this->session->set_flashdata('alert', $this->alert->set_alert(Alert::DANGER, $this->upload->display_errors()));
-				redirect( site_url($this->current_page.'detail/'.$data['tender_id']));
+				redirect(site_url( $this->current_page.'detail/'.base64_encode($data['tender_id']) ));
 			}
 		}
 
@@ -131,11 +135,12 @@ class Tender extends User_Controller {
 		}else{
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
 		}
-		redirect( site_url($this->current_page.'detail/'.$data['tender_id']));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($data['tender_id']) ));
 	}
 
 	public function detail( $tender_id = null )
     {
+		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -239,7 +244,7 @@ class Tender extends User_Controller {
 		
 
 		if( $data['content'] == '' )
-			redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+			redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 
 		if( $this->comment_model->create( $data ) ){
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->comment_model->messages() ) );
@@ -247,7 +252,7 @@ class Tender extends User_Controller {
 			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->comment_model->errors() ) );
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$tender_id ));
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
 	}
 
 }

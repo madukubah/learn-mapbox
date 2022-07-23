@@ -38,6 +38,10 @@ class Tender extends User_Controller {
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -115,6 +119,7 @@ class Tender extends User_Controller {
 
 	public function detail( $tender_id = null )
     {
+		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -133,6 +138,9 @@ class Tender extends User_Controller {
 		$form_data_draft_tender = $this->draft_tender_services->get_form_data()['form_data'];
 		$form_data_draft_tender['tender_id']['value'] = $tender_id;
 		$form_data_draft_tender['name']['value'] = $this->services->get_form_data( $tender_id )['form_data']['name']['value'];
+		unset( $form_data_draft_tender['kak_file'] );
+		unset( $form_data_draft_tender['design_file'] );
+		unset( $form_data_draft_tender['other_file'] );
 		$create_draft_tender = array(
 			"name" => "Buat Draft",
 			"modal_id" => "create_draft_",
@@ -158,6 +166,7 @@ class Tender extends User_Controller {
 
 	public function edit( $tender_id = null )
 	{
+		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 

@@ -68,14 +68,14 @@ class Draft_tender_services
 			"type" => "link",
 			"url" => site_url($_page."detail/"),
 			"button_color" => "primary",
-			"param" => "id",
+			"param" => "id_enc",
 		),
 		array(
 			"name" => "Usul Draft",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
 			"button_color" => "warning",
-			"param" => "id",
+			"param" => "id_enc",
 		),
 		array(
 			"name" => 'X',

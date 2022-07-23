@@ -51,7 +51,10 @@ class Draft_tender extends User_Controller {
 		for ($i=0; $i < count($table[ "rows" ]) ; $i++) { 
 			$table[ "rows" ][$i]->pa_name = $user_select[ $table[ "rows" ][$i]->pa_id ];
 		}
-
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		unset( $table[ "action" ][2] );
 		unset( $table[ "action" ][1] );
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
@@ -70,6 +73,7 @@ class Draft_tender extends User_Controller {
 
 	public function detail( $draft_tender_id = null )
     {
+		$draft_tender_id = base64_decode($draft_tender_id);
 		if ($draft_tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->draft_tender_model->errors() ? $this->draft_tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->draft_tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -90,7 +94,7 @@ class Draft_tender extends User_Controller {
 		$form_data_paket['draft_tender_id']['value'] = $draft_tender_id;
 		$form_data_paket['pa_id']['value'] = $user_id;
 		$form_data_paket['name']['value'] = $this->services->get_form_data( $draft_tender_id )['form_data']['name']['value'];
-
+		$form_data_paket['status']['type'] = 'hidden';
 		$create_paket = array(
 			"name" => "Buat Paket",
 			"modal_id" => "create_draft_",

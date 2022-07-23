@@ -73,14 +73,14 @@ class Tender_services
 			"type" => "link",
 			"url" => site_url($_page."detail/"),
 			"button_color" => "primary",
-			"param" => "id",
+			"param" => "id_enc",
 		),
 		array(
 			"name" => "Edit",
 			"type" => "link",
 			"url" => site_url($_page."edit/"),
 			"button_color" => "warning",
-			"param" => "id",
+			"param" => "id_enc",
 		),
 		array(
 			"name" => 'X',

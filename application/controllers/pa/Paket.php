@@ -53,6 +53,10 @@ class Paket extends User_Controller {
 			"pokmil.id = paket.pokmil_id",
 			"inner")
 		->pakets( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 
@@ -120,6 +124,7 @@ class Paket extends User_Controller {
 
 	public function detail( $paket_id = null )
     {
+		$paket_id = base64_decode($paket_id);
 		if ($paket_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->paket_model->errors() ? $this->paket_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->paket_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -147,6 +152,7 @@ class Paket extends User_Controller {
 
 	public function edit( $paket_id = null )
 	{
+		$paket_id = base64_decode($paket_id);
 		if ($paket_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 
