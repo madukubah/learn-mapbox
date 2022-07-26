@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Company_services
 {
 	protected $id;
@@ -245,7 +246,7 @@ class Company_services
 						'label' => "Kondisi",
 					),
 					"year" => array(
-						'type' => 'text',
+						'type' => 'number',
 						'label' => "Tahun Pembuatan",
 					),
 					"location" => array(
@@ -749,12 +750,12 @@ class Company_services
 				'value' => $this->form_validation->set_value('postal_code', $this->postal_code),			  
 			),
 			"province" => array(
-				'type' => 'text',
+				'type' => 'select',
 				'label' => "Provinsi",
 				'value' => $this->form_validation->set_value('province', $this->province),			  
 			),
 			"city" => array(
-				'type' => 'text',
+				'type' => 'select',
 				'label' => "Kabupaten/Kota",
 				'value' => $this->form_validation->set_value('city', $this->city),			  
 			),

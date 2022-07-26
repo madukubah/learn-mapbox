@@ -139,6 +139,10 @@ class Users extends Uadmin_Controller
 	public function edit( $user_id = NULL )
     {
 		$user_id = base64_decode($user_id);
+		$user = $this->ion_auth_model->user( $user_id )->row();
+		if( ! $user ) 
+			redirect( site_url($this->current_page)  );
+
         $tables = $this->config->item('tables', 'ion_auth');
         $identity_column = $this->config->item('identity', 'ion_auth');
         $this->form_validation->set_rules( $this->ion_auth->get_validation_config() );
@@ -228,6 +232,10 @@ class Users extends Uadmin_Controller
 	public function detail( $user_id = NULL )
 	{
 		$user_id = base64_decode($user_id);
+
+		if( ! $user ) 
+			redirect( site_url($this->current_page)  );
+			
 		if( !($user_id) ) redirect(site_url('uadmin'));  
 
 		$form_data = $this->services->get_form_data_readonly(  $user_id );

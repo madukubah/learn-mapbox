@@ -120,6 +120,10 @@ class Tender extends User_Controller {
 	public function detail( $tender_id = null )
     {
 		$tender_id = base64_decode($tender_id);
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		if( ! $tender ) 
+			redirect( site_url($this->current_page)  );
+
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -167,6 +171,9 @@ class Tender extends User_Controller {
 	public function edit( $tender_id = null )
 	{
 		$tender_id = base64_decode($tender_id);
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		if( ! $tender ) 
+			redirect( site_url($this->current_page)  );
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 

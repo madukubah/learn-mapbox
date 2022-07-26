@@ -37,7 +37,7 @@
                 if($user_id == $row-> penyedia_id )
                 {   
                     if( $row->effering_file )
-                        echo '<a href="'.base_url("uploads/tender/").$row-> effering_file.'">  File </a>';
+                        echo '<a href="'.base_url("uploads/tender/").$row-> effering_file.'">  '.$row-> effering_file.' </a>';
                     else
                         echo 'None';
                     echo form_open_multipart(site_url('penyedia/tender/effering_file/'.$row->id));

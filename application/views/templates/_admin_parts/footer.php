@@ -61,6 +61,7 @@
 </script>
 
 <script>
+    console.log( "ceiling_budget" );
 
   $(document).ready(function() {
   var t = $('#summernote').summernote(

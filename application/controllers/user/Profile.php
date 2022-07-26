@@ -132,6 +132,7 @@ class Profile extends User_Controller {
 			);
 			$form_data[ 'form_data' ] = array_merge( $form_data[ 'form_data' ] , $form_password[ 'form_data' ] );
 			unset( $form_data[ 'form_data' ]["group_id"] );
+			unset( $form_data[ 'form_data' ]["active"] );
 			$form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
 
 			$this->data[ "user" ] =  $this->ion_auth->user()->row();
