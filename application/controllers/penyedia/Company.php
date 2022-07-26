@@ -112,6 +112,12 @@ class Company extends User_Controller {
 		#############################################################################
 		$company_permission_table = $this->services->get_company_permission_table_config( site_url( $this->current_page."company_permission/".$company_id) );
 		$company_permission_table['rows'] = $this->company_permission_model
+			->select('
+				*,
+				concat(name, " ") as name,
+				concat(cert_no, " ") as cert_no,
+				concat(agency_from, " ") as agency_from
+			')
 			->where('company_id', $company_id)
 			->company_permissions()
 			->result();
@@ -139,6 +145,10 @@ class Company extends User_Controller {
 		#############################################################################
 		$acta_table = $this->services->get_acta_table_config( site_url( $this->current_page."acta/".$company_id) );
 		$acta_table['rows'] = $this->acta_model
+			->select('
+				*,
+				concat(name, " ") as name
+			')
 			->where('company_id', $company_id)
 			->actas()
 			->result();
@@ -166,6 +176,10 @@ class Company extends User_Controller {
 		#############################################################################
 		$ownership_table = $this->services->get_ownership_table_config( site_url( $this->current_page."ownership/".$company_id) );
 		$ownership_table['rows'] = $this->ownership_model
+			->select('
+				*,
+				concat(id_number, " ") as id_number
+			')
 			->where('company_id', $company_id)
 			->ownerships()
 			->result();
@@ -193,6 +207,10 @@ class Company extends User_Controller {
 		#############################################################################
 		$expert_table = $this->services->get_expert_table_config( site_url( $this->current_page."expert/".$company_id) );
 		$expert_table['rows'] = $this->expert_model
+			->select('
+				*,
+				concat(npwp, " ") as npwp
+			')
 			->where('company_id', $company_id)
 			->experts()
 			->result();
@@ -377,7 +395,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->company_permission_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -404,7 +422,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function acta( $company_id )
@@ -416,7 +434,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->acta_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -443,7 +461,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function ownership( $company_id )
@@ -455,7 +473,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->ownership_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -483,7 +501,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function expert( $company_id )
@@ -495,7 +513,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->expert_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -530,7 +548,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function tool( $company_id )
@@ -542,7 +560,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tool_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -573,7 +591,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function experience( $company_id )
@@ -585,7 +603,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->experience_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -615,7 +633,7 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 
 	public function tax( $company_id )
@@ -627,7 +645,7 @@ class Company extends User_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tax_model->errors() ) );
 			}
-			redirect(site_url( $this->current_page.'detail/'.$company_id ));
+			redirect(site_url( $this->current_page));
 		}
 
 		$data['company_id'] = $this->input->post( 'company_id' );
@@ -654,6 +672,6 @@ class Company extends User_Controller {
 			}
 		}
 		
-		redirect(site_url( $this->current_page.'detail/'.$company_id ));
+		redirect(site_url( $this->current_page));
 	}
 }
