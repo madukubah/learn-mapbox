@@ -158,7 +158,7 @@ class Tender_services
 				'selected' => $this->form_validation->set_value('type', $this->type),
 			),
 			"budget" => array(
-			  'type' => 'text',
+			  'type' => 'number',
 			  'label' => "Anggaran (Rp.)*",
 			  'value' => $this->form_validation->set_value('budget', $this->budget),
 			),

@@ -49,7 +49,8 @@
 <!-- <script src="<?= base_url('assets/') ?>dist/js/demo.js"></script> -->
 <!-- bootstrap datepicker -->
 <script src="<?= base_url('assets/') ?>plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-
+<script src="<?= base_url('assets/') ?>plugins/numeric/jquery.numeric.js"></script>
+<script src="https://unpkg.com/imask"></script>
 <script>
   $(function () {
 
@@ -61,17 +62,27 @@
 </script>
 
 <script>
-    console.log( "ceiling_budget" );
+  var numberMask = IMask(
+  document.getElementsByClassName('numeric'),
+  {
+    mask: Number,
+    min: -10000,
+    max: 10000,
+    thousandsSeparator: '.'
+  });
 
   $(document).ready(function() {
-  var t = $('#summernote').summernote(
-  {
-    height: 500,
-    // focus: true
-  });
-  $("#btn").click(function(){
-      $('div.note-editable').height(150);
+    var t = $('#summernote').summernote(
+    {
+      height: 500,
+      // focus: true
     });
+    $("#btn").click(function(){
+        $('div.note-editable').height(150);
+    });
+
+    $(':input[type="number"]').numeric({ decimal : ".",  negative : false, scale: 3 });
+    $(".numeric").numeric({ decimal : ".",  negative : false, scale: 3 });
   });
 </script>
 </body>
