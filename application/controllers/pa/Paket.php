@@ -125,6 +125,10 @@ class Paket extends User_Controller {
 	public function detail( $paket_id = null )
     {
 		$paket_id = base64_decode($paket_id);
+		$paket = $this->paket_model->paket( $paket_id )->row();
+		if( ! $paket ) 
+			redirect( site_url($this->current_page)  );
+			
 		if ($paket_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->paket_model->errors() ? $this->paket_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->paket_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -153,6 +157,9 @@ class Paket extends User_Controller {
 	public function edit( $paket_id = null )
 	{
 		$paket_id = base64_decode($paket_id);
+		$paket = $this->paket_model->paket( $paket_id )->row();
+		if( ! $paket ) 
+			redirect( site_url($this->current_page)  );
 		if ($paket_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 

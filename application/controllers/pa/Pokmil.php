@@ -117,6 +117,10 @@ class Pokmil extends User_Controller {
 	public function detail( $pokmil_id = null )
     {
 		$pokmil_id = base64_decode($pokmil_id);
+		$pokmil = $this->pokmil_model->pokmil( $pokmil_id )->row();
+		if( ! $pokmil ) 
+			redirect( site_url($this->current_page)  );
+
 		if ($pokmil_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->pokmil_model->errors() ? $this->pokmil_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->pokmil_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -138,6 +142,10 @@ class Pokmil extends User_Controller {
 	public function edit( $pokmil_id = null )
 	{
 		$pokmil_id = base64_decode($pokmil_id);
+		$pokmil = $this->pokmil_model->pokmil( $pokmil_id )->row();
+		if( ! $pokmil ) 
+			redirect( site_url($this->current_page)  );
+			
 		if ($pokmil_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 

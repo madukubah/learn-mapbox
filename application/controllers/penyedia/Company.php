@@ -79,6 +79,9 @@ class Company extends User_Controller {
 	public function detail( $company_id = null )
     {
 		$company_id = base64_decode($company_id);
+		$company = $this->company_model->company( $company_id )->row();
+		if( ! $company ) 
+			redirect( site_url($this->parent_page)  );
 		if ($company_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->company_model->errors() ? $this->company_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->company_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -92,6 +95,8 @@ class Company extends User_Controller {
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
 		$form_data = $this->services->get_form_data( $company_id );
+		$form_data['form_data']['province']['type'] = 'text';
+		$form_data['form_data']['city']['type'] = 'text';
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 		$this->data[ "contents" ] =  $form_data;
 		
@@ -331,13 +336,32 @@ class Company extends User_Controller {
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
-			$this->data["block_header"] = "Edit Paket ";
-			$this->data["header"] = "Edit Paket ";
+			$this->data["block_header"] = "Edit Perusahaan ";
+			$this->data["header"] = "Edit Perusahaan ";
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data($company_id);
-            $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
 
+            $form = array(
+                'name' => 'province_1',
+                'id' => 'province_1',
+                'type' => 'text',
+                'class' => 'form-control',  
+                'style' => 'display: none',  
+				'value' => $form_data['form_data']['province']['value'],
+            );
+			$extra_html = form_input( $form );
+            $form = array(
+                'name' => 'city_1',
+                'id' => 'city_1',
+                'type' => 'text',
+                'class' => 'form-control',  
+                'style' => 'display: none',  
+				'value' => $form_data['form_data']['city']['value'],
+            );
+			$extra_html .= form_input( $form );
+            $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
+			$form_data.= $extra_html;
             $this->data[ "contents" ] =  $form_data;
             
 			$this->render( "penyedia/company/edit/content" );

@@ -109,6 +109,10 @@ class Draft_tender extends User_Controller {
 	public function detail( $draft_tender_id = null )
     {
 		$draft_tender_id = base64_decode($draft_tender_id);
+		$draft_tender = $this->draft_tender_model->draft_tender( $draft_tender_id )->row();
+		if( ! $draft_tender ) 
+			redirect( site_url($this->current_page)  );
+
 		if ($draft_tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->draft_tender_model->errors() ? $this->draft_tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->draft_tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -131,6 +135,10 @@ class Draft_tender extends User_Controller {
 	public function edit( $draft_tender_id = null )
 	{
 		$draft_tender_id = base64_decode($draft_tender_id);
+		$draft_tender = $this->draft_tender_model->draft_tender( $draft_tender_id )->row();
+		if( ! $draft_tender ) 
+			redirect( site_url($this->current_page)  );
+			
 		if ($draft_tender_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
 
