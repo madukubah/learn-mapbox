@@ -167,7 +167,7 @@ class Draft_tender_services
 				'selected' => $this->form_validation->set_value('contract_type', $this->contract_type),
 			),
 			"budget_estimation" => array(
-			  'type' => 'text',
+			  'type' => 'number',
 			  'label' => "Harga Perkiraan Sendiri (HPS)*",
 			  'value' => $this->form_validation->set_value('budget_estimation', $this->budget_estimation),
 			),

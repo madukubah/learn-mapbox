@@ -16,7 +16,7 @@
                 <img class="img-circle elevation-2" src="<?php echo $user_image ?>" width="48" height="48" alt="User" />
         </div>
         <div class="info">
-          <a href="<?= site_url('user/profile') ?>" class="d-block"><?php echo ucwords($this->session->userdata('user_profile_name')) ?></a>
+          <a href="<?= base_url() ?>" class="d-block"><?php echo ucwords($this->session->userdata('user_profile_name')) ?></a>
         </div>
       </div>
       

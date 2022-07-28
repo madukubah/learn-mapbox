@@ -69,6 +69,7 @@ class Tender extends User_Controller {
 		$tender = $this->tender_model->tender( $tender_id )->row();
 		if( ! $tender ) 
 			redirect( site_url($this->current_page)  );
+			
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->tender_model->errors() ? $this->tender_model->errors() : $this->session->flashdata('message')));
 		if(  !empty( validation_errors() ) || $this->tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
@@ -91,6 +92,9 @@ class Tender extends User_Controller {
 			->draft_tender()
 			->row();
 
+		if( ! $draft_tender ) 
+			redirect( site_url($this->current_page)  );
+			
 		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $draft_tender->id );
 		unset($form_data_draft_tender['form_data']['name']);
 		unset($form_data_draft_tender['form_data']['status']);
