@@ -19,7 +19,6 @@ class Paket_services
       $this->pokmil_id		  	="";
       $this->date				="";
       $this->status		  		="";
-	  
   }
 
   public function __get($var)

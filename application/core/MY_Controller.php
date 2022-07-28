@@ -7,11 +7,15 @@ class MY_Controller extends CI_Controller {
 
     public function __construct(){
 	   parent::__construct();
-	   $this->load->model(array(
-			'log_model',
+		if ($this->input->post()) {    
+				foreach($this->input->post() as $post)
+				$post = html_escape($post);
+		}
+		$this->load->model(array(
+				'log_model',
 		));
-	   $this->data["menu_list_id"] = $this->router->fetch_class() . '_' . $this->router->fetch_method() ; 
-	   $this->data["user_image"] = ( $this->session->userdata( 'user_image' ) != "" ) ? $this->session->userdata( 'user_image' ) : base_url('assets/img/user.png') ;
+		$this->data["menu_list_id"] = $this->router->fetch_class() . '_' . $this->router->fetch_method() ; 
+	   	$this->data["user_image"] = ( $this->session->userdata( 'user_image' ) != "" ) ? $this->session->userdata( 'user_image' ) : base_url('assets/img/user.png') ;
 
     }
 
@@ -20,7 +24,7 @@ class MY_Controller extends CI_Controller {
 		$data['user_id'] = $user_id;
 		$data['content'] = $this->db->last_query();
 		$this->log_model->create( $data );
-	 }
+	}
 
     protected function render($the_view = NULL, $template = NULL){
 		if($template == 'json' || $this->input->is_ajax_request()){

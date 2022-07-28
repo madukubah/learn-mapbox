@@ -359,6 +359,7 @@ class Company extends User_Controller {
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data($company_id);
+			$form_data['form_data']['npwp']['type'] = 'number';
 
             $form = array(
                 'name' => 'province_1',

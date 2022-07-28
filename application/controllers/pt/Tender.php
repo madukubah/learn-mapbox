@@ -20,6 +20,7 @@ class Tender extends User_Controller {
 			'tender_penyedia_model',
 			'schedule_model',
 			'comment_model',
+			'paket_model'
 		));
 	}	
 
@@ -83,6 +84,16 @@ class Tender extends User_Controller {
 		$this->data["block_header"] = " ";
 		$this->data["header"] = "Detail Paket Tender Terumumkan ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+
+		$link_print_tender = 
+		array(
+			"name" => "Print",
+			"type" => "link",
+			"url" => site_url( "pt/tender/print/".base64_encode($tender_id)),
+			"button_color" => "success",	
+			"data" => NULL,
+		);
+		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_print_tender, TRUE );
 
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
@@ -317,5 +328,100 @@ class Tender extends User_Controller {
 		}
 		
 		redirect(site_url( $this->current_page.'detail/'.base64_encode($tender_id) ));
+	}
+
+	public function print($tender_id = null)
+	{
+		$tender_id = base64_decode($tender_id);
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		if( ! $tender ) 
+			redirect( site_url($this->current_page)  );
+			
+		$this->data['title'] = "";
+		$this->data["header"] = $this->services->get_table_config($this->current_page)['header'];
+		unset($this->data["header"]["_date"]);
+		$this->data["rows"]   = [];
+		$tender = $this->tender_model->tender( $tender_id )->row();
+		$draft_tender = $this->draft_tender_model
+			->where('tender_id', $tender_id)
+			->draft_tender()
+			->row();
+		$tender_penyedias = $this->tender_penyedia_model
+			->select('	tender_penyedia.*, 
+					company.*,
+					company.id as company_id,
+				')
+			->where('tender_id', $tender_id )
+			->join(
+				"users",
+				"users.id = tender_penyedia.penyedia_id",
+				"inner")
+			->join(
+				"company",
+				"company.user_id = users.id",
+				"inner")
+			->order_by('position asc')
+			->tender_penyedias()
+			->result();
+		$tender_penyedias_html = ""	;
+		foreach($tender_penyedias as $tender_penyedia){
+			$tender_penyedias_html .= $tender_penyedia->name." (".$tender_penyedia->position.") <br>";
+		}
+		$paket = $this->paket_model
+			->select('	
+						paket.*, 
+						concat(users.first_name, " ", users.last_name) as pa_full_name,
+						pokmil.*,
+						pokmil.name as pokmil_name
+						')
+			->join(
+				"users",
+				"users.id = paket.pa_id",
+				"inner")
+			->join(
+				"pokmil",
+				"pokmil.id = paket.pokmil_id",
+				"inner")
+			->where('paket.draft_tender_id', $draft_tender->id )
+			->paket()
+			->row();
+		$paket_html = "";
+		$paket_html .= $paket->pokmil_name."<br>";
+		// $paket_html .= "- ".$paket->pokmil_name."<br>";
+		$this->data["form_data"] = array(
+			"Kode Tender" => $tender->code,
+			"Nama Paket"  => $tender->name,
+			"Jenis Pengadaan" => $tender->type,
+			"Anggaran" => "Rp. ".number_format($tender->budget),
+			"HPS" => "Rp. ".number_format($draft_tender->budget_estimation),
+			"Tahun Anggaran" => $tender->year,
+			"Jenis Kontrak" => $draft_tender->contract_type,
+			"Lokasi Pekerjaan" => $tender->location,
+			"Jumlah Peserta" => count($tender_penyedias),
+			"Nama Perusahaan Pemenang" => $tender_penyedias_html,
+			"Kelompok Kerja Pemilihan" => $paket_html
+		);
+
+		$this->load->library('pdf');
+		$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+
+		$pdf->SetTitle("Report");
+
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+
+		$pdf->SetTopMargin(10);
+		$pdf->SetLeftMargin(10);
+		$pdf->SetRightMargin(10);
+		$pdf->SetAutoPageBreak(true);
+		$pdf->SetAuthor('TLS');
+		$pdf->SetDisplayMode('real', 'default');
+		$pdf->AddPage();
+		// $pdf->SetFont('times', NULL, 9);
+
+		$html =  $this->load->view('templates/report/tender', $this->data, true);
+		$pdf->writeHTML($html, true, false, true, false, '');
+		$title = str_replace(" ", "_", $this->data['title']);
+		$pdf->Output($title . ".pdf", 'I');
 	}
 }

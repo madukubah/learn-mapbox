@@ -349,7 +349,7 @@ class Company_services
 						'label' => "Profesi/Keahlian",
 					),
 					"npwp" => array(
-						'type' => 'text',
+						'type' => 'number',
 						'label' => "NPWP",
 					),
 					"sex" => array(
@@ -437,7 +437,7 @@ class Company_services
 						'label' => "Nama",
 					),
 					"id_number" => array(
-						'type' => 'text',
+						'type' => 'number',
 						'label' => "Nomor KTP",
 					),
 					"address" => array(
