@@ -5,11 +5,11 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= site_url() ?>" class="nav-link">Beranda</a>
                 </li>
+                <!--<li class="nav-item d-none d-sm-inline-block">-->
+                <!--    <a href="<?= site_url() ?>" class="nav-link">Tentang</a>-->
+                <!--</li>-->
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?= site_url() ?>" class="nav-link">Tentang</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?= base_url('downloads/User Guide Penyedia.pdf') ?>" class="nav-link">Unduh</a>
+                    <a target="_blank" href="<?= base_url('downloads/User_Guide_Penyedia.pdf') ?>" class="nav-link">Unduh</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="<?= site_url('auth/') ?>login" class="nav-link">Login</a>

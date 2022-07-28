@@ -22,7 +22,7 @@
             <td> 
                 <?php 
                     if( $row->effering_file )
-                        echo '<a href="'.base_url("uploads/tender/").$row->effering_file.'">  File Persyaratan </a>';
+                        echo '<a href="'.base_url("uploads/tender/").$row->effering_file.'">  File Dokumen Penawaran </a>';
                     else
                         echo 'None';
                 ?>

@@ -189,7 +189,7 @@ class Tender extends User_Controller {
 			$data['method'] = $this->input->post( 'method' );
 			$data['start_date'] = $this->input->post( 'start_date' );
 			$data['end_date'] = $this->input->post( 'end_date' );
-			$data['status'] = $this->input->post( 'status' );
+// 			$data['status'] = $this->input->post( 'status' );
 
 			$data_param["id"] = $this->input->post( 'id' );
 
