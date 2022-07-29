@@ -772,7 +772,6 @@ class Ion_auth_model extends MY_Model
 	{
 		// Retrieve the token object from the code
 		$token = $this->_retrieve_selector_validator_couple($user_code);
-
 		// Retrieve the user according to this selector
 		$user = $this->where('forgotten_password_selector', $token->selector)->users()->row();
 
@@ -780,11 +779,11 @@ class Ion_auth_model extends MY_Model
 		{
 			// Check the hash against the validator
 			if ($this->verify_password($token->validator, $user->forgotten_password_code))
+			// if ($token->validator === $user->forgotten_password_code)
 			{
 				return $user;
 			}
 		}
-
 		return FALSE;
 	}
 

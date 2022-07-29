@@ -132,6 +132,7 @@ $config['argon2_admin_params']		= [
  */
 $config['site_title']                 = "Example.com";       // Site Title, example.com
 $config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
+$config['admin_pass']                 = "admin"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';	        /* You can use any unique column in your table as identity column.
@@ -150,7 +151,7 @@ $config['track_login_ip_address']     = TRUE;                // Track login atte
 $config['maximum_login_attempts']     = 3;                   // The maximum number of failed login attempts.
 $config['lockout_time']               = 300;                 /* The number of seconds to lockout an account due to exceeded attempts
 																You should not use a value below 60 (1 minute) */
-$config['forgot_password_expiration'] = 1800;                /* The number of seconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
+$config['forgot_password_expiration'] = 18000;                /* The number of seconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
                    												30 minutes to 1 hour are good values (enough for a user to receive the email and reset its password)
                    												You should not set a value too high, as it would be a security issue! */
 $config['recheck_timer']              = 0;                   /* The number of seconds after which the session is checked again against database to see if the user still exists and is active.
