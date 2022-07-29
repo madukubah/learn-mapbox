@@ -354,22 +354,22 @@ class Auth extends Public_Controller
                                         'protocol' => 'smtp',
                                         'smtp_host' => 'ssl://smtp.googlemail.com',
                                         'smtp_port' => 465,
-                                        'smtp_user' => 'XXX',
-                                        'smtp_pass' => 'XXX',
+                                        'smtp_user' => $this->config->item('admin_email', 'ion_auth'),
+                                        'smtp_pass' => $this->config->item('admin_pass', 'ion_auth'),
                                         'mailtype' => 'html'
                                     ];
                                 $data = array(
                                 'identity'=>$forgotten['identity'],
                                 'forgotten_password_code' => $forgotten['forgotten_password_code'],
-                                'forgotten_password_selector' => $forgotten['forgotten_password_selector'],
                                 );
+                                echo anchor('auth/reset_password/'.$forgotten['forgotten_password_code']);
                                 $this->load->library('email');
 
                                 $this->email->initialize($config);
                                 $this->load->helpers('url');
                                 $this->email->set_newline("\r\n");
 
-                                $this->email->from('XXX');
+                                $this->email->from($this->config->item('admin_email', 'ion_auth'));
                                 $this->email->to($identity->{$this->config->item('identity', 'ion_auth')});
                                 $this->email->subject("forgot password");
                                 $body = $this->load->view('auth/email/forgot_password.tpl.php',$data,TRUE);
@@ -377,7 +377,7 @@ class Auth extends Public_Controller
 
                                 if ($this->email->send()) {
 
-                                        $this->session->set_flashdata('success','Email Send sucessfully');
+                                        $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Email Send sucessfully" ) );
                                         return redirect('auth/login');
                                 } 
                                 else {
@@ -387,9 +387,6 @@ class Auth extends Public_Controller
                                         // echo "Email not send .....";
                                         // show_error($this->email->print_debugger());
                                 }
-				// if there were no errors
-				// $this->session->set_flashdata('message', $this->ion_auth->messages());
-				// redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
 			}
 			else
 			{
