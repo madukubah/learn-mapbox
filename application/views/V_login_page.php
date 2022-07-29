@@ -42,6 +42,9 @@
             </form>
 
             <p class="mt-4 mb-4 text-center">
+                <a href="<?= site_url('auth/forgot_password') ?>" class="text-center">Lupa Password</a>
+            </p>
+            <p class="mt-4 mb-4 text-center">
                 Tidak punya akun? <a href="<?= site_url('auth/') ?>register" class="text-center">Register</a>
             </p>
         </div>

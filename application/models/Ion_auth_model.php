@@ -779,7 +779,8 @@ class Ion_auth_model extends MY_Model
 		if ($user)
 		{
 			// Check the hash against the validator
-			if ($this->verify_password($token->validator, $user->forgotten_password_code))
+			// if ($this->verify_password($token->validator, $user->forgotten_password_code))
+			if ($token->validator === $user->forgotten_password_code)
 			{
 				return $user;
 			}
