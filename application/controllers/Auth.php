@@ -146,6 +146,8 @@ class Auth extends Public_Controller
                                 'label' => "Password",
                         );
                         $form_data_company = $this->services->get_form_data();
+			$form_data_company['form_data']['npwp']['type'] = 'number';
+			$form_data_company['form_data']['postal_code']['type'] = 'number';
 
                         $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
                         $form_data_company = $this->load->view('templates/form/plain_form', $form_data_company , TRUE ) ;
@@ -350,43 +352,44 @@ class Auth extends Public_Controller
 
 			if ($forgotten)
 			{
-                                $config = [
-                                        'protocol' => 'smtp',
-                                        'smtp_host' => 'ssl://smtp.googlemail.com',
-                                        'smtp_port' => 465,
-                                        'smtp_user' => $this->config->item('admin_email', 'ion_auth'),
-                                        'smtp_pass' => $this->config->item('admin_pass', 'ion_auth'),
-                                        'mailtype' => 'html'
-                                    ];
                                 $data = array(
                                 'identity'=>$forgotten['identity'],
                                 'forgotten_password_code' => $forgotten['forgotten_password_code'],
                                 );
-                                echo anchor('auth/reset_password/'.$forgotten['forgotten_password_code']);
-                                $this->load->library('email');
+                                // echo anchor('auth/reset_password/'.$forgotten['forgotten_password_code']);
+                                $this->load->library('PhpMail');
+                                $mail = new PhpMail(TRUE);
 
-                                $this->email->initialize($config);
-                                $this->load->helpers('url');
-                                $this->email->set_newline("\r\n");
-
-                                $this->email->from($this->config->item('admin_email', 'ion_auth'));
-                                $this->email->to($identity->{$this->config->item('identity', 'ion_auth')});
-                                $this->email->subject("forgot password");
-                                $body = $this->load->view('auth/email/forgot_password.tpl.php',$data,TRUE);
-                                $this->email->message($body);
-
-                                if ($this->email->send()) {
-
-                                        $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Email Send sucessfully" ) );
+                                try {
+                                        //Server settings
+                                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                                        $mail->isSMTP();                                            //Send using SMTP
+                                        $mail->Host       = 'banksultra.co.id';                     //Set the SMTP server to send through
+                                        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                                        $mail->Username   = $this->config->item('admin_email', 'ion_auth');                     //SMTP username
+                                        $mail->Password   = $this->config->item('admin_pass', 'ion_auth');                               //SMTP password
+                                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
+                                        $mail->Port       = "587";                                //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                                    
+                                        //Recipients
+                                        $mail->setFrom($this->config->item('admin_email', 'ion_auth'), 'Tender Online');
+                                        $mail->addAddress($identity->{$this->config->item('identity', 'ion_auth')});     //Add a recipient
+                                    
+                                        //Content
+                                        $mail->isHTML(true);                                  //Set email format to HTML
+                                        $mail->Subject = 'Forgot Password';
+                                        $mail->Body    = $this->load->view('auth/email/forgot_password.tpl.php',$data,TRUE);
+                                    
+                                        $mail->send();
+                                        
+                                        $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, "Email Send sucessfully" ) );
                                         return redirect('auth/login');
-                                } 
-                                else {
-
+                                } catch (Exception $e) {
+                                        // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                                         $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Gagal Kirim E-mail" ) );
                                         return redirect('auth/login');
-                                        // echo "Email not send .....";
-                                        // show_error($this->email->print_debugger());
                                 }
+
 			}
 			else
 			{
