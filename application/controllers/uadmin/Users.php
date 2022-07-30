@@ -232,7 +232,7 @@ class Users extends Uadmin_Controller
 	public function detail( $user_id = NULL )
 	{
 		$user_id = base64_decode($user_id);
-
+		$user = $this->ion_auth_model->user( $user_id )->row();
 		if( ! $user ) 
 			redirect( site_url($this->current_page)  );
 			

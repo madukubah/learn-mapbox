@@ -144,8 +144,11 @@ class User_services
 
 		$groups =$this->ion_auth_model->groups(  )->result();
 		$group_select = array();
+		$is_penyedia = FALSE;
 		foreach( $groups as $group )
 		{
+			if( $user_id != -1 && $group->name == 'penyedia' ) $is_penyedia = TRUE;
+
 			// if( $group->id == 1 ) continue;
 			$group_select[ $group->id ] = $group->name;
 		}
@@ -229,6 +232,18 @@ class User_services
 				'selected' => $this->group_id,
 			),
 		  );
+		
+		if( $is_penyedia ){
+			
+			unset($_data['form_data']['nrrp'] );
+			unset($_data['form_data']['job_position'] );
+			unset($_data['form_data']['sk_number'] );
+			unset($_data['form_data']['due_date'] );
+			unset($_data['form_data']['cert_no'] );
+			unset($_data['form_data']['cert_date'] );
+			unset($_data['form_data']['status'] );
+			unset($_data['form_data']['active'] );
+		}
 		return $_data;
 	}
 }
