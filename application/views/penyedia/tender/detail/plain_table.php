@@ -19,7 +19,12 @@
         ?>
         <tr >
             <td> <?php echo $no ++ ?> </td>
-            <td> <?php echo $row->name ?> </td>
+            <td> <?php 
+                if($user_id == $row-> penyedia_id )
+                    echo $row->name ;
+                else
+                    echo "Perusahaan XXX";
+            ?> </td>
             <!-- <td>
                  <?php 
                     $form = array(
