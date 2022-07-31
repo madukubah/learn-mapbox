@@ -175,9 +175,11 @@ class Ion_auth
 	{
 		// Retrieve user information
 		$user = $this->where($this->ion_auth_model->identity_column, $identity)
-					 ->where('active', 1)
+				// 	 ->where('active', 1)
 					 ->users()->row();
-
+// 		echo var_dump($this->ion_auth_model->identity_column);
+// 		echo var_dump($identity);
+//         echo var_dump($user);
 		if ($user)
 		{
 			// Generate code
@@ -667,7 +669,7 @@ class Ion_auth
 		$is_penyedia = FALSE;
 		foreach( $groups as $group )
 		{
-			if( $user_id != -1 && $group->name == 'penyedia' ) $is_penyedia = TRUE;
+			if( $user_id != -1 && $group->name == 'penyedia' && $this->group_id == $group->id ) $is_penyedia = TRUE;
 			if( $group->id == 1 ) continue;
 			$group_select[ $group->id ] = $group->name;
 		}
@@ -761,7 +763,7 @@ class Ion_auth
 			unset($_data['form_data']['cert_no'] );
 			unset($_data['form_data']['cert_date'] );
 			unset($_data['form_data']['status'] );
-			unset($_data['form_data']['active'] );
+// 			unset($_data['form_data']['active'] );
 		}
 		return $_data;
 	}

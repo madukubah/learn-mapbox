@@ -147,7 +147,7 @@ class User_services
 		$is_penyedia = FALSE;
 		foreach( $groups as $group )
 		{
-			if( $user_id != -1 && $group->name == 'penyedia' ) $is_penyedia = TRUE;
+			if( $user_id != -1 && $group->name == 'penyedia' && $this->group_id == $group->id ) $is_penyedia = TRUE;
 
 			// if( $group->id == 1 ) continue;
 			$group_select[ $group->id ] = $group->name;
@@ -242,7 +242,7 @@ class User_services
 			unset($_data['form_data']['cert_no'] );
 			unset($_data['form_data']['cert_date'] );
 			unset($_data['form_data']['status'] );
-			unset($_data['form_data']['active'] );
+// 			unset($_data['form_data']['active'] );
 		}
 		return $_data;
 	}

@@ -319,10 +319,12 @@ class Auth extends Public_Controller
 			}
                         
 			// set any errors and display the form
-                        if( validation_errors() )
-			        $this->data['message'] =$this->alert->set_alert( Alert::DANGER, (validation_errors()) ? validation_errors() : $this->session->flashdata('message') ) ;
-                        else
-                                $this->data['message'] = '';
+            if( $this->session->flashdata('message') )
+			        $this->data['message'] =$this->session->flashdata('message');
+            else if( validation_errors() )
+			        $this->data['message'] =$this->alert->set_alert( Alert::DANGER, (validation_errors())) ;
+            else
+                    $this->data['message'] = '';
 			$this->render('auth/forgot_password');
 		}
 		else
@@ -343,13 +345,13 @@ class Auth extends Public_Controller
 				}
 
 				// $this->session->set_flashdata('message', $this->ion_auth->errors());
-                                $this->session->set_flashdata('message', $this->alert->set_alert( Alert::DANGER, $this->ion_auth->errors() ) );
-				redirect("auth/forgot_password", 'refresh');
+                 $this->session->set_flashdata('message', $this->alert->set_alert( Alert::DANGER, $this->ion_auth->errors() ) );
+				redirect("auth/forgot_password");
 			}
 
 			// run the forgotten password method to email an activation code to the user
 			$forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
-
+            // echo var_dump($forgotten);
 			if ($forgotten)
 			{
                                 $data = array(
@@ -382,10 +384,11 @@ class Auth extends Public_Controller
                                     
                                         $mail->send();
                                         
+                                        // echo "sent";
                                         $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, "Email Send sucessfully" ) );
                                         return redirect('auth/login');
                                 } catch (Exception $e) {
-                                        // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                                         $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Gagal Kirim E-mail" ) );
                                         return redirect('auth/login');
                                 }
@@ -393,8 +396,9 @@ class Auth extends Public_Controller
 			}
 			else
 			{
-                                $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->ion_auth->errors() ) );
-				redirect("auth/forgot_password", 'refresh');
+			 //   echo var_dump($this->ion_auth->errors());
+                $this->session->set_flashdata('message', $this->alert->set_alert( Alert::DANGER, $this->ion_auth->errors() ) );
+                redirect("auth/forgot_password");
 			}
 		}
 
