@@ -69,7 +69,7 @@ class User_services
 			'group_name' => 'Akses',
 			'user_fullname' => 'Nama Lengkap',
 			'phone' => 'No Telepon',
-			'email' => 'E-mail',
+			'active' => 'Status',
 		  );
 		  $table["number"] = $start_number ;
 		  $table[ "action" ] = array(

@@ -9,7 +9,7 @@ class MY_Controller extends CI_Controller {
 	   parent::__construct();
 		if ($this->input->post()) {    
 				foreach($this->input->post() as $post)
-				$post = html_escape($post);
+				$post = htmlspecialchars(html_escape($post));
 		}
 		$this->load->model(array(
 				'log_model',

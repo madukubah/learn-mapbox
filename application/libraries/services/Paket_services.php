@@ -51,6 +51,9 @@ class Paket_services
 			'date' => 'Tanggal Buat Paket',
 		  );
 	$table["number"] = $start_number ;
+	$table["search"] = array(
+		"field" => "paket.name"
+	);
 	$table[ "action" ] = array(
 		array(
 			"name" => "Detail",
@@ -152,14 +155,15 @@ class Paket_services
 				'value' => $this->form_validation->set_value('date', $this->date),
 			),
 			"status" => array(
-				'type' => 'select',
+				'type' => 'hidden',
 				'label' => "Status",
-				'options' => array(
-					'Aktif' => 'Aktif',
-					'Non Aktif' => 'Non Aktif'
-				)
-				,
-				'selected' => $this->form_validation->set_value('status', $this->status),
+				'value' => 'Aktif',
+				// 'options' => array(
+				// 	'Aktif' => 'Aktif',
+				// 	'Non Aktif' => 'Non Aktif'
+				// )
+				// ,
+				// 'selected' => $this->form_validation->set_value('status', $this->status),
 			),
 		  );
 		return $_data;

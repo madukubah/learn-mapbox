@@ -50,14 +50,10 @@
               </h5>
             </div>
             <div class="card-body">
-              <b>10 Juni 2022 13:13</b><br>
-              <a href="#">Maintenance Server</a><br>
-              <b>9 Juni 2022 11:14</b><br>
-              <a href="#">Undangan</a><br>
-              <b>3 Juni 2022 00:52</b><br>
-              <a href="#">Batas penginputan P3DN Tanggal 27 Mei 2022 instruksi Presiden Joko Widodo</a><br>
-              <b>3 Juni 2022 00:47</b><br>
-              <a href="#">pemberitahuan</a><br>
+              <?php foreach( $newss as $news ):?>
+                <b><?= date('d M Y H:i', time($news->datetime))?></b><br>
+                <a href="#"><?= $news->content?></a><br>
+              <?php endforeach;?>
             </div>
           </div>
         </div>

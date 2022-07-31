@@ -34,7 +34,7 @@
                         if($key == 'name')
                         {
                             ?>
-                                <a href="<?php echo site_url("tender/detail/".$row->id)?>"><?= $attr?></a>
+                                <a href="<?php echo site_url("tender/detail/".$row->id_enc)?>"><?= $attr?></a>
                             <?php
                         }
                         else

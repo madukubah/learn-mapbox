@@ -1,3 +1,17 @@
+<?php if( isset( $search ) ):?>
+    <form class="form-inline form-group float-right">
+        <div class="input-group input-group-sm">
+        <input value="<?= $this->input->get( 'search' ) ?>" name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn btn-default" type="submit">
+            <i class="fas fa-search"></i>
+            </button>
+        </div>
+        </div>
+    </form>
+    <br>
+    <br>
+<?php endif;?>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover  ">
         <thead>

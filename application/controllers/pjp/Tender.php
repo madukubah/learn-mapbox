@@ -34,7 +34,16 @@ class Tender extends User_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->tender_model
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
@@ -71,7 +80,16 @@ class Tender extends User_Controller {
 
 		if ( $this->form_validation->run() === TRUE )
         {
-			$data['code'] = $this->input->post( 'code' );
+			$data['code'] = 'X';
+			switch($this->input->post( 'type' ))
+			{
+				case 'Pengadaan Barang':
+					$data['code'] = 'PB'.substr(".".time(), -6);
+					break;
+				case 'Pekerjaan Konstruksi':
+					$data['code'] = 'PK'.substr(".".time(), -6);
+					break;
+			}
 			$data['name'] = $this->input->post( 'name' );
 			$data['type'] = $this->input->post( 'type' );
 			$data['budget'] = $this->input->post( 'budget' );

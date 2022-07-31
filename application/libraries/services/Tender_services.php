@@ -63,10 +63,14 @@ class Tender_services
 			'year' => 'Tahun Anggaran',
 			'start_date' => 'Mulai',
 			'end_date' => 'Selesai',
+			'status' => 'Status',
 			// 'physical_progress' => 'Progress Fisik (%)',
 			// 'monetary_progress' => 'Progress Keuangan (%)',
 		  );
 	$table["number"] = $start_number ;
+	$table["search"] = array(
+		"field" => "name"
+	);
 	$table[ "action" ] = array(
 		array(
 			"name" => "Detail",
@@ -140,6 +144,7 @@ class Tender_services
 			"code" => array(
 			  'type' => 'text',
 			  'label' => "Kode Tender*",
+			  'readonly' => TRUE,
 			  'value' => $this->form_validation->set_value('code', $this->code),
 			),
 			"name" => array(
@@ -194,7 +199,7 @@ class Tender_services
 				'type' => 'select',
 				'label' => "Metode Pengadaan*",
 				'options' => array(
-					'Pengadaan Langsung' => 'Pengadaan Langsung',
+					// 'Pengadaan Langsung' => 'Pengadaan Langsung',
 					'Tender' => 'Tender',
 				)
 				,

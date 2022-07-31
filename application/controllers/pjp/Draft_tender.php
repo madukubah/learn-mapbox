@@ -29,7 +29,24 @@ class Draft_tender extends User_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->draft_tender_model
+
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->draft_tender_model
+				->select('
+					draft_tender.*,
+					concat(users.first_name, " ", users.last_name) as pa_name
+				')
+				->join(
+					'users',
+					'users.id = draft_tender.pa_id',
+					'left'
+				)
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->draft_tender_model
 			->select('
 				draft_tender.*,
 				concat(users.first_name, " ", users.last_name) as pa_name
@@ -40,6 +57,7 @@ class Draft_tender extends User_Controller {
 				'left'
 			)
 			->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->id_enc = base64_encode($row->id);

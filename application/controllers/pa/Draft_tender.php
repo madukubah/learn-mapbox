@@ -38,9 +38,17 @@ class Draft_tender extends User_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		$user_id = $this->ion_auth->get_user_id();
 
-		$table[ "rows" ] = $this->draft_tender_model
-		->where('pa_id',$user_id )
-		->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->draft_tender_model
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->draft_tender_model
+			->where('pa_id',$user_id )
+			->draft_tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
 
 		$users = $this->ion_auth->users_limit( 1000, 0, 'pa' )->result();
 		$user_select = array();

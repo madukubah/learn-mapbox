@@ -40,9 +40,18 @@ class Tender extends User_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		unset($table['action'][2]);
 		unset($table['action'][1]);
-		$table[ "rows" ] = $this->tender_model
-			->where('status', 'Tayang')
-			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->tender_model
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->tender_model
+				->where('status', 'Tayang')
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}

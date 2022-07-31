@@ -62,6 +62,9 @@ class Draft_tender_services
 			//'status' => 'Status',
 		  );
 	$table["number"] = $start_number ;
+	$table["search"] = array(
+		"field" => "name"
+	);
 	$table[ "action" ] = array(
 		array(
 			"name" => "Detail",

@@ -30,13 +30,28 @@ class Pokmil extends User_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->pokmil_model
-		->select('pokmil.*, concat(users.first_name, " ", users.last_name) as lead_full_name')
-		->join(
-			"users",
-			"users.id = pokmil.lead_id",
-			"inner"
-		)->pokmils( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->pokmil_model
+				->select('pokmil.*, concat(users.first_name, " ", users.last_name) as lead_full_name')
+				->join(
+					"users",
+					"users.id = pokmil.lead_id",
+					"inner"
+				)	
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->pokmils( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->pokmil_model
+			->select('pokmil.*, concat(users.first_name, " ", users.last_name) as lead_full_name')
+			->join(
+				"users",
+				"users.id = pokmil.lead_id",
+				"inner"
+			)->pokmils( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->id_enc = base64_encode($row->id);

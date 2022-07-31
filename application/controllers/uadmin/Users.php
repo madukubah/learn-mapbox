@@ -42,6 +42,7 @@ class Users extends Uadmin_Controller
 		}
 		foreach( $table[ "rows" ] as $row )
 		{
+			$row->active = $row->active ? 'Aktif': 'Non Aktif';
 			$row->id_enc = base64_encode($row->id);
 		}
 		$table = $this->load->view('templates/tables/plain_table', $table, true);

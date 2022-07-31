@@ -126,7 +126,7 @@
                 <?php foreach($comments as $comment): ?>
                   <b><?= $comment->datetime ?></b><br>
                   <b><?= $comment->user_name ?></b><br>
-                  <p><?= html_escape($comment->content) ?></p>
+                  <p><?= htmlspecialchars(html_escape($comment->content)) ?></p>
                 <?php endforeach; ?>
                 <?php echo form_open_multipart(site_url('pt/tender/comment/'.$tender->id));?>
                 <div class='row'>

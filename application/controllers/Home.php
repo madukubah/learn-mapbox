@@ -13,6 +13,7 @@ class Home extends Public_Controller {
 		$this->tender_services = new Tender_services;
 		$this->load->model(array(
 			'tender_model',
+			'news_model',
 		));
 	}
 	public function index()
@@ -49,9 +50,20 @@ class Home extends Public_Controller {
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
+		foreach( $table[ "rows" ] as $row )
+		{
+			$row->id_enc = base64_encode($row->id);
+		}
 		$table = $this->load->view('public/plain_table_12', $table, true);
 		$this->data[ "contents" ] = $table;
 
+		$newss = $this->news_model
+			->order_by('id desc')
+			->limit(5)
+			->newss()
+			->result();
+		$this->data["newss"] = $newss;
+		
 		$alert = $this->session->flashdata('alert');
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;

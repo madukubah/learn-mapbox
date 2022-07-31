@@ -62,14 +62,6 @@
 </script>
 
 <script>
-  var numberMask = IMask(
-  document.getElementsByClassName('numeric'),
-  {
-    mask: Number,
-    min: -10000,
-    max: 10000,
-    thousandsSeparator: '.'
-  });
 
   $(document).ready(function() {
     var t = $('#summernote').summernote(
@@ -81,8 +73,6 @@
         $('div.note-editable').height(150);
     });
 
-    $(':input[type="number"]').numeric({ decimal : ".",  negative : false, scale: 3 });
-    $(".numeric").numeric({ decimal : ".",  negative : false, scale: 3 });
   });
 </script>
 </body>

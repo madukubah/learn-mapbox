@@ -57,6 +57,9 @@ class Pokmil_services
 			'lead_full_name' => 'Ketua',
 		  );
 	$table["number"] = $start_number ;
+	$table["search"] = array(
+		"field" => "name"
+	);
 	$table[ "action" ] = array(
 		array(
 			"name" => "Detail",

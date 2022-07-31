@@ -39,7 +39,24 @@ class Tender extends User_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		unset($table['action'][2]);
 		unset($table['action'][1]);
-		$table[ "rows" ] = $this->tender_model
+		if($this->input->get( 'search' )){
+			$table[ "rows" ] = $this->tender_model
+				->select('
+					schedule.*,
+					tender.*
+				')
+				->join(
+					'schedule',
+					'schedule.tender_id = tender.id',
+					'inner'
+				)
+				->like($table["search"]["field"], $this->input->get( 'search' ))
+				// ->where('status', 'Tayang')	
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		}
+		else
+		{
+			$table[ "rows" ] = $this->tender_model
 			->select('
 				schedule.*,
 				tender.*
@@ -51,6 +68,8 @@ class Tender extends User_Controller {
 			)
 			->where('status', 'Tayang')
 			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+		
+		}
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
