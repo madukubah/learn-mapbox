@@ -19,6 +19,9 @@ class Users extends Uadmin_Controller
 			"suplier" => 'Suplier',
 			"transporter" => 'Transporter',
 		);
+		$this->load->model(array(
+			'ion_auth_model',
+		));
 		
 	} 
 	public function index( $id_user = NULL )
@@ -34,12 +37,24 @@ class Users extends Uadmin_Controller
 		 if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
-		$table[ "rows" ] = $this->ion_auth->users_limit( $pagination['limit_per_page'], $pagination['start_record']  )->result();
-		if($page == 0)
-		{
-			unset( $table[ "rows" ][0] );
-			unset( $table[ "rows" ][1] );
+		if($this->input->get( 'search' )){
+		    
+			$table[ "rows" ] = $this->ion_auth_model
+			    ->like($table["search"]["field"], $this->input->get( 'search' ))
+			    ->users( $pagination['limit_per_page'], $pagination['start_record']  )
+			    ->result();
 		}
+		else
+		{
+			$table[ "rows" ] = $this->ion_auth->users_limit( $pagination['limit_per_page'], $pagination['start_record']  )->result();
+			
+    		if($page == 0)
+    		{
+    			unset( $table[ "rows" ][0] );
+    			unset( $table[ "rows" ][1] );
+    		}
+		}
+		
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->active = $row->active ? 'Aktif': 'Non Aktif';

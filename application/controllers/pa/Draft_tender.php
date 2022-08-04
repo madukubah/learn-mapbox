@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Draft_tender extends User_Controller {
+class Draft_tender extends Pa_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'pa';

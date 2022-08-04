@@ -150,6 +150,76 @@ class Uadmin_Controller extends User_Controller
   	}
 }
 
+
+class Pa_Controller extends User_Controller
+{
+	public function __construct()
+	{
+      parent::__construct();
+    	if( !$this->ion_auth->in_group( 'pa' ) ){
+    		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Tidak Boleh Mengakses Halaman ini" ) );
+    		redirect(site_url('/auth/login'));
+    	}else{
+      }
+    }
+
+    protected function render($the_view = NULL, $template = 'admin_master'){
+  		parent::render($the_view, $template);
+  	}
+}
+
+class Pjp_Controller extends User_Controller
+{
+	public function __construct()
+	{
+      parent::__construct();
+    	if( !$this->ion_auth->in_group( 'pjp' ) ){
+    		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Tidak Boleh Mengakses Halaman ini" ) );
+    		redirect(site_url('/auth/login'));
+    	}else{
+      }
+    }
+
+    protected function render($the_view = NULL, $template = 'admin_master'){
+  		parent::render($the_view, $template);
+  	}
+}
+
+class Pt_Controller extends User_Controller
+{
+	public function __construct()
+	{
+      parent::__construct();
+    	if( !$this->ion_auth->in_group( 'pt' ) ){
+    		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Tidak Boleh Mengakses Halaman ini" ) );
+    		redirect(site_url('/auth/login'));
+    	}else{
+      }
+    }
+
+    protected function render($the_view = NULL, $template = 'admin_master'){
+  		parent::render($the_view, $template);
+  	}
+}
+
+class Penyedia_Controller extends User_Controller
+{
+	public function __construct()
+	{
+      parent::__construct();
+    	if( !$this->ion_auth->in_group( 'penyedia' ) ){
+    		$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Tidak Boleh Mengakses Halaman ini" ) );
+    		redirect(site_url('/auth/login'));
+    	}else{
+      }
+    }
+
+    protected function render($the_view = NULL, $template = 'admin_master'){
+  		parent::render($the_view, $template);
+  	}
+}
+
+
 class Public_Controller extends MY_Controller{
 
 	function __construct(){

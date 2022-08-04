@@ -51,6 +51,7 @@
                     echo form_input( $form );
                     break;
                 case 'number':
+                case 'currency':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
                     if (is_numeric( $form['value'] ) )

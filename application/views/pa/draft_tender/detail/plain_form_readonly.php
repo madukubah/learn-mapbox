@@ -45,9 +45,19 @@
                 case 'password':
                 case 'email':
                 case 'text':
+                    $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
+                    $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
+                    echo form_input( $form );
+                    break;
                 case 'number':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    if (is_numeric( $form['value'] ) )
+                    {
+                        $form['type'] = 'text';
+                        $form['value'] = number_format( $form['value'] );
+                    }
                     echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
                     echo form_input( $form );
                     break;

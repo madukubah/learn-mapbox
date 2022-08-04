@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tender extends User_Controller {
+class Tender extends Pjp_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'pjp';
@@ -92,7 +92,7 @@ class Tender extends User_Controller {
 			}
 			$data['name'] = $this->input->post( 'name' );
 			$data['type'] = $this->input->post( 'type' );
-			$data['budget'] = $this->input->post( 'budget' );
+			$data['budget'] = str_ireplace(",", "", $this->input->post( 'budget' ));
 			$data['budget_source'] = $this->input->post( 'budget_source' );
 			$data['year'] = $this->input->post( 'year' );
 			$data['location'] = $this->input->post( 'location' );
@@ -200,7 +200,7 @@ class Tender extends User_Controller {
 			$data['code'] = $this->input->post( 'code' );
 			$data['name'] = $this->input->post( 'name' );
 			$data['type'] = $this->input->post( 'type' );
-			$data['budget'] = $this->input->post( 'budget' );
+			$data['budget'] = str_ireplace(",", "", $this->input->post( 'budget' ));
 			$data['budget_source'] = $this->input->post( 'budget_source' );
 			$data['year'] = $this->input->post( 'year' );
 			$data['location'] = $this->input->post( 'location' );

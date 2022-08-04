@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tender extends User_Controller {
+class Tender extends Penyedia_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'penyedia';
@@ -70,9 +70,14 @@ class Tender extends User_Controller {
 			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		
 		}
+		
+		$tables = [];
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
+			if( $table[ "rows" ][$i]->file_download_end_date != '0000-00-00 00:00:00' )
+			    $tables []= $table[ "rows" ][$i];
 		}
+		$table[ "rows" ] = $tables;
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->id_enc = base64_encode($row->id);
@@ -118,7 +123,20 @@ class Tender extends User_Controller {
 	public function effering_file( $tender_penyedia_id = NULL )
 	{
 		if ($tender_penyedia_id == NULL) redirect(site_url($this->current_page));
-
+        
+		$schedule = $this->schedule_model
+			->where('tender_id', $this->input->post( 'tender_id' ))
+			->schedule()
+			->row();
+		if( $schedule->effering_file_upload_end_date  !=  '0000-00-00 00:00:00' ){
+		    $effering_file_upload_end_date = strtotime($schedule->effering_file_upload_end_date);
+		    $time_now = time();
+		    if( $time_now > $effering_file_upload_end_date )
+		    {
+		        $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, "Masa Upload Penawaran Sudah Selesai" ) );
+		        redirect(site_url( $this->current_page.'detail/'.base64_encode($this->input->post( 'tender_id' )) ));   
+		    }
+		}
 		$this->load->library('upload'); // Load librari upload
 		
 		$filename = "Penawaran_".time();
@@ -175,7 +193,7 @@ class Tender extends User_Controller {
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = " ";
 		$this->data["header"] = "Detail Tender Terumumkan ";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		$this->data["sub_header"] = '<div style="color:red">File yang diupload berekstensi .pdf, .docx</div>';
 
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
@@ -226,14 +244,16 @@ class Tender extends User_Controller {
 				"inner")
 			->tender_penyedias()
 			->result();
-		$tender_penyedia_table['user_id'] = $user_id;
-		$tender_penyedia_table = $this->load->view('penyedia/tender/detail/plain_table', $tender_penyedia_table, true);
-		$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
-		$this->data[ "contents_2" ] =  $tender_penyedia_table;
+			
 		$schedule = $this->schedule_model
 			->where('tender_id', $tender_id)
 			->schedule()
 			->row();
+		$tender_penyedia_table['user_id'] = $user_id;
+		$tender_penyedia_table['schedule'] = $schedule;
+		$tender_penyedia_table = $this->load->view('penyedia/tender/detail/plain_table', $tender_penyedia_table, true);
+		$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
+		$this->data[ "contents_2" ] =  $tender_penyedia_table;
 		$schedule_id = '';
 		$schedule_table = $this->load->view('penyedia/tender/detail/schedule_table', array('schedule' => $schedule,'tender_id' => $tender_id ), true);
 		$this->data[ "contents_3" ] =  $schedule_table;

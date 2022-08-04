@@ -50,10 +50,12 @@
 <!-- bootstrap datepicker -->
 <script src="<?= base_url('assets/') ?>plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="<?= base_url('assets/') ?>plugins/numeric/jquery.numeric.js"></script>
+<script src="<?= base_url('assets/') ?>plugins/inputmask/jquery.inputmask.bundle.js"></script>
 <script src="https://unpkg.com/imask"></script>
 <script>
   $(function () {
-
+    // $('[data-mask]').inputmask()
+    $('.currency').inputmask({ alias : "currency", prefix: '', digits: 0, rightAlign:false });
     //Date range picker
     $('.datepicker').datepicker();
     // console.log( $('.datepicker').val() );

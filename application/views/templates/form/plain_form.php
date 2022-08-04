@@ -44,14 +44,20 @@
                     break;
                 case 'password':
                 case 'email':
-                case 'number':
+                case 'text':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['class'] .= ' numeric';
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
                     echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
                     echo form_input( $form );
                     break;
-                case 'text':
+                case 'currency':
+                    $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
+                    $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;
+                    echo '<label for="'.$form_name.'" class="control-label">'.$attr["label"].'</label>';
+                    echo '<input value="'.$form['value'].'" name="'.$form['name'].'" id="'.$form['name'].'" type="text" class="form-control currency"  data-mask="" inputmode="decimal" >';
+                    break;
+                case 'number':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['class'] .= ' numeric';
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;

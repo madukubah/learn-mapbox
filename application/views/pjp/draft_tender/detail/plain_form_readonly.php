@@ -45,6 +45,7 @@
                 case 'password':
                 case 'email':
                 case 'text':
+                case 'currency':
                 case 'number':
                     $value = ( ( isset( $data ) && ( $data != NULL) )   ? ( isset( $data->$form_name ) ? $data->$form_name : '' ) : ''  );
                     $form['value'] = ( isset( $attr['value'] )  ) ? $attr['value'] : $value;

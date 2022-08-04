@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Company extends User_Controller {
+class Company extends Pt_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'penyedia';

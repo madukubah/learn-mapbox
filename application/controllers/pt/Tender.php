@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tender extends User_Controller {
+class Tender extends Pt_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'pt';
@@ -92,7 +92,7 @@ class Tender extends User_Controller {
 		$this->data["current_page"] = $this->current_page;
 		$this->data["block_header"] = " ";
 		$this->data["header"] = "Detail Paket Tender Terumumkan ";
-		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+		$this->data["sub_header"] = '<div style="color:red">File yang diupload berekstensi .pdf, .docx</div>';
 
 		$link_print_tender = 
 		array(
@@ -176,14 +176,14 @@ class Tender extends User_Controller {
     
 	public function edit( $tender_id = null )
 	{
-		$tender_id = base64_decode($tender_id);
+// 		$tender_id = base64_decode($tender_id);
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
 		$this->form_validation->set_rules( $this->services->validation_config() );
         $paket_id = $this->input->post( 'paket_id' );
         if ($this->form_validation->run() === TRUE )
         {
 			$data['status'] = $this->input->post( 'status' );
-
+            
 			$data_param["id"] = $tender_id;
 
 			if( $this->tender_model->update( $data, $data_param ) ){
@@ -200,7 +200,7 @@ class Tender extends User_Controller {
 
             $alert = $this->session->flashdata('alert');
         }
-        redirect( site_url('pt/paket/detail/'.$paket_id));
+        redirect( site_url('pt/paket/detail/'.base64_encode($paket_id)));
 	}
 	
 	public function schedule( $tender_id )

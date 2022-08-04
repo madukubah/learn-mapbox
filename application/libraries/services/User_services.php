@@ -72,6 +72,9 @@ class User_services
 			'active' => 'Status',
 		  );
 		  $table["number"] = $start_number ;
+    	  $table["search"] = array(
+    		"field" => "users.first_name"
+    	  );
 		  $table[ "action" ] = array(
 			array(
 			  "name" => "Detail",

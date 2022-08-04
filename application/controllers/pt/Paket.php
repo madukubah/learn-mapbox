@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Paket extends User_Controller {
+class Paket extends Pt_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'pt';

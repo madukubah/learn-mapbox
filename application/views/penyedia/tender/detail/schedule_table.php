@@ -37,7 +37,7 @@
             'value_end' => isset($schedule)? $schedule->effering_file_upload_end_date: '0000-00-00 00:00:00',
         ),
         array(
-            'label' => 'Pembuktian Dokumen Penawaran',
+            'label' => 'Pembukaan Dokumen Penawaran',
             'id_start_date' => 'proof_offering_start_date',
             'id_start_time' => 'proof_offering_start_time',
             'id_end_date' => 'proof_offering_end_date',

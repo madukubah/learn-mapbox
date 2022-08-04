@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Draft_tender extends User_Controller {
+class Draft_tender extends Pjp_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'pjp';
@@ -86,7 +86,7 @@ class Draft_tender extends User_Controller {
 			$data['pa_id'] = $this->input->post( 'pa_id' );
 			$data['name'] = $this->input->post( 'name' );
 			$data['contract_type'] = $this->input->post( 'contract_type' );
-			$data['budget_estimation'] = $this->input->post( 'budget_estimation' );
+			$data['budget_estimation'] = str_ireplace(",", "", $this->input->post( 'budget_estimation' ));
 			$data['date'] = $this->input->post( 'date' );
 			$data['status'] = $this->input->post( 'status' );
 			
@@ -207,7 +207,7 @@ class Draft_tender extends User_Controller {
 			$data['pa_id'] = $this->input->post( 'pa_id' );
 			$data['name'] = $this->input->post( 'name' );
 			$data['contract_type'] = $this->input->post( 'contract_type' );
-			$data['budget_estimation'] = $this->input->post( 'budget_estimation' );
+			$data['budget_estimation'] = str_ireplace(",", "", $this->input->post( 'budget_estimation' ));
 			$data['date'] = $this->input->post( 'date' );
 			$data['status'] = $this->input->post( 'status' );
 
@@ -224,14 +224,14 @@ class Draft_tender extends User_Controller {
         {
             $this->data['message'] = (validation_errors() ? validation_errors() : ($this->draft_tender_model->errors() ? $this->draft_tender_model->errors() : $this->session->flashdata('message')));
             if(  !empty( validation_errors() ) || $this->draft_tender_model->errors() ) $this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->data['message'] ) );
-
+            
             $alert = $this->session->flashdata('alert');
 			$this->data["key"] = $this->input->get('key', FALSE);
 			$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 			$this->data["current_page"] = $this->current_page;
 			$this->data["block_header"] = "";
 			$this->data["header"] = "Usul Draft Tender";
-			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
+			$this->data["sub_header"] = '<div style="color:red">File yang diupload berekstensi .pdf, .docx</div>';
 
             $form_data = $this->services->get_form_data($draft_tender_id);
             $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;

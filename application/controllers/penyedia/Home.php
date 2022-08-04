@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends User_Controller {
+class Home extends Penyedia_Controller {
 	private $services = null;
     private $name = null;
     private $parent_page = 'user';
