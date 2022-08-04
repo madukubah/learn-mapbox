@@ -38,27 +38,101 @@ class Tender extends Pt_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
+		unset($table['header']['start_date']);
+		unset($table['header']['end_date']);
+		unset($table['header']['status']);
+		unset($table['header']['budget']);
+		$table['header']['budget_estimation'] = 'HPS';
+		$table['header']['announcement_start_date'] = 'Tanggal Mulai Tender';
+		$table['header']['signing_end_date'] = 'Tanggal Selesai Tender';
+		$table['header']['status'] = 'Status';
 		unset($table['action'][2]);
 		unset($table['action'][1]);
+		$table[ "rows" ] = [];
 		if($this->input->get( 'search' )){
 			$table[ "rows" ] = $this->tender_model
-				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->select('
+					schedule.*,
+					draft_tender.*,
+					paket.*,
+					pokmil.*,
+					tender.*
+				')
+				->join(
+					'schedule',
+					'schedule.tender_id = tender.id',
+					'left'
+				)
+				->join(
+					'draft_tender',
+					'draft_tender.tender_id = tender.id',
+					'inner'
+				)
+				->join(
+					'paket',
+					'paket.draft_tender_id = draft_tender.id',
+					'inner'
+				)
+				->join(
+					'pokmil',
+					'paket.pokmil_id = pokmil.id',
+					'inner'
+				)
+				->like('tender.'.$table["search"]["field"], $this->input->get( 'search' ))
 				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		}
 		else
 		{
 			$table[ "rows" ] = $this->tender_model
-				->where('status', 'Tayang')
+				->select('
+					schedule.*,
+					draft_tender.*,
+					paket.*,
+					pokmil.*,
+					tender.*
+				')
+				->join(
+					'schedule',
+					'schedule.tender_id = tender.id',
+					'left'
+				)
+				->join(
+					'draft_tender',
+					'draft_tender.tender_id = tender.id',
+					'inner'
+				)
+				->join(
+					'paket',
+					'paket.draft_tender_id = draft_tender.id',
+					'inner'
+				)
+				->join(
+					'pokmil',
+					'paket.pokmil_id = pokmil.id',
+					'inner'
+				)
+				->where('tender.status', 'Tayang')
 				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		}
 		
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
 		}
+		$user_id = $this->ion_auth->get_user_id();
+		$table_rows = [];
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->id_enc = base64_encode($row->id);
+			if(
+				$user_id == $row->lead_id ||
+				$user_id == $row->member_1_id ||
+				$user_id == $row->member_2_id ||
+				$user_id == $row->member_3_id ||
+				$user_id == $row->member_4_id
+			)
+			$table_rows []= $row;
 		}
+		$table[ "rows" ] = $table_rows;
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
 		$this->data[ "contents" ] = $table;
 

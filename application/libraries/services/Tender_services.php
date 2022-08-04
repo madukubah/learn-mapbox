@@ -220,7 +220,8 @@ class Tender_services
 				'label' => "Status Tender*",
 				'options' => array(
 					'Rencana' => 'Rencana',
-					'Tayang' => 'Tayang'
+					'Tayang' => 'Tayang',
+					'Selesai' => 'Selesai',
 				)
 				,
 				'selected' => $this->form_validation->set_value('status', $this->status),

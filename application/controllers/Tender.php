@@ -17,13 +17,31 @@ class Tender extends Public_Controller {
 		$this->load->model(array(
 			'tender_model',
 			'draft_tender_model',
+			'tender_penyedia_model',
 		));
 	}	
 
 	public function detail( $tender_id = null )
     {
 		$tender_id = base64_decode($tender_id);
-		$tender = $this->tender_model->tender( $tender_id )->row();
+		$tender = $this->tender_model
+			->select('
+				schedule.*,
+				draft_tender.budget_estimation as budget_estimation,
+				draft_tender.status as draft_tender_status,
+				tender.*,
+			')
+			->join(
+				'draft_tender',
+				'draft_tender.tender_id = tender.id',
+				'inner'
+			)
+			->join(
+				'schedule',
+				'schedule.tender_id = tender.id',
+				'inner'
+			)
+			->tender( $tender_id )->row();
 		if( ! $tender ) 
 			redirect( site_url($this->current_page)  );
 		if ($tender_id == NULL) redirect(site_url($this->current_page));
@@ -39,7 +57,20 @@ class Tender extends Public_Controller {
 		$this->data["sub_header"] = 'Klik Tombol Aksi Untuk Ikut Tender';
 
 		$form_data = $this->services->get_form_data( $tender_id );
-		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
+		// unset($form_data['form_data']['budget']);
+		$form_data['form_data']['budget']['label'] = 'Harga Perkiraan Sendiri (HPS)*';
+		$form_data['form_data']['budget']['value'] = $tender->budget_estimation;
+		$form_data['form_data']['start_date']['label'] = 'Tanggal Mulai Tender';
+		$form_data['form_data']['start_date']['type'] = 'text';
+		$form_data['form_data']['start_date']['value'] = $tender->announcement_start_date;
+		$form_data['form_data']['end_date']['label'] = 'Tanggal Selesai Tender';
+		$form_data['form_data']['end_date']['type'] = 'text';
+		$form_data['form_data']['end_date']['value'] = $tender->signing_end_date;
+		$form_data['form_data']['penyedia_count'] = array(
+			'type' => 'text',
+			'label' => "Jumlah Peserta",
+			'value' => 0,
+		);
 
 		$link_register_tender = 
 		array(
@@ -49,10 +80,35 @@ class Tender extends Public_Controller {
 			"button_color" => "success",	
 			"data" => NULL,
 		);
-		$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_register_tender, TRUE );
+		if( $tender->status == 'Tayang' )
+			$this->data[ "header_button" ] =  $this->load->view('templates/actions/link', $link_register_tender, TRUE );
 
+		$tender_penyedia_table["header"] = array(
+			'name' => 'Nama',
+		);
+		$tender_penyedia_table["number"] = 1;
+		$tender_penyedia_table["rows"] = $this->tender_penyedia_model
+			->select('	tender_penyedia.*, 
+					company.name,
+				')
+			->where('tender_id', $tender_id )
+			->join(
+				"users",
+				"users.id = tender_penyedia.penyedia_id",
+				"inner")
+			->join(
+				"company",
+				"company.user_id = users.id",
+				"inner")
+			->tender_penyedias()
+			->result();
+			$form_data['form_data']['penyedia_count']['value'] = count( $tender_penyedia_table["rows"] );
+		$tender_penyedia_table = $this->load->view('public/tender/detail/plain_table', $tender_penyedia_table, true);
+		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 		$this->data[ "contents" ] =  $form_data;
-		$this->render( "tender" );
+		$this->data[ "contents_2" ] =  $tender_penyedia_table;
+		$this->data[ "tender" ] =  $tender;
+		$this->render( "public/tender/detail/content_tayang" );
 	}
 
 }

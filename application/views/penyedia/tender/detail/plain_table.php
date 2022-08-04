@@ -6,6 +6,7 @@
             <th >Nama</th>
             <!-- <th >HPS</th> -->
             <th >Penawaran</th>
+            <th >HPS(Rp)</th>
             <th >Administrasi</th>
             <th >Teknis</th>
             <th >Harga/Biaya</th>
@@ -39,7 +40,7 @@
             </td> -->
             <td> 
                 <?php 
-                if($user_id == $row-> penyedia_id )
+                if($user_id == $row->penyedia_id )
                 {   
                     if( $row->effering_file )
                         echo '<a href="'.base_url("uploads/tender/").$row-> effering_file.'">  '.$row-> effering_file.' </a>';
@@ -70,6 +71,31 @@
                     echo form_close();
                 }
             ?> </td>
+            <td><?php
+                if($user_id == $row->penyedia_id )
+                {   
+                    echo form_open_multipart(site_url('penyedia/tender/hps/'.$row->id));
+                    $form = array(
+                        'name' => 'tender_id',
+                        'id' => 'tender_id',
+                        'type' => 'hidden',
+                        'value' => $row->tender_id,
+                        
+                    );
+                    echo form_input( $form );
+                    ?>
+                    <div class="input-group input-group-sm">
+                        <input value="<?=$row->hps?>" name="hps" id="hps" type="text" class="form-control currency"  data-mask="" inputmode="decimal" >
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <?php
+                    echo form_close();
+                }
+            ?></td>
             <td>
                 <input disabled type="checkbox" name="administration" id="administration" <?= ( $row->administration ) ? 'checked': ''?> >
             </td>

@@ -33,6 +33,7 @@ class Home extends Public_Controller {
 			'name' => 'Nama Paket',
 			'budget_estimation' => 'HPS',
 			'file_download_end_date' => 'Akhir Pendaftaran',
+			'status' => 'Status',
 		);
 		unset($table['action']);
 		$tables = [];
@@ -54,6 +55,7 @@ class Home extends Public_Controller {
 				'inner'
 			)
 			->where('tender.status', 'Tayang')
+			->like('tender.status', 'Selesai')
 			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";

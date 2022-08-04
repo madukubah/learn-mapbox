@@ -5,6 +5,7 @@
             <th style="width:50px">No</th>
             <th >Nama</th>
             <th >Penawaran</th>
+            <th >HPS(Rp)</th>
             <th >Administrasi</th>
             <th >Teknis</th>
             <th >Harga/Biaya</th>
@@ -26,6 +27,9 @@
                     else
                         echo 'None';
                 ?>
+            </td>
+            <td>
+                <?= number_format($row->hps)?>
             </td>
             <?php 
                 echo form_open_multipart(site_url('pt/tender/tender_penyedia/'.$row->tender_id)); 

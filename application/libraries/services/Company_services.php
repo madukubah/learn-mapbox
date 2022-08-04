@@ -736,7 +736,7 @@ class Company_services
 			),
 			"company_cert" => array(
 				'type' => 'text',
-				'label' => "Sertifikat Badan Usaha (SBU)",
+				'label' => "Nomor Induk Berusaha (NIB)",
 				'value' => $this->form_validation->set_value('company_cert', $this->company_cert),			  
 			),
 			"npwp" => array(

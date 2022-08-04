@@ -23,5 +23,6 @@
     <script src="<?= base_url('assets/') ?>plugins/jquery/jquery.min.js"></script>
 </head>
 
-<body class="hold-transition layout-top-nav layout-footer-fixed" style="background-image: url(<?= base_url('assets/img/bg.jpeg') ?>); background-size: cover; background-repeat: no-repeat">
+<body class="hold-transition layout-top-nav layout-footer-fixed" style="height:100%; background: #f15f79;
+      background: linear-gradient(to bottom, #2C5F78 0%,#b24592 100%); ">
     <div class="wrapper">

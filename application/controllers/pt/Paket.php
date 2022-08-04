@@ -41,9 +41,11 @@ class Paket extends Pt_Controller {
 		$table = $this->services->get_table_config( $this->current_page );
 		if($this->input->get( 'search' )){
 			$table[ "rows" ] = $this->paket_model
-				->select('	paket.*, 
+				->select('	 
 							concat(users.first_name, " ", users.last_name) as pa_full_name,
-							pokmil.name as pokmil_name
+							pokmil.name as pokmil_name,
+							pokmil.*,
+							paket.*
 							')
 				->join(
 					"users",
@@ -59,24 +61,37 @@ class Paket extends Pt_Controller {
 		else
 		{
 			$table[ "rows" ] = $this->paket_model
-			->select('	paket.*, 
-						concat(users.first_name, " ", users.last_name) as pa_full_name,
-						pokmil.name as pokmil_name
-						')
-			->join(
-				"users",
-				"users.id = paket.pa_id",
-				"inner")
-			->join(
-				"pokmil",
-				"pokmil.id = paket.pokmil_id",
-				"inner")
-			->pakets( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+				->select('	
+							concat(users.first_name, " ", users.last_name) as pa_full_name,
+							pokmil.name as pokmil_name,
+							pokmil.*,
+							paket.*
+							')
+				->join(
+					"users",
+					"users.id = paket.pa_id",
+					"inner")
+				->join(
+					"pokmil",
+					"pokmil.id = paket.pokmil_id",
+					"inner")
+				->pakets( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		}
+		$user_id = $this->ion_auth->get_user_id();
+		$table_rows = [];
 		foreach( $table[ "rows" ] as $row )
 		{
 			$row->id_enc = base64_encode($row->id);
+			if(
+				$user_id == $row->lead_id ||
+				$user_id == $row->member_1_id ||
+				$user_id == $row->member_2_id ||
+				$user_id == $row->member_3_id ||
+				$user_id == $row->member_4_id
+			)
+			$table_rows []= $row;
 		}
+		$table[ "rows" ] = $table_rows;
 		unset( $table[ "action" ][2] );
 		unset( $table[ "action" ][1] );
 		$table = $this->load->view('templates/tables/plain_table', $table, true);
@@ -96,7 +111,22 @@ class Paket extends Pt_Controller {
 	public function detail( $paket_id = null )
     {
 		$paket_id = base64_decode($paket_id);
-		$paket = $this->paket_model->paket( $paket_id )->row();
+		$paket = $this->paket_model
+			->select('	
+						concat(users.first_name, " ", users.last_name) as pa_full_name,
+						pokmil.name as pokmil_name,
+						pokmil.*,
+						paket.*
+						')
+			->join(
+				"users",
+				"users.id = paket.pa_id",
+				"inner")
+			->join(
+				"pokmil",
+				"pokmil.id = paket.pokmil_id",
+				"inner")
+			->paket( $paket_id )->row();
 		if( ! $paket ) 
 			redirect( site_url($this->current_page)  );
 			
@@ -116,7 +146,7 @@ class Paket extends Pt_Controller {
 		$form_data = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data , TRUE ) ;
 		$this->data[ "contents" ] =  $form_data;
 
-		$paket = $this->paket_model->paket( $paket_id )->row();
+		// $paket = $this->paket_model->paket( $paket_id )->row();
 		
 		$form_data_draft_tender = $this->draft_tender_services->get_form_data( $paket->draft_tender_id );
 		unset($form_data_draft_tender['form_data']['name']);
@@ -158,7 +188,8 @@ class Paket extends Pt_Controller {
 		);
 
 		$publish_tender= $this->load->view('templates/actions/modal_form', $publish_tender, true ); 
-		if($tender->status != 'Tayang')
+		$user_id = $this->ion_auth->get_user_id();
+		if($tender->status != 'Tayang' && $paket->lead_id == $user_id )
 			$this->data[ "header_button" ] =  $publish_tender;
 
 		$this->render( "pt/paket/detail/content" );

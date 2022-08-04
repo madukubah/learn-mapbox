@@ -55,7 +55,7 @@
 <script>
   $(function () {
     // $('[data-mask]').inputmask()
-    $('.currency').inputmask({ alias : "currency", prefix: '', digits: 0, rightAlign:false });
+    $('.currency').inputmask({ alias : "currency", prefix: '', digits: 0, rightAlign:false, removeMaskOnSubmit:true });
     //Date range picker
     $('.datepicker').datepicker();
     // console.log( $('.datepicker').val() );

@@ -9,7 +9,7 @@ class Home extends Pjp_Controller {
 	public function __construct(){
 		parent::__construct();
 
-		redirect(site_url('/pjp/tender'));
+		redirect(site_url('/pjp/tender?status=Rencana'));
 
 		$this->load->model(array(
 			'paket_model',

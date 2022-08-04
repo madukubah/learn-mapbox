@@ -37,12 +37,21 @@ class Tender extends Penyedia_Controller {
 		if ($pagination['total_records']>0) $this->data['pagination_links'] = $this->setPagination($pagination);
 
 		$table = $this->services->get_table_config( $this->current_page );
+		unset($table['header']['start_date']);
+		unset($table['header']['end_date']);
+		unset($table['header']['status']);
+		unset($table['header']['budget']);
+		$table['header']['budget_estimation'] = 'HPS';
+		$table['header']['announcement_start_date'] = 'Tanggal Mulai Tender';
+		$table['header']['signing_end_date'] = 'Tanggal Selesai Tender';
+		$table['header']['status'] = 'Status';
 		unset($table['action'][2]);
 		unset($table['action'][1]);
 		if($this->input->get( 'search' )){
 			$table[ "rows" ] = $this->tender_model
 				->select('
 					schedule.*,
+					draft_tender.*,
 					tender.*
 				')
 				->join(
@@ -50,24 +59,35 @@ class Tender extends Penyedia_Controller {
 					'schedule.tender_id = tender.id',
 					'inner'
 				)
-				->like($table["search"]["field"], $this->input->get( 'search' ))
+				->join(
+					'draft_tender',
+					'draft_tender.tender_id = tender.id',
+					'inner'
+				)
+				->like('tender.'.$table["search"]["field"], $this->input->get( 'search' ))
 				// ->where('status', 'Tayang')	
 				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		}
 		else
 		{
 			$table[ "rows" ] = $this->tender_model
-			->select('
-				schedule.*,
-				tender.*
-			')
-			->join(
-				'schedule',
-				'schedule.tender_id = tender.id',
-				'inner'
-			)
-			->where('status', 'Tayang')
-			->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+				->select('
+					schedule.*,
+					draft_tender.*,
+					tender.*
+				')
+				->join(
+					'schedule',
+					'schedule.tender_id = tender.id',
+					'inner'
+				)
+				->join(
+					'draft_tender',
+					'draft_tender.tender_id = tender.id',
+					'inner'
+				)
+				->where('tender.status', 'Tayang')
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		
 		}
 		
@@ -175,6 +195,22 @@ class Tender extends Penyedia_Controller {
 		redirect(site_url( $this->current_page.'detail/'.base64_encode($data['tender_id']) ));
 	}
 
+	public function hps( $tender_penyedia_id = NULL )
+	{
+		if ($tender_penyedia_id == NULL) redirect(site_url($this->current_page));
+        
+		$data['tender_id'] = $this->input->post( 'tender_id' );
+		$data['hps'] = $this->input->post( 'hps' );
+		$data_param["id"] = $tender_penyedia_id;
+
+		if( $this->tender_penyedia_model->update( $data, $data_param ) ){
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::SUCCESS, $this->tender_penyedia_model->messages() ) );
+		}else{
+			$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_penyedia_model->errors() ) );
+		}
+		redirect(site_url( $this->current_page.'detail/'.base64_encode($data['tender_id']) ));
+	}
+
 	public function detail( $tender_id = null )
     {
 		$tender_id = base64_decode($tender_id);
@@ -196,6 +232,9 @@ class Tender extends Penyedia_Controller {
 		$this->data["sub_header"] = '<div style="color:red">File yang diupload berekstensi .pdf, .docx</div>';
 
 		$form_data = $this->services->get_form_data( $tender_id );
+		unset($form_data['form_data']['budget']);
+		unset($form_data['form_data']['start_date']);
+		unset($form_data['form_data']['end_date']);
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 
 		$draft_tender = $this->draft_tender_model

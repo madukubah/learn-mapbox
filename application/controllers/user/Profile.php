@@ -131,6 +131,9 @@ class Profile extends User_Controller {
 				),
 			);
 			$form_data[ 'form_data' ] = array_merge( $form_data[ 'form_data' ] , $form_password[ 'form_data' ] );
+			if( !$this->ion_auth->in_group( 'uadmin' ) ){
+				$form_data[ 'form_data' ]["email"]['readonly'] = TRUE;
+			}
 			unset( $form_data[ 'form_data' ]["group_id"] );
 			unset( $form_data[ 'form_data' ]["active"] );
 			$form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;

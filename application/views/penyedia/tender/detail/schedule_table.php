@@ -55,7 +55,7 @@
             'value_end' => isset($schedule)? $schedule->evaluation_end_date: '0000-00-00 00:00:00',
         ),
         array(
-            'label' => 'Pembuktian Kualifikasi',
+            'label' => 'Pembuktian Kualifikasi, Pembuatan BAHT dan Usulan Penetapan Pemenang Tender',
             'id_start_date' => 'proof_qualification_start_date',
             'id_start_time' => 'proof_qualification_start_time',
             'id_end_date' => 'proof_qualification_end_date',
@@ -64,7 +64,7 @@
             'value_end' => isset($schedule)? $schedule->proof_qualification_end_date: '0000-00-00 00:00:00',
         ),
         array(
-            'label' => 'Penetapan Pemenang',
+            'label' => 'Penetapan Pemenang Oleh Direksi dan Reviu Hasil Kegiatan',
             'id_start_date' => 'winner_settle_start_date',
             'id_start_time' => 'winner_settle_start_time',
             'id_end_date' => 'winner_settle_end_date',

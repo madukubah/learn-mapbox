@@ -17,6 +17,9 @@ class Tender extends Pjp_Controller {
 		$this->load->model(array(
 			'tender_model',
 			'draft_tender_model',
+			'tender_penyedia_model',
+			'schedule_model',
+			'comment_model',
 		));
 	}	
 
@@ -42,7 +45,9 @@ class Tender extends Pjp_Controller {
 		}
 		else
 		{
-			$table[ "rows" ] = $this->tender_model->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
+			$table[ "rows" ] = $this->tender_model
+				->where( 'status', $this->input->get( 'status' ) )
+				->tenders( $pagination['start_record'], $pagination['limit_per_page'] )->result();
 		}
 		for ($i=0; $i < count($table[ "rows" ]); $i++) { 
 			$table[ "rows" ][$i]->year = $table[ "rows" ][$i]->year." ";
@@ -68,8 +73,8 @@ class Tender extends Pjp_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Rencana Tender";
-		$this->data["header"] = "Rencana Tender";
+		$this->data["block_header"] = "Tender";
+		$this->data["header"] = "Tender";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 		$this->render( "templates/contents/plain_content" );
 	}
@@ -106,7 +111,7 @@ class Tender extends Pjp_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_model->errors() ) );
 			}
-			redirect( site_url($this->current_page));
+			redirect( site_url($this->current_page.'?status=Rencana'));
 		}
         else
         {
@@ -127,6 +132,8 @@ class Tender extends Pjp_Controller {
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data();
+			$form_data['form_data']['status']['type'] = 'hidden';
+			$form_data['form_data']['status']['value'] = 'Rencana';
             $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
 
             $this->data[ "contents" ] =  $form_data;
@@ -150,10 +157,10 @@ class Tender extends Pjp_Controller {
 		$this->data["key"] = $this->input->get('key', FALSE);
 		$this->data["alert"] = (isset($alert)) ? $alert : NULL ;
 		$this->data["current_page"] = $this->current_page;
-		$this->data["block_header"] = "Detail Rencana Tender ";
-		$this->data["header"] = "Detail Rencana Tender ";
+		$this->data["block_header"] = "Detail Tender ";
+		$this->data["header"] = "Detail Tender ";
 		$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
-
+		$this->data[ "header_button" ] = '';
 		$form_data = $this->services->get_form_data( $tender_id );
 		$form_data = $this->load->view('templates/form/plain_form_readonly', $form_data , TRUE ) ;
 
@@ -163,16 +170,16 @@ class Tender extends Pjp_Controller {
 		unset( $form_data_draft_tender['kak_file'] );
 		unset( $form_data_draft_tender['design_file'] );
 		unset( $form_data_draft_tender['other_file'] );
-		$create_draft_tender = array(
+		$done_tender_tender = array(
 			"name" => "Buat Draft",
-			"modal_id" => "create_draft_",
+			"modal_id" => "done_tender_",
 			"button_color" => "success",
 			"url" => site_url( "pjp/draft_tender/add/"),
 			"form_data" => $form_data_draft_tender,
 			'data' => NULL
 		);
 
-		$create_draft_tender= $this->load->view('templates/actions/modal_form', $create_draft_tender, true ); 
+		$done_tender_tender= $this->load->view('templates/actions/modal_form', $done_tender_tender, true ); 
 
 		$draft_tender = $this->draft_tender_model
 			->where('tender_id', $tender_id)
@@ -180,10 +187,116 @@ class Tender extends Pjp_Controller {
 			->row();
 
 		if( !$draft_tender )
-			$this->data[ "header_button" ] =  $create_draft_tender;
+			$this->data[ "header_button" ] =  $done_tender_tender;
+		
+		$finish_tender = array(
+			"name" => "Tender Selesai",
+			"modal_id" => "done_tender_",
+			"button_color" => "success",
+			"url" => site_url( "pjp/tender/edit/".base64_encode( $tender->id ) ),
+			"form_data" => array(
+				"id" => array(
+					'type' => 'hidden',
+					'label' => "Nama Tender",
+					'value' => $tender->id,
+				),
+				"name" => array(
+					'type' => 'text',
+					'label' => "Nama Tender",
+					'readonly' => true,
+					'value' => $tender->name,
+				),
+				"status" => array(
+					'type' => 'hidden',
+					'label' => "status",
+					'value' => 'Selesai',
+				),
+			),
+			'data' => NULL
+		);
 
-		$this->data[ "contents" ] =  $form_data;
-		$this->render( "pjp/tender/detail/content" );
+		$finish_tender= $this->load->view('templates/actions/modal_form', $finish_tender, true ); 
+		if( $tender->status == 'Tayang' )
+			$this->data[ "header_button" ] .=  $finish_tender;
+
+		$link_edit_tender = 
+		array(
+			"name" => "Edit",
+			"type" => "link",
+			"url" => site_url( "pjp/tender/edit/".base64_encode( $tender->id ) ),
+			"button_color" => "warning",	
+			"data" => NULL,
+		);
+		$this->data[ "header_button" ] .=  $this->load->view('templates/actions/link', $link_edit_tender, TRUE );
+
+		if( $tender->status == 'Rencana' )
+		{
+			$this->data[ "contents" ] =  $form_data;
+			$this->render( "pjp/tender/detail/content" );
+		}
+		else
+		{
+			$draft_tender = $this->draft_tender_model
+				->where('tender_id', $tender_id)
+				->draft_tender()
+				->row();
+			$form_data_draft_tender = $this->draft_tender_services->get_form_data( $draft_tender->id );
+			unset($form_data_draft_tender['form_data']['name']);
+			unset($form_data_draft_tender['form_data']['status']);
+			$form_data_draft_tender = $this->load->view('pt/paket/detail/plain_form_readonly', $form_data_draft_tender , TRUE ) ;
+
+
+			$user_id = $this->ion_auth->get_user_id();
+			
+			$tender_penyedia_table["header"] = array(
+				'name' => 'Nama',
+			);
+			$tender_penyedia_table["number"] = 1;
+			$tender_penyedia_table["rows"] = $this->tender_penyedia_model
+				->select('	tender_penyedia.*, 
+						company.name,
+					')
+				->where('tender_id', $tender_id )
+				->join(
+					"users",
+					"users.id = tender_penyedia.penyedia_id",
+					"inner")
+				->join(
+					"company",
+					"company.user_id = users.id",
+					"inner")
+				->tender_penyedias()
+				->result();
+				
+			$schedule = $this->schedule_model
+				->where('tender_id', $tender_id)
+				->schedule()
+				->row();
+			$tender_penyedia_table['user_id'] = $user_id;
+			$tender_penyedia_table['schedule'] = $schedule;
+			$tender_penyedia_table = $this->load->view('pjp/tender/detail/plain_table', $tender_penyedia_table, true);
+			$this->data[ "contents" ] =  $form_data.$form_data_draft_tender;
+			$this->data[ "contents_2" ] =  $tender_penyedia_table;
+			$schedule_id = '';
+			$schedule_table = $this->load->view('penyedia/tender/detail/schedule_table', array('schedule' => $schedule,'tender_id' => $tender_id ), true);
+			$this->data[ "contents_3" ] =  $schedule_table;
+			$comments = $this->comment_model
+				->select('
+					comment.*,
+					concat(users.first_name, " ", users.last_name) as user_name
+				')
+				->join(
+					'users',
+					'users.id = comment.user_id',
+					'left'
+				)
+				->where('tender_id', $tender_id)
+				->comments()
+				->result();
+			$this->data[ "comments" ] =  $comments;
+			$this->data[ "tender" ] =  $tender;
+			$this->render( "pjp/tender/detail/content_tayang" );
+		}
 	}
 
 	public function edit( $tender_id = null )
@@ -197,17 +310,10 @@ class Tender extends Pjp_Controller {
 
         if ($this->form_validation->run() === TRUE )
         {
-			$data['code'] = $this->input->post( 'code' );
-			$data['name'] = $this->input->post( 'name' );
-			$data['type'] = $this->input->post( 'type' );
-			$data['budget'] = str_ireplace(",", "", $this->input->post( 'budget' ));
-			$data['budget_source'] = $this->input->post( 'budget_source' );
-			$data['year'] = $this->input->post( 'year' );
-			$data['location'] = $this->input->post( 'location' );
-			$data['method'] = $this->input->post( 'method' );
-			$data['start_date'] = $this->input->post( 'start_date' );
-			$data['end_date'] = $this->input->post( 'end_date' );
-// 			$data['status'] = $this->input->post( 'status' );
+			foreach($this->input->post() as $key => $post)
+			{
+				$data[$key] = $post;
+			}
 
 			$data_param["id"] = $this->input->post( 'id' );
 
@@ -216,7 +322,7 @@ class Tender extends Pjp_Controller {
 			}else{
 				$this->session->set_flashdata('alert', $this->alert->set_alert( Alert::DANGER, $this->tender_model->errors() ) );
 			}
-			redirect( site_url($this->current_page));
+			redirect( site_url($this->current_page.'detail/'.base64_encode($tender->id)));
 		}
         else
         {
@@ -232,7 +338,9 @@ class Tender extends Pjp_Controller {
 			$this->data["sub_header"] = 'Klik Tombol Action Untuk Aksi Lebih Lanjut';
 
             $form_data = $this->services->get_form_data($tender_id);
+			$form_data['form_data']['status']['readonly'] = TRUE;
             $form_data = $this->load->view('templates/form/plain_form', $form_data , TRUE ) ;
+			
 
             $this->data[ "contents" ] =  $form_data;
             
